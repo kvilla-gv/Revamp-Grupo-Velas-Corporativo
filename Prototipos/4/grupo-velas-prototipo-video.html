@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grupo Velas · Desarrollos Inmobiliarios en México</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================
+   GRUPO VELAS — Prototipo fiel a los PDF de referencia
+   Vistas: Home (#/) y Velasur (#/velasur)
+   ========================================================== */
+
+:root{
+  --verde:#0E3B32;          /* verde institucional (barras, pie, contacto) */
+  --verde-osc:#0A2E27;
+  --coral:#E8663D;          /* acento */
+  --crema:#F2E9DA;          /* bandas beige */
+  --hueso:#FDFAF5;          /* fondo general */
+  --tinta:#1C2320;          /* texto oscuro */
+  --gris:#82857F;           /* texto secundario */
+  --linea:#E2DBCC;
+
+  --titulo:'Montserrat',system-ui,sans-serif;
+  --texto:'Inter',system-ui,-apple-system,sans-serif;
+
+  --marco:clamp(18px,5vw,90px);
+  --ancho:1240px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--hueso);color:var(--tinta);
+  font-family:var(--texto);font-size:14px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;border:0;background:none;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px}
+img,svg{max-width:100%;display:block}
+
+h1,h2,h3{margin:0;font-family:var(--titulo);font-weight:700;text-transform:uppercase;line-height:1.08}
+h1{font-size:clamp(34px,5vw,58px);letter-spacing:-.01em;font-weight:700}
+h2{font-size:clamp(22px,2.6vw,32px);letter-spacing:.01em}
+h3{font-size:14px;letter-spacing:.02em;line-height:1.35}
+p{margin:0 0 1em}
+
+.envoltura{max-width:var(--ancho);margin:0 auto;padding-inline:var(--marco)}
+.estrecho{max-width:1000px;margin:0 auto;padding-inline:var(--marco)}
+
+/* etiqueta coral + título + filete */
+.etiqueta{font-family:var(--texto);font-size:11px;color:var(--coral);margin-bottom:10px;letter-spacing:.02em}
+.filete{width:44px;height:3px;background:var(--coral);margin-top:14px}
+.filete.claro{background:var(--coral)}
+
+/* botones */
+.btn{display:inline-block;padding:11px 22px;border-radius:3px;font-family:var(--titulo);
+  font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:background .25s,color .25s,border-color .25s}
+.btn-coral{background:var(--coral);color:#fff}
+.btn-coral:hover{background:#D2552F}
+.btn-blanco{background:#fff;color:var(--tinta)}
+.btn-blanco:hover{background:#EDE6DA}
+.btn-borde{border:1px solid rgba(255,255,255,.65);color:#fff}
+.btn-borde:hover{background:rgba(255,255,255,.14)}
+.btn-verde{background:var(--verde);color:#fff}
+.btn-verde:hover{background:#0A2E27}
+.btn-whatsapp{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff}
+.btn-whatsapp:hover{background:#1EBE5A}
+.btn-whatsapp svg{width:14px;height:14px;flex:none}
+
+/* ---------- barra de navegación ---------- */
+.nav{position:absolute;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  gap:24px;padding:22px var(--marco)}
+.nav.fija{position:fixed;background:var(--verde);padding-block:14px;box-shadow:0 2px 14px rgba(0,0,0,.14)}
+.logo{display:flex;align-items:center;gap:9px;color:#fff}
+.logo svg{width:26px;height:26px}
+.logo b{font-family:var(--titulo);font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.menu{display:flex;align-items:center;gap:26px}
+.menu a{display:inline-flex;align-items:center;font-family:var(--titulo);font-size:10.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:#fff;opacity:.92;transition:color .25s,opacity .25s}
+.menu a:hover,.menu a.activo{color:var(--coral);opacity:1}
+.menu .caja{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.7);padding:9px 18px;border-radius:2px;
+  z-index:0;transition:border-color .3s ease,color .3s ease,opacity .3s ease,transform .3s ease,box-shadow .3s ease}
+.menu .caja::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--coral);
+  transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.65,0,.35,1)}
+.menu .caja:hover{border-color:var(--coral);color:#fff;opacity:1;transform:translateY(-2px);
+  box-shadow:0 10px 22px rgba(232,102,61,.35)}
+.menu .caja:hover::before{transform:scaleX(1)}
+
+.item-sub{position:relative;display:inline-flex;align-items:center}
+.item-sub>a{gap:5px}
+.caret{width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+  transform:rotate(45deg) translateY(-2px);transition:transform .25s ease}
+.item-sub:hover .caret,.item-sub:focus-within .caret{transform:rotate(225deg) translateY(1px)}
+
+.submenu{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(-8px);
+  padding-top:14px;opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .25s ease,transform .3s ease,visibility .25s}
+.item-sub:hover .submenu,.item-sub:focus-within .submenu{
+  opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+
+.submenu-in{display:flex;flex-direction:column;min-width:200px;background:#fff;border-radius:7px;
+  box-shadow:0 10px 24px rgba(28,35,32,.13);padding:10px;gap:2px}
+.submenu-in a{display:block;padding:9px 14px;font-family:var(--titulo);font-size:10.5px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--tinta);border-radius:3px;
+  transition:background .2s,color .2s}
+.submenu-in a:hover,.submenu-in a:focus-visible{background:var(--crema);color:var(--coral)}
+@media (max-width:900px){.menu a:not(.caja){display:none}.item-sub{display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:100vh;height:100dvh;min-height:420px;overflow:hidden;background:var(--verde-osc)}
+.hero>svg,
+.hero>video{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.hero>video{object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;z-index:2;
+  background:linear-gradient(90deg,rgba(8,26,22,.74) 0%,rgba(8,26,22,.42) 48%,rgba(8,26,22,.12) 100%)}
+.hero-txt{position:absolute;z-index:3;left:0;right:0;bottom:clamp(40px,9vh,86px);
+  max-width:var(--ancho);margin:0 auto;padding-inline:var(--marco);color:#fff}
+.hero-txt .sobre{font-size:11px;color:var(--coral);margin-bottom:12px;letter-spacing:.02em}
+.hero-txt h1{max-width:16ch}
+.hero-txt p{max-width:38ch;font-size:12.5px;line-height:1.75;color:rgba(255,255,255,.88);margin:16px 0 0}
+.hero-txt .precio-desde{margin-top:16px;font-family:var(--texto);font-size:13px;color:rgba(255,255,255,.88)}
+.hero-txt .precio-desde strong{margin-left:5px;font-family:var(--titulo);font-size:23px;font-weight:800;color:var(--coral)}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+
+/* ---------- buscador del hero ---------- */
+.buscador{position:relative;max-width:420px;margin-top:26px}
+.buscador-caja{display:flex;align-items:center;gap:10px;background:rgba(253,250,245,.97);border-radius:40px;
+  padding:12px 20px;box-shadow:0 10px 30px rgba(8,26,22,.28);transition:box-shadow .3s ease}
+.buscador-caja:focus-within{box-shadow:0 14px 36px rgba(232,102,61,.4)}
+.buscador-icono{width:15px;height:15px;color:var(--gris);flex:none}
+.buscador-caja input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:12.5px;color:var(--tinta)}
+.buscador-caja input::placeholder{color:var(--gris)}
+.buscador-caja input:focus{outline:none}
+
+.buscador-resultados{position:absolute;top:calc(100% + 10px);left:0;right:0;background:#fff;border-radius:7px;
+  box-shadow:0 10px 24px rgba(28,35,32,.18);padding:8px;max-height:280px;overflow-y:auto;
+  opacity:0;visibility:hidden;transform:translateY(-8px);pointer-events:none;
+  transition:opacity .25s ease,transform .3s ease,visibility .25s}
+.buscador-resultados.mostrar{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+.buscador-resultados a{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;
+  border-radius:4px;font-size:12px;color:var(--tinta);transition:background .2s,color .2s}
+.buscador-resultados a:hover,.buscador-resultados a:focus-visible{background:var(--crema);color:var(--coral)}
+.buscador-resultados a span{font-size:9.5px;color:var(--gris);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.buscador-resultados .vacio{padding:9px 12px;font-size:11.5px;color:var(--gris)}
+@media (max-width:520px){.buscador{max-width:none}}
+
+/* ---------- banda de cifras (home) ---------- */
+.cifras{background:var(--crema)}
+.cifras-in{display:grid;grid-template-columns:repeat(4,1fr);max-width:var(--ancho);margin:0 auto}
+.cifras-in>div{position:relative;padding:40px 20px;text-align:center}
+.cifras-in>div+div::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:1px;height:36px;background:rgba(14,59,50,.16)}
+.cifras-in b{display:flex;align-items:baseline;justify-content:center;gap:2px;
+  font-family:var(--titulo);font-size:clamp(28px,3.4vw,40px);font-weight:800;letter-spacing:-.01em;color:var(--verde)}
+.cifras-in .raya{width:26px;height:2px;background:var(--coral);margin:14px auto 0}
+.cifras-in span{display:block;margin-top:10px;font-size:10.5px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gris)}
+@media (max-width:760px){.cifras-in{grid-template-columns:1fr 1fr}.cifras-in>div:nth-child(3)::before{display:none}}
+
+/* ---------- secciones ---------- */
+.seccion{padding-block:clamp(52px,7vw,90px)}
+.cab{margin-bottom:30px}
+.cab p{color:var(--gris);font-size:13px;margin:22px 0 0}
+
+/* ---------- tarjetas de ciudad ---------- */
+.ciudades{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.ciudad{background:#fff;border-radius:7px;overflow:hidden;box-shadow:0 2px 10px rgba(28,35,32,.07);
+  transition:transform .3s ease,box-shadow .3s ease}
+.ciudad:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(28,35,32,.13)}
+.ciudad .foto{position:relative;aspect-ratio:4/3;background:var(--verde)}
+.ciudad .foto svg{position:absolute;inset:0;width:100%;height:100%}
+.ciudad .flecha{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;background:#fff;
+  display:grid;place-items:center;font-size:11px;color:var(--tinta);transition:background .25s,color .25s}
+.ciudad:hover .flecha{background:var(--coral);color:#fff}
+.ciudad .pie{padding:13px 14px 16px}
+.ciudad .pie b{display:block;font-family:var(--titulo);font-size:11.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--verde)}
+.ciudad .pie span{font-size:10.5px;color:var(--gris)}
+@media (max-width:980px){.ciudades{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- testimonio ---------- */
+.testimonio{background:var(--crema);text-align:center;padding-block:clamp(56px,7vw,96px)}
+.testimonio .etiqueta{margin-bottom:22px}
+.testimonio blockquote{margin:0 auto;max-width:620px;font-family:var(--titulo);font-weight:500;
+  font-size:clamp(18px,2.1vw,25px);line-height:1.45;color:var(--verde);text-transform:none}
+.testimonio cite{display:block;margin-top:22px;font-style:normal;font-size:11px;color:var(--coral)}
+
+.testimonio-carrusel{position:relative;max-width:620px;margin:0 auto;min-height:clamp(260px,34vw,310px)}
+.testimonio-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
+.testimonio-slide.activo{opacity:1;transform:none;pointer-events:auto}
+.testimonio-avatar{width:52px;height:52px;border-radius:50%;background:var(--verde);color:#fff;
+  display:grid;place-items:center;font-family:var(--titulo);font-size:14px;font-weight:700;margin-bottom:16px}
+.testimonio-estrellas{color:var(--coral);font-size:14px;letter-spacing:3px;margin-bottom:16px}
+.testimonio-puntos{display:flex;justify-content:center;gap:8px;margin-top:20px}
+.testimonio-puntos button{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:rgba(14,59,50,.2);
+  transition:background .25s ease,transform .25s ease}
+.testimonio-puntos button.activo{background:var(--coral);transform:scale(1.35)}
+
+/* ---------- notas ---------- */
+.notas{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.nota{display:flex;flex-direction:column;background:var(--verde);border-radius:7px;overflow:hidden;
+  box-shadow:0 2px 10px rgba(28,35,32,.07);transition:transform .3s ease,box-shadow .3s ease}
+.nota:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(28,35,32,.13)}
+.nota .foto{flex:none;aspect-ratio:16/9;display:grid;place-items:center}
+.nota .foto span{font-family:var(--titulo);font-size:9.5px;font-weight:600;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(255,255,255,.28)}
+.nota .pie{flex:1;background:#fff;padding:16px 18px 22px}
+.nota .pie em{display:block;font-style:normal;font-size:10px;color:var(--coral);margin-bottom:8px;
+  text-transform:uppercase;letter-spacing:.06em}
+.nota h3{color:var(--tinta)}
+@media (max-width:860px){.notas{grid-template-columns:1fr}}
+
+/* ---------- contacto verde (home) ---------- */
+.contacto-verde{background:var(--verde);color:#fff;padding-block:clamp(56px,7vw,92px)}
+.contacto-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(30px,6vw,86px);max-width:var(--ancho);margin:0 auto;padding-inline:var(--marco)}
+.contacto-verde h2{color:#fff}
+.contacto-verde .intro{font-size:12.5px;color:rgba(255,255,255,.82);max-width:34ch;margin-top:22px}
+.campos{display:grid;grid-template-columns:1fr 1fr;gap:26px 30px;align-content:start}
+.campo{display:flex;flex-direction:column;gap:4px}
+.campo.ancho{grid-column:span 2}
+.campo label{font-family:var(--titulo);font-size:9.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.72)}
+.campo input,.campo select,.campo textarea{background:transparent;border:0;border-bottom:1px solid rgba(255,255,255,.4);
+  color:#fff;padding:7px 0;font:inherit;font-size:13px;transition:border-color .25s}
+.campo textarea{min-height:64px;resize:vertical}
+.campo select option{color:var(--tinta)}
+.campo input:focus,.campo select:focus,.campo textarea:focus{outline:none;border-color:var(--coral)}
+.contacto-verde .btn{margin-top:4px}
+.campos-acciones{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+@media (max-width:880px){.contacto-grid,.campos{grid-template-columns:1fr}.campo.ancho{grid-column:span 1}}
+
+/* ---------- newsletter ---------- */
+.news{background:var(--crema);padding-block:34px}
+.news-in{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;max-width:var(--ancho);margin:0 auto;padding-inline:var(--marco)}
+.news h3{font-size:15px;color:var(--tinta);letter-spacing:.01em}
+.news p{font-size:11.5px;color:var(--gris);margin:6px 0 0}
+.news form{display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(14,59,50,.3);padding-bottom:6px}
+.news input{flex:1;background:transparent;border:0;font:inherit;font-size:12.5px;color:var(--tinta)}
+.news input:focus{outline:none}
+.news button{font-size:11px;color:var(--coral);font-weight:600;white-space:nowrap}
+@media (max-width:760px){.news-in{grid-template-columns:1fr}}
+
+/* ---------- pie ---------- */
+.pie{background:var(--verde);color:rgba(255,255,255,.72);padding-block:48px 26px;font-size:12px}
+.pie-grid{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:36px;max-width:var(--ancho);margin:0 auto;padding-inline:var(--marco)}
+.pie-marca>svg{width:40px;height:40px;margin-bottom:16px}
+.pie-grid p{max-width:32ch;line-height:1.8;margin:0}
+.pie h4{font-family:var(--titulo);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:#fff;margin:0 0 14px}
+.pie ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.pie a:hover{color:var(--coral)}
+.pie-social{display:flex;gap:12px;margin-top:22px}
+.pie-social a{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.24);color:rgba(255,255,255,.82);
+  transition:background .25s ease,border-color .25s ease,color .25s ease,transform .25s ease}
+.pie-social svg{width:16px;height:16px}
+.pie-social a:hover{background:var(--coral);border-color:var(--coral);color:#fff;transform:translateY(-3px)}
+.pie-base{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:10.5px;
+  max-width:var(--ancho);margin:40px auto 0;padding:18px var(--marco) 0;border-top:1px solid rgba(255,255,255,.12)}
+@media (max-width:760px){.pie-grid{grid-template-columns:1fr 1fr}}
+
+/* ==========================================================
+   VISTA VELASUR
+   ========================================================== */
+/* barra verde de datos */
+.datos{background:var(--verde);color:#fff}
+.datos-in{display:grid;grid-template-columns:repeat(5,1fr);max-width:var(--ancho);margin:0 auto}
+.datos-in>div{position:relative;padding:28px 24px}
+.datos-in>div+div::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:1px;height:30px;background:rgba(255,255,255,.18)}
+.datos-in b{display:block;font-family:var(--titulo);font-size:clamp(18px,2vw,22px);font-weight:800;letter-spacing:-.01em}
+.datos-in .raya{width:22px;height:2px;background:var(--coral);margin:12px 0 0}
+.datos-in span{display:block;margin-top:10px;font-size:10px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:rgba(255,255,255,.55)}
+.datos-in .coral b{color:var(--coral)}
+@media (max-width:860px){.datos-in{grid-template-columns:repeat(2,1fr)}
+  .datos-in>div:nth-child(3)::before,.datos-in>div:nth-child(5)::before{display:none}}
+@media (max-width:460px){.datos-in{grid-template-columns:1fr}.datos-in>div::before{display:none}}
+
+/* características numeradas */
+.caracteristicas{border-top:1px solid var(--linea);margin-top:26px}
+.caract{display:grid;grid-template-columns:44px 1fr;gap:10px;padding:18px 0;border-bottom:1px solid var(--linea)}
+.caract .n{font-size:10.5px;color:var(--coral);font-weight:600;padding-top:2px}
+.caract b{display:block;font-family:var(--titulo);font-size:12.5px;font-weight:700;color:var(--tinta);margin-bottom:4px}
+.caract p{margin:0;font-size:11.5px;color:var(--gris);max-width:46ch;line-height:1.7}
+
+/* mapa + panel */
+.ubicacion{display:grid;grid-template-columns:1fr 1fr}
+.mapa{position:relative;min-height:clamp(260px,38vw,330px);background:#E8EDE4}
+.mapa svg{position:absolute;inset:0;width:100%;height:100%}
+.mapa .ficha{position:absolute;left:12px;top:12px;background:#fff;border-radius:3px;padding:8px 30px 8px 12px;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);font-size:10.5px;line-height:1.45}
+.mapa .ficha b{display:block;font-size:11px;color:#222}
+.mapa .ficha span{color:#777}
+.mapa .control{position:absolute;right:12px;bottom:14px;background:#fff;border-radius:2px;padding:4px 7px;
+  font-size:14px;color:#555;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.mapa-panel{background:var(--verde);color:#fff;padding:clamp(28px,4vw,54px);display:flex;flex-direction:column;justify-content:center}
+.mapa-panel h2{color:#fff}
+.mapa-panel p{font-size:12.5px;color:rgba(255,255,255,.82);max-width:34ch;margin:18px 0 22px}
+.mapa-panel .btn{align-self:flex-start}
+@media (max-width:860px){.ubicacion{grid-template-columns:1fr}}
+
+/* amenidades */
+.amenidades{display:grid;grid-template-columns:repeat(5,1fr);background:var(--crema);margin-top:26px}
+.amenidades>div{padding:24px 20px 56px;border-right:1px solid rgba(14,59,50,.13)}
+.amenidades>div:last-child{border-right:0}
+.amenidad-icono{width:42px;height:42px;border-radius:50%;background:#fff;color:var(--verde);
+  display:grid;place-items:center;margin-bottom:14px;box-shadow:0 2px 8px rgba(14,59,50,.08);
+  opacity:0;transform:scale(.6);transition:opacity .4s ease,transform .4s ease}
+.amenidad-icono svg{width:20px;height:20px}
+.amenidades.visible .amenidad-icono{opacity:1;transform:scale(1)}
+.amenidades>div:nth-child(1) .amenidad-icono{transition-delay:0s}
+.amenidades>div:nth-child(2) .amenidad-icono{transition-delay:.08s}
+.amenidades>div:nth-child(3) .amenidad-icono{transition-delay:.16s}
+.amenidades>div:nth-child(4) .amenidad-icono{transition-delay:.24s}
+.amenidades>div:nth-child(5) .amenidad-icono{transition-delay:.32s}
+.amenidades b{font-family:var(--titulo);font-size:11.5px;font-weight:700;color:var(--tinta);line-height:1.45}
+@media (max-width:860px){.amenidades{grid-template-columns:repeat(2,1fr)}.amenidades>div{padding-bottom:28px;border-bottom:1px solid rgba(14,59,50,.13)}}
+@media (max-width:480px){.amenidades{grid-template-columns:1fr}.amenidades>div{border-right:0}}
+
+/* galería tipo mosaico */
+.galeria{columns:3;column-gap:12px;margin-top:26px}
+.galeria figure{margin:0 0 12px;break-inside:avoid;border-radius:3px;overflow:hidden;background:var(--verde);position:relative}
+.galeria svg{width:100%;height:100%;position:absolute;inset:0}
+.galeria .m{position:relative}
+.galeria .r43{aspect-ratio:4/3}
+.galeria .r11{aspect-ratio:1}
+.galeria .r34{aspect-ratio:3/4}
+.galeria .r169{aspect-ratio:16/10}
+@media (max-width:820px){.galeria{columns:2}}
+@media (max-width:480px){.galeria{columns:1}}
+
+/* bloque catálogo */
+.catalogo{display:grid;grid-template-columns:1.05fr .95fr;max-width:920px;margin:0 auto;overflow:hidden}
+.catalogo .txt{background:var(--verde);color:#fff;padding:clamp(28px,3.6vw,46px)}
+.catalogo h2{color:#fff;max-width:11ch}
+.catalogo p{font-size:12px;color:rgba(255,255,255,.8);margin:16px 0 22px;max-width:30ch}
+.catalogo .btns{display:flex;gap:10px;flex-wrap:wrap}
+.catalogo .foto{position:relative;min-height:230px;background:var(--verde-osc)}
+.catalogo .foto svg{position:absolute;inset:0;width:100%;height:100%}
+@media (max-width:760px){.catalogo{grid-template-columns:1fr}}
+
+/* contacto crema (velasur) */
+.contacto-crema{background:var(--crema);padding-block:clamp(52px,6.5vw,86px)}
+.contacto-crema h2{color:var(--verde)}
+.contacto-crema .intro{font-size:12.5px;color:var(--gris);max-width:30ch;margin-top:22px}
+.contacto-crema .campo label{color:var(--gris)}
+.contacto-crema .campo input,.contacto-crema .campo select,.contacto-crema .campo textarea{
+  color:var(--tinta);border-bottom-color:rgba(14,59,50,.28)}
+.volver{display:inline-block;font-family:var(--titulo);font-size:10px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gris);padding-block:26px}
+.volver:hover{color:var(--coral)}
+
+/* aparición discreta */
+.ap{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+.ap.visible{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.001ms!important}
+  html{scroll-behavior:auto}
+  .ap{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVEGACIÓN ============ -->
+<header class="nav" id="nav">
+  <a class="logo" href="#/">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13 16 24 34 35 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>Grupo Velas</b>
+  </a>
+  <nav class="menu">
+    <a href="#/" data-ruta="home">Inicio</a>
+    <a href="#nosotros">Nosotros</a>
+    <div class="item-sub">
+      <a href="#/velasur" data-ruta="velasur" aria-haspopup="true" aria-expanded="false">Proyectos<i class="caret" aria-hidden="true"></i></a>
+      <div class="submenu">
+        <div class="submenu-in">
+          <a href="#/velasur">Velasur — Querétaro</a>
+          <a href="#/">Ver todos los desarrollos</a>
+        </div>
+      </div>
+    </div>
+    <div class="item-sub">
+      <a href="#ciudades" aria-haspopup="true" aria-expanded="false">Ciudades<i class="caret" aria-hidden="true"></i></a>
+      <div class="submenu">
+        <div class="submenu-in" id="submenuCiudades"></div>
+      </div>
+    </div>
+    <a class="caja" href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- ================================================================
+     VISTA 1 · HOME
+     ================================================================ -->
+<div data-pagina="home">
+
+  <section class="hero">
+    <video
+      src="video/hero-home.mp4"
+      poster="img/hero-home.png"
+      autoplay muted loop playsinline preload="metadata"
+      aria-hidden="true"></video>
+    <div class="hero-txt">
+      <div class="sobre">Grupo Velas · 45 años construyendo México</div>
+      <h1>Desarrollos inmobiliarios en México</h1>
+      <p>Transformamos ideas en desarrollos que destacan por su calidad excepcional, diseño innovador y ubicaciones estratégicas.</p>
+      <div class="buscador ap" role="search">
+        <div class="buscador-caja">
+          <svg class="buscador-icono" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="text" id="buscadorInput" placeholder="Busca tu ciudad o desarrollo ideal…" autocomplete="off" aria-label="Buscar ciudad o desarrollo">
+        </div>
+        <div class="buscador-resultados" id="buscadorResultados" aria-live="polite"></div>
+      </div>
+      <div class="hero-btns">
+        <a class="btn btn-coral" href="#ciudades">Ver ciudades</a>
+        <a class="btn btn-blanco" href="#contacto">Contáctanos</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cifras">
+    <div class="cifras-in ap">
+      <div><b data-num="15" data-prefijo="+">0</b><div class="raya"></div><span>Ciudades</span></div>
+      <div><b data-num="75" data-prefijo="+">0</b><div class="raya"></div><span>Desarrollos</span></div>
+      <div><b data-num="100" data-prefijo="+" data-sufijo=" mil">0</b><div class="raya"></div><span>Familias</span></div>
+      <div><b data-num="45">0</b><div class="raya"></div><span>Años de experiencia</span></div>
+    </div>
+  </section>
+
+  <section class="seccion envoltura" id="ciudades">
+    <div class="cab ap">
+      <div class="etiqueta">Ciudades</div>
+      <h2>Elige tu ciudad</h2>
+      <div class="filete"></div>
+      <p>Selecciona una ciudad para ver los desarrollos disponibles.</p>
+    </div>
+    <div class="ciudades ap" id="listaCiudades"></div>
+  </section>
+
+  <section class="testimonio">
+    <div class="envoltura ap">
+      <div class="etiqueta">Testimonios</div>
+      <div class="testimonio-carrusel">
+        <div class="testimonio-slide activo">
+          <div class="testimonio-avatar">RM</div>
+          <div class="testimonio-estrellas">★★★★★</div>
+          <blockquote>“Qué está precioso para vivir. Las casas están hermosas y los departamentos espectaculares. ¡Me encanta!”</blockquote>
+          <cite>Rosa María Z. — Velasur</cite>
+        </div>
+        <div class="testimonio-slide">
+          <div class="testimonio-avatar">CM</div>
+          <div class="testimonio-estrellas">★★★★★</div>
+          <blockquote>“La atención desde el primer día fue excelente, y la calidad de construcción superó nuestras expectativas.”</blockquote>
+          <cite>Carlos Mendoza — Tampico</cite>
+        </div>
+        <div class="testimonio-slide">
+          <div class="testimonio-avatar">DR</div>
+          <div class="testimonio-estrellas">★★★★★</div>
+          <blockquote>“Elegimos Grupo Velas por la ubicación y la plusvalía; hoy podemos decir que fue la mejor decisión para nuestra familia.”</blockquote>
+          <cite>Daniela Ruiz — Cancún</cite>
+        </div>
+      </div>
+      <div class="testimonio-puntos"></div>
+    </div>
+  </section>
+
+  <section class="seccion envoltura" id="nosotros">
+    <div class="cab ap">
+      <div class="etiqueta">Revista Horizonte</div>
+      <h2>Noticias y tendencias</h2>
+      <div class="filete"></div>
+    </div>
+    <div class="notas ap">
+      <a class="nota" href="#">
+        <div class="foto"><span>Revista Horizonte</span></div>
+        <div class="pie"><em>31 ago 2026</em><h3>¿Realidad o utopía? La infraestructura necesaria para el crecimiento urbano</h3></div>
+      </a>
+      <a class="nota" href="#">
+        <div class="foto"><span>Revista Horizonte</span></div>
+        <div class="pie"><em>Grupo Velas</em><h3>Cómo elegir el desarrollo ideal para tu próxima inversión</h3></div>
+      </a>
+      <a class="nota" href="#">
+        <div class="foto"><span>Revista Horizonte</span></div>
+        <div class="pie"><em>Grupo Velas</em><h3>Las ciudades con mayor plusvalía en México este año</h3></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="contacto-verde" id="contacto">
+    <div class="contacto-grid">
+      <div class="ap">
+        <div class="etiqueta">Contacto</div>
+        <h2>Agenda tu visita</h2>
+        <div class="filete"></div>
+        <p class="intro">Más de 100 mil familias ya confían en nosotros. Escríbenos y un asesor te contactará.</p>
+      </div>
+      <div class="campos ap">
+        <div class="campo"><label for="h1">Nombre completo *</label><input id="h1" type="text"></div>
+        <div class="campo"><label for="h2">Correo *</label><input id="h2" type="email"></div>
+        <div class="campo"><label for="h3">Teléfono</label><input id="h3" type="tel"></div>
+        <div class="campo"><label for="h4">Ciudad de interés</label>
+          <select id="h4"><option>Cancún</option><option>Ciudad Juárez</option><option>Los Cabos</option><option>Matamoros</option><option>Playa del Carmen</option><option>Querétaro</option><option>Reynosa</option><option>Tampico</option></select>
+        </div>
+        <div class="campo ancho"><label for="h6">Desarrollo de interés</label>
+          <select id="h6"><option>Velasur — Querétaro</option><option>Vela Towers — Cancún</option><option>Vistavela — Los Cabos</option><option>Fraccionamiento Arecas — Matamoros</option><option>Coto Jade — Tampico</option><option>Punta Vela Residencial</option><option>Selvanova Residencial</option><option>Florencia Residencial</option></select>
+        </div>
+        <div class="campo ancho"><label for="h5">Mensaje</label><textarea id="h5"></textarea></div>
+        <div class="ancho"><button class="btn btn-coral" type="button" data-enviar>Quiero más información</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="news">
+    <div class="news-in">
+      <div>
+        <h3>Suscríbete a nuestro newsletter</h3>
+        <p>Nuevas tendencias, noticias de desarrollos y temas de interés directo en tu correo.</p>
+      </div>
+      <form onsubmit="return false">
+        <input type="email" placeholder="tu@correo.com" aria-label="Correo electrónico">
+        <button type="button" data-enviar>Enviar</button>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- ================================================================
+     VISTA 2 · VELASUR
+     ================================================================ -->
+<div data-pagina="velasur" hidden>
+
+  <section class="hero">
+    <video
+      src="video/hero-velasur.mp4"
+      poster="img/hero-velasur.png"
+      autoplay muted loop playsinline preload="metadata"
+      aria-hidden="true"></video>
+    <div class="hero-txt">
+      <div class="sobre">Querétaro</div>
+      <h1>Velasur</h1>
+      <div class="precio-desde">Precio desde <strong>$</strong></div>
+      <div class="hero-btns">
+        <a class="btn btn-coral" href="#catalogo">Ver catálogo</a>
+        <a class="btn btn-blanco" href="#galeria">Ver galería</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="datos">
+    <div class="datos-in ap">
+      <div><b data-num="3">0</b><div class="raya"></div><span>Recámaras</span></div>
+      <div><b data-num="3">0</b><div class="raya"></div><span>Baños</span></div>
+      <div><b data-num="264" data-sufijo=" m²">0</b><div class="raya"></div><span>Superficie</span></div>
+      <div><b>Nuevo proyecto</b><div class="raya"></div><span>Estatus</span></div>
+      <div class="coral"><b>Disponible</b><div class="raya"></div><span>Ventas</span></div>
+    </div>
+  </section>
+
+  <section class="seccion estrecho">
+    <div class="cab ap">
+      <div class="etiqueta">Sobre el desarrollo</div>
+      <h2>Un desarrollo pensado para elevar tu calidad de vida</h2>
+      <div class="filete"></div>
+      <p>Un desarrollo que redefine el estándar de la vivienda inmobiliaria en Querétaro, pensado para elevar el nivel de calidad de vida de sus espacios privados. Diseño moderno de áreas calculadas con diferentes ambientes para la recreación, el acondicionamiento físico y la convivencia familiar en contacto con la naturaleza.</p>
+    </div>
+  </section>
+
+  <section class="seccion estrecho">
+    <div class="cab ap">
+      <div class="etiqueta">Ventajas</div>
+      <h2>Características que elevan tu vida</h2>
+      <div class="filete"></div>
+    </div>
+    <div class="caracteristicas ap">
+      <div class="caract"><span class="n">01</span><div><b>Comunidad</b><p>Espacios pensados para la convivencia y la vida en familia.</p></div></div>
+      <div class="caract"><span class="n">02</span><div><b>Ubicación</b><p>Cerca de servicios, vialidades principales y zonas de valor en Querétaro.</p></div></div>
+      <div class="caract"><span class="n">03</span><div><b>Seguridad</b><p>Pensado para estar tranquilo todos los días.</p></div></div>
+      <div class="caract"><span class="n">04</span><div><b>Diseño</b><p>Acabados modernos y distribución funcional en cada espacio.</p></div></div>
+    </div>
+  </section>
+
+  <section class="ubicacion">
+    <div class="mapa">
+      <svg data-escena="mapa" role="img" aria-label="Mapa de Santiago de Querétaro"></svg>
+      <div class="ficha"><b>Santiago de Querétaro</b><span>Santiago de Querétaro,<br>Querétaro, México</span></div>
+      <div class="control">⤢</div>
+    </div>
+    <div class="mapa-panel">
+      <div class="etiqueta">Ubicación</div>
+      <h2>Querétaro</h2>
+      <p>Una ubicación pensada para el crecimiento y la plusvalía a largo plazo.</p>
+      <a class="btn btn-coral" href="#">Cómo llegar</a>
+    </div>
+  </section>
+
+  <section class="seccion estrecho">
+    <div class="cab ap">
+      <div class="etiqueta">Amenidades</div>
+      <h2>Conoce nuestras amenidades</h2>
+      <div class="filete"></div>
+    </div>
+    <div class="amenidades ap">
+      <div>
+        <div class="amenidad-icono"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20c-1.2-6.2 2-13 12.5-15 1 8.3-3.3 13.4-9.6 15.3-1 .3-1.9.3-2.9-.3Z"/><path d="M8.2 17.8C10 13.6 13 10.3 17 7.3"/></svg></div>
+        <b>Áreas verdes</b>
+      </div>
+      <div>
+        <div class="amenidad-icono"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4 18.6 6v5.1c0 4.8-2.9 7.9-6.6 9.1-3.7-1.2-6.6-4.3-6.6-9.1V6Z"/><path d="M9 12.1l2.1 2.1L15.3 10"/></svg></div>
+        <b>Seguridad y control de acceso</b>
+      </div>
+      <div>
+        <div class="amenidad-icono"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.6 19c.5-3.6 3-5.7 5.4-5.7s4.9 2.1 5.4 5.7"/><circle cx="17" cy="8.8" r="2.3"/><path d="M15.2 13.1c2-.5 4 .9 4.7 3.9"/></svg></div>
+        <b>Espacios de convivencia</b>
+      </div>
+      <div>
+        <div class="amenidad-icono"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="1.2"/><path d="M9 8h1.3M13.7 8H15M9 12h1.3M13.7 12H15M9 16h1.3M13.7 16H15"/></svg></div>
+        <b>Diseño moderno</b>
+      </div>
+      <div>
+        <div class="amenidad-icono"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M9.6 16.2V7.8h3a2.6 2.6 0 0 1 0 5.2H9.6"/></svg></div>
+        <b>Estacionamiento</b>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion estrecho" id="galeria">
+    <div class="cab ap">
+      <div class="etiqueta">Galería</div>
+      <h2>Fotografías del desarrollo</h2>
+      <div class="filete"></div>
+    </div>
+    <div class="galeria ap">
+      <figure class="m r43"><svg data-escena="fachada"></svg></figure>
+      <figure class="m r169"><svg data-escena="atardecer"></svg></figure>
+      <figure class="m r34"><svg data-escena="andador"></svg></figure>
+
+      <figure class="m r34"><svg data-escena="interior"></svg></figure>
+      <figure class="m r43"><svg data-escena="sala"></svg></figure>
+      <figure class="m r169"><svg data-escena="albercaAmplia"></svg></figure>
+      <figure class="m r43"><svg data-escena="alberca"></svg></figure>
+
+      <figure class="m r169"><svg data-escena="albercaAmplia"></svg></figure>
+      <figure class="m r43"><svg data-escena="terraza"></svg></figure>
+      <figure class="m r34"><svg data-escena="fachada"></svg></figure>
+      <figure class="m r169"><svg data-escena="jardin"></svg></figure>
+    </div>
+  </section>
+
+  <section class="seccion" id="catalogo">
+    <div class="catalogo ap">
+      <div class="txt">
+        <div class="etiqueta">Disponibilidad</div>
+        <h2>Descarga el catálogo de Velasur</h2>
+        <p>Precios, especificaciones y ubicación en un solo documento.</p>
+        <div class="btns">
+          <a class="btn btn-coral" href="#">Descargar brochure (PDF)</a>
+          <a class="btn btn-borde" href="#contacto-velasur">Cotizar ahora</a>
+        </div>
+      </div>
+      <div class="foto"><svg data-escena="fachada"></svg></div>
+    </div>
+  </section>
+
+  <section class="contacto-crema" id="contacto-velasur">
+    <div class="contacto-grid">
+      <div class="ap">
+        <div class="etiqueta">Contacto</div>
+        <h2>Agenda tu visita</h2>
+        <div class="filete"></div>
+        <p class="intro">Más de 100 mil familias que confían en nosotros. Adquiere hoy la propiedad de tus sueños.</p>
+      </div>
+      <div class="campos ap">
+        <div class="campo"><label for="v1">Nombre completo *</label><input id="v1" type="text"></div>
+        <div class="campo"><label for="v2">Correo *</label><input id="v2" type="email"></div>
+        <div class="campo"><label for="v3">Teléfono</label><input id="v3" type="tel"></div>
+        <div class="campo"><label for="v4">Horario preferido</label>
+          <select id="v4"><option>9 am – 2 pm</option><option>2 pm – 6 pm</option><option>Sábado, 9 am – 2 pm</option></select>
+        </div>
+        <div class="campo ancho"><label for="v6">Desarrollo de interés</label>
+          <select id="v6"><option selected>Velasur — Querétaro</option><option>Vela Towers — Cancún</option><option>Vistavela — Los Cabos</option><option>Fraccionamiento Arecas — Matamoros</option><option>Coto Jade — Tampico</option><option>Punta Vela Residencial</option><option>Selvanova Residencial</option><option>Florencia Residencial</option></select>
+        </div>
+        <div class="campo ancho"><label for="v5">Mensaje</label><textarea id="v5"></textarea></div>
+        <div class="ancho campos-acciones">
+          <button class="btn btn-verde" type="button" data-enviar>Quiero más información</button>
+          <a class="btn btn-whatsapp" href="#">
+            <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.588-.525-.984-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.245.08.38-.058 1.171-.48 1.336-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="envoltura"><a class="volver" href="#/">← Volver al catálogo</a></div>
+  </section>
+</div>
+
+</main>
+
+<!-- ============ PIE ============ -->
+<footer class="pie">
+  <div class="pie-grid">
+    <div class="pie-marca">
+      <svg viewBox="0 0 48 48" aria-hidden="true" style="color:#fff"><circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13 16 24 34 35 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <p>Transformamos ideas en desarrollos inmobiliarios que destacan por su calidad excepcional, diseño innovador y ubicaciones estratégicas en México.</p>
+      <div class="pie-social">
+        <a href="#" aria-label="Facebook">
+          <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor">
+            <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>
+          </svg>
+        </a>
+        <a href="#" aria-label="Instagram">
+          <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor">
+            <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.719-.891.923-1.417.198-.509.333-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.174-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
+          </svg>
+        </a>
+        <a href="#" aria-label="YouTube">
+          <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor">
+            <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div>
+      <h4>Sitio</h4>
+      <ul><li><a href="#/">Inicio</a></li><li><a href="#/velasur">Proyectos</a></li><li><a href="#ciudades">Ciudades</a></li><li><a href="#contacto">Contacto</a></li></ul>
+    </div>
+    <div>
+      <h4>Horario de atención</h4>
+      <ul><li>Lunes a viernes: 9:00 am – 6:00 pm</li><li>Sábado: 9:00 am – 2:00 pm</li></ul>
+    </div>
+  </div>
+  <div class="pie-base">
+    <span>© 2026 Grupo Velas. Todos los derechos reservados.</span>
+    <a href="#">Aviso de privacidad</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ==========================================================
+     IMÁGENES
+     Marcadores vectoriales en lugar de fotografía.
+     Para producción: sustituir cada
+        <svg data-escena="fachada"></svg>
+     por
+        <img src="img/fachada.jpg" alt="Fachada de Velasur">
+     (los contenedores ya usan position:absolute / inset:0)
+
+     HERO: los dos heroes ya no usan SVG, llevan <video> con
+     autoplay muted loop playsinline. Sus archivos:
+        video/hero-home.mp4     + img/hero-home.jpg     (póster)
+        video/hero-velasur.mp4  + img/hero-velasur.jpg  (póster)
+     La escena "lobby" queda sin uso; se conserva por si se
+     quiere volver a un hero vectorial.
+     ========================================================== */
+  const escenas={
+    /* hero home: lobby de resort al atardecer con espejo de agua */
+    lobby:`<defs><linearGradient id="e1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7C93A6"/><stop offset=".34" stop-color="#C98D61"/><stop offset=".52" stop-color="#8A4F2E"/><stop offset="1" stop-color="#2A1B14"/></linearGradient></defs>
+      <rect width="400" height="500" fill="url(#e1)"/>
+      <rect y="150" width="400" height="26" fill="#2C1C14"/>
+      <g fill="#33211722"><rect y="176" width="400" height="120"/></g>
+      <g fill="#2E1D15"><rect x="24" y="176" width="13" height="122"/><rect x="104" y="176" width="13" height="122"/><rect x="184" y="176" width="13" height="122"/><rect x="264" y="176" width="13" height="122"/><rect x="344" y="176" width="13" height="122"/></g>
+      <g fill="#F7C983" opacity=".75"><rect x="44" y="190" width="52" height="5" rx="2"/><rect x="124" y="190" width="52" height="5" rx="2"/><rect x="204" y="190" width="52" height="5" rx="2"/><rect x="284" y="190" width="52" height="5" rx="2"/></g>
+      <rect y="200" width="400" height="98" fill="#E39B52" opacity=".22"/>
+      <rect y="298" width="400" height="202" fill="#1D2A2B"/>
+      <g stroke="#E8A45E" stroke-opacity=".5" stroke-width="4" fill="none"><path d="M0 320 H400"/><path d="M0 356 H400"/><path d="M0 404 H400"/><path d="M0 460 H400"/></g>
+      <g fill="#F7C983" opacity=".35"><rect x="44" y="330" width="52" height="4"/><rect x="204" y="330" width="52" height="4"/></g>`,
+
+    /* hero velasur + galería: fachada moderna */
+    fachada:`<defs><linearGradient id="e2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FB4CE"/><stop offset=".45" stop-color="#C9D6DC"/><stop offset="1" stop-color="#A89D8A"/></linearGradient></defs>
+      <rect width="400" height="500" fill="url(#e2)"/>
+      <rect x="16" y="120" width="250" height="250" fill="#EFEAE0"/>
+      <rect x="16" y="120" width="250" height="16" fill="#CFC7B8"/>
+      <rect x="40" y="150" width="200" height="96" fill="#2F3B3C"/>
+      <g stroke="#EFEAE0" stroke-width="5"><path d="M90 150 V246"/><path d="M140 150 V246"/><path d="M190 150 V246"/></g>
+      <rect x="266" y="176" width="118" height="194" fill="#DCD4C6"/>
+      <rect x="266" y="176" width="118" height="14" fill="#C4BBAA"/>
+      <rect x="292" y="240" width="66" height="70" fill="#5C5348"/>
+      <rect x="16" y="258" width="250" height="14" fill="#D6CEC0"/>
+      <rect x="60" y="292" width="76" height="78" fill="#6E645A"/>
+      <g fill="#6D8757"><rect x="16" y="246" width="250" height="14"/><circle cx="330" cy="352" r="26"/></g>
+      <rect y="370" width="400" height="130" fill="#7B7468"/>
+      <rect y="370" width="400" height="12" fill="#948C7D"/>`,
+
+    atardecer:`<defs><linearGradient id="e3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#20364A"/><stop offset=".5" stop-color="#C57A45"/><stop offset="1" stop-color="#3A2A21"/></linearGradient></defs>
+      <rect width="400" height="500" fill="url(#e3)"/>
+      <circle cx="286" cy="176" r="34" fill="#FFD89B" opacity=".75"/>
+      <rect y="250" width="400" height="16" fill="#241A16"/>
+      <g fill="#2A1F19"><rect x="30" y="180" width="60" height="86"/><rect x="130" y="160" width="80" height="106"/><rect x="250" y="196" width="70" height="70"/></g>
+      <g fill="#FFC87A" opacity=".8"><rect x="44" y="200" width="28" height="7"/><rect x="146" y="184" width="44" height="7"/><rect x="264" y="216" width="36" height="7"/></g>
+      <rect y="266" width="400" height="234" fill="#16242C"/>
+      <g stroke="#E8A45E" stroke-opacity=".45" stroke-width="4" fill="none"><path d="M0 300 H400"/><path d="M0 348 H400"/><path d="M0 410 H400"/></g>`,
+
+    andador:`<rect width="400" height="500" fill="#8AA06F"/>
+      <rect width="400" height="180" fill="#AFC9D6"/>
+      <path d="M0 180 H400 V236 H0 Z" fill="#6B7F55"/>
+      <g fill="#E4DCC8"><rect y="260" width="400" height="46"/><rect y="352" width="400" height="46"/><rect y="444" width="400" height="46"/></g>
+      <g fill="#46583A"><circle cx="62" cy="158" r="46"/><circle cx="312" cy="142" r="58"/><circle cx="190" cy="172" r="34"/></g>
+      <g fill="#33422B"><rect x="58" y="158" width="9" height="46"/><rect x="306" y="142" width="11" height="58"/></g>`,
+
+    interior:`<defs><linearGradient id="e4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0E7D6"/><stop offset="1" stop-color="#B9A588"/></linearGradient></defs>
+      <rect width="400" height="500" fill="url(#e4)"/>
+      <rect width="128" height="500" fill="#4A3A2C"/>
+      <rect x="164" y="60" width="200" height="236" fill="#BFD9DD"/>
+      <g stroke="#6B5A45" stroke-width="6" fill="none"><rect x="164" y="60" width="200" height="236"/><path d="M264 60 V296"/><path d="M164 178 H364"/></g>
+      <rect x="28" y="330" width="344" height="20" fill="#7A6247"/>
+      <rect x="58" y="350" width="150" height="90" fill="#C8B79B"/>
+      <rect x="230" y="350" width="100" height="56" fill="#5F5240"/>
+      <rect y="440" width="400" height="60" fill="#9E8B6D"/>`,
+
+    sala:`<rect width="400" height="500" fill="#E7DCC8"/>
+      <rect width="400" height="210" fill="#D6C9B0"/>
+      <rect x="0" y="210" width="400" height="10" fill="#B5A68A"/>
+      <rect x="40" y="96" width="160" height="112" fill="#3E4F46"/>
+      <rect x="230" y="120" width="130" height="88" fill="#BFD9DD"/>
+      <rect x="40" y="250" width="200" height="86" rx="6" fill="#8C9A86"/>
+      <rect x="264" y="266" width="96" height="70" rx="6" fill="#6E5B47"/>
+      <circle cx="150" cy="60" r="22" fill="#E8663D" opacity=".8"/>
+      <rect y="400" width="400" height="100" fill="#C3B394"/>`,
+
+    alberca:`<defs><linearGradient id="e5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4FC0CC"/><stop offset="1" stop-color="#0E6A83"/></linearGradient></defs>
+      <rect width="400" height="500" fill="#DCCFB2"/>
+      <rect width="400" height="150" fill="#9FCBDD"/>
+      <rect y="150" width="400" height="70" fill="#CBBE9F"/>
+      <rect y="220" width="400" height="280" fill="url(#e5)"/>
+      <g stroke="#FFFFFF" stroke-opacity=".38" stroke-width="4" fill="none"><path d="M0 270 H400"/><path d="M0 330 H400"/><path d="M0 400 H400"/><path d="M0 464 H400"/></g>
+      <g fill="#F6F1E4"><rect x="30" y="176" width="70" height="12" rx="6"/><rect x="120" y="176" width="70" height="12" rx="6"/></g>
+      <g fill="#3E6B4B"><circle cx="330" cy="120" r="34"/><circle cx="372" cy="140" r="26"/></g>`,
+
+    albercaAmplia:`<defs><linearGradient id="e6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#57C7D0"/><stop offset="1" stop-color="#0D5E77"/></linearGradient></defs>
+      <rect width="400" height="500" fill="#D9CCAF"/>
+      <rect width="400" height="190" fill="#A7D2E3"/>
+      <g fill="#EFE9DA"><rect y="150" width="400" height="14"/><rect x="30" y="100" width="12" height="64"/><rect x="180" y="100" width="12" height="64"/><rect x="330" y="100" width="12" height="64"/></g>
+      <rect y="240" width="400" height="260" fill="url(#e6)"/>
+      <g stroke="#FFFFFF" stroke-opacity=".35" stroke-width="4" fill="none"><path d="M0 286 H400"/><path d="M0 346 H400"/><path d="M0 418 H400"/></g>
+      <g fill="#F4EFE2"><rect x="24" y="200" width="64" height="11" rx="5"/><rect x="104" y="200" width="64" height="11" rx="5"/><rect x="184" y="200" width="64" height="11" rx="5"/></g>`,
+
+    terraza:`<defs><linearGradient id="e7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B5E74"/><stop offset=".55" stop-color="#C08551"/><stop offset="1" stop-color="#3C2D22"/></linearGradient></defs>
+      <rect width="400" height="500" fill="url(#e7)"/>
+      <rect y="230" width="400" height="20" fill="#2B2019"/>
+      <g fill="#EFE7D6"><rect x="40" y="250" width="320" height="120"/></g>
+      <g fill="#2F3B3C"><rect x="70" y="272" width="110" height="74"/><rect x="220" y="272" width="110" height="74"/></g>
+      <rect y="370" width="400" height="130" fill="#6B7A56"/>
+      <g fill="#F7C983" opacity=".6"><rect x="80" y="286" width="90" height="6"/><rect x="230" y="286" width="90" height="6"/></g>`,
+
+    jardin:`<rect width="400" height="500" fill="#7E9A62"/>
+      <rect width="400" height="200" fill="#A9C8DA"/>
+      <path d="M0 200 H400 V254 H0 Z" fill="#5F7448"/>
+      <g fill="#E7DFCB"><rect y="290" width="400" height="40"/><rect y="378" width="400" height="40"/></g>
+      <g fill="#41522F"><circle cx="70" cy="176" r="50"/><circle cx="300" cy="160" r="62"/></g>
+      <rect x="150" y="440" width="104" height="16" rx="8" fill="#E8663D"/>`,
+
+    /* mapa estilo Google Maps */
+    mapa:`<rect width="400" height="500" fill="#EAE7DF"/>
+      <path d="M0 0 H400 V500 H0 Z" fill="#EEEBE2"/>
+      <g fill="#DCE8D4"><rect x="0" y="0" width="150" height="130"/><rect x="250" y="330" width="150" height="170"/><circle cx="330" cy="120" r="60"/></g>
+      <g stroke="#FFFFFF" stroke-width="9" fill="none">
+        <path d="M-10 150 H410"/><path d="M-10 300 H410"/><path d="M120 -10 V510"/><path d="M280 -10 V510"/>
+      </g>
+      <g stroke="#FFFFFF" stroke-width="4" fill="none">
+        <path d="M-10 80 H410"/><path d="M-10 220 H410"/><path d="M-10 400 H410"/><path d="M60 -10 V510"/><path d="M200 -10 V510"/><path d="M350 -10 V510"/>
+      </g>
+      <g stroke="#F6D08A" stroke-width="10" fill="none"><path d="M-10 40 L410 230"/><path d="M40 510 L360 -10"/></g>
+      <g fill="#E3DFD4"><rect x="130" y="160" width="60" height="52"/><rect x="212" y="232" width="60" height="58"/><rect x="72" y="310" width="42" height="46"/></g>
+      <g transform="translate(206,258)">
+        <ellipse cy="20" rx="9" ry="3.5" fill="rgba(0,0,0,.2)"/>
+        <path d="M0 18 C-12 2 -14 -4 -14 -10 a14 14 0 1 1 28 0 c0 6 -2 12 -14 28Z" fill="#E8663D"/>
+        <circle cy="-10" r="5" fill="#fff"/>
+      </g>`
+  };
+  document.querySelectorAll('[data-escena]').forEach(s=>{
+    s.setAttribute('viewBox','0 0 400 500');
+    s.setAttribute('preserveAspectRatio','xMidYMid slice');
+    s.innerHTML=escenas[s.dataset.escena]||'';
+  });
+
+  /* ==========================================================
+     TARJETAS DE CIUDAD (mismo orden que el PDF)
+     ========================================================== */
+  const ciudades=[
+    {n:'Cancún',d:1,s:'albercaAmplia'},
+    {n:'Ciudad Juárez',d:1,s:'fachada'},
+    {n:'Los Cabos',d:2,s:'atardecer'},
+    {n:'Matamoros',d:1,s:'terraza'},
+    {n:'Playa del Carmen',d:1,s:'alberca'},
+    {n:'Querétaro',d:1,s:'jardin'},
+    {n:'Reynosa',d:2,s:'interior'},
+    {n:'Tampico',d:10,s:'sala'}
+  ];
+  const lista=document.getElementById('listaCiudades');
+  ciudades.forEach(c=>{
+    const a=document.createElement('a');
+    a.className='ciudad';a.href='#/velasur';
+    a.innerHTML=`<div class="foto"><svg></svg><span class="flecha">→</span></div>
+      <div class="pie"><b>${c.n}</b><span>${c.d} ${c.d===1?'desarrollo':'desarrollos'}</span></div>`;
+    const svg=a.querySelector('svg');
+    svg.setAttribute('viewBox','0 0 400 500');
+    svg.setAttribute('preserveAspectRatio','xMidYMid slice');
+    svg.innerHTML=escenas[c.s];
+    lista.appendChild(a);
+  });
+
+  /* submenú "Ciudades" del nav: reutiliza el mismo array */
+  const subCiudades=document.getElementById('submenuCiudades');
+  ciudades.forEach(c=>{
+    const a=document.createElement('a');
+    a.href='#/velasur'; // misma limitación que las tarjetas de #listaCiudades: única plantilla de detalle disponible
+    a.textContent=c.n;
+    subCiudades.appendChild(a);
+  });
+
+  /* submenús del nav: aria-expanded + cierre con Escape (el hover/foco ya los abre por CSS) */
+  document.querySelectorAll('.item-sub').forEach(item=>{
+    const toggle=item.querySelector('a');
+    item.addEventListener('mouseenter',()=>toggle.setAttribute('aria-expanded','true'));
+    item.addEventListener('mouseleave',()=>toggle.setAttribute('aria-expanded','false'));
+    item.addEventListener('focusin',()=>toggle.setAttribute('aria-expanded','true'));
+    item.addEventListener('focusout',e=>{
+      if(!item.contains(e.relatedTarget)) toggle.setAttribute('aria-expanded','false');
+    });
+    item.addEventListener('keydown',e=>{
+      if(e.key==='Escape'){toggle.setAttribute('aria-expanded','false');toggle.blur()}
+    });
+  });
+
+  /* ==========================================================
+     CARRUSEL DE TESTIMONIOS
+     ========================================================== */
+  const testimonioSlides=[...document.querySelectorAll('.testimonio-slide')];
+  const testimonioPuntos=document.querySelector('.testimonio-puntos');
+  if(testimonioSlides.length && testimonioPuntos){
+    testimonioSlides.forEach((s,i)=>{
+      const b=document.createElement('button');
+      b.type='button';
+      b.setAttribute('aria-label','Ver testimonio '+(i+1));
+      if(i===0) b.classList.add('activo');
+      b.addEventListener('click',()=>mostrarTestimonio(i));
+      testimonioPuntos.appendChild(b);
+    });
+    const puntos=[...testimonioPuntos.children];
+    let testimonioActual=0,testimonioTemporizador;
+    function mostrarTestimonio(i){
+      testimonioSlides[testimonioActual].classList.remove('activo');
+      puntos[testimonioActual].classList.remove('activo');
+      testimonioActual=i;
+      testimonioSlides[testimonioActual].classList.add('activo');
+      puntos[testimonioActual].classList.add('activo');
+    }
+    function testimonioSiguiente(){mostrarTestimonio((testimonioActual+1)%testimonioSlides.length)}
+    if(!reduce) testimonioTemporizador=setInterval(testimonioSiguiente,6000);
+  }
+
+  /* ==========================================================
+     BUSCADOR DEL HERO (ciudades + desarrollos)
+     ========================================================== */
+  const indiceBusqueda=[
+    ...ciudades.map(c=>({n:c.n,t:'Ciudad',href:'#ciudades'})),
+    {n:'Velasur',t:'Desarrollo · Querétaro',href:'#/velasur'}
+  ];
+  const buscadorInput=document.getElementById('buscadorInput');
+  const buscadorResultados=document.getElementById('buscadorResultados');
+  function pintarBusqueda(texto){
+    const q=texto.trim().toLowerCase();
+    const coincidencias=q?indiceBusqueda.filter(it=>it.n.toLowerCase().includes(q)):indiceBusqueda;
+    buscadorResultados.innerHTML=coincidencias.length
+      ? coincidencias.map(it=>`<a href="${it.href}">${it.n}<span>${it.t}</span></a>`).join('')
+      : `<div class="vacio">Sin resultados para “${texto}”</div>`;
+  }
+  buscadorInput.addEventListener('focus',()=>{pintarBusqueda(buscadorInput.value);buscadorResultados.classList.add('mostrar')});
+  buscadorInput.addEventListener('input',()=>{pintarBusqueda(buscadorInput.value);buscadorResultados.classList.add('mostrar')});
+  buscadorInput.addEventListener('blur',()=>setTimeout(()=>buscadorResultados.classList.remove('mostrar'),150));
+  buscadorInput.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){buscadorResultados.classList.remove('mostrar');buscadorInput.blur()}
+  });
+
+  /* ==========================================================
+     CONTEO ANIMADO DE NUMERALIAS (banda de cifras + datos de Velasur)
+     ========================================================== */
+  function animarNumero(el){
+    const fin=parseInt(el.dataset.num,10);
+    const pre=el.dataset.prefijo||'';
+    const suf=el.dataset.sufijo||'';
+    if(reduce){el.textContent=pre+fin+suf;return}
+    const dur=1100,inicio=performance.now();
+    (function paso(ahora){
+      const p=Math.min((ahora-inicio)/dur,1);
+      const val=Math.round(fin*(1-Math.pow(1-p,3)));
+      el.textContent=pre+val+suf;
+      if(p<1) requestAnimationFrame(paso);
+    })(inicio);
+  }
+  function observarConteo(contenedor){
+    if(!contenedor) return;
+    const numeros=[...contenedor.querySelectorAll('[data-num]')];
+    if(!numeros.length) return;
+    const obs=new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting){numeros.forEach(animarNumero);obs.disconnect()}
+    }),{threshold:.4});
+    obs.observe(contenedor);
+  }
+  observarConteo(document.querySelector('.cifras-in'));
+  observarConteo(document.querySelector('.datos-in'));
+
+  /* ==========================================================
+     RUTEO: #/ (home) y #/velasur
+     ========================================================== */
+  const vistas=document.querySelectorAll('[data-pagina]');
+  function ir(nombre,silencioso){
+    vistas.forEach(v=>v.hidden=v.dataset.pagina!==nombre);
+    document.querySelectorAll('[data-ruta]').forEach(a=>a.classList.toggle('activo',a.dataset.ruta===nombre));
+    if(!silencioso) scrollTo({top:0,behavior:'auto'});
+    revelar();
+  }
+  function leerRuta(){const h=location.hash;return h.startsWith('#/')?(h.slice(2)||'home'):null}
+  addEventListener('hashchange',()=>{const r=leerRuta();if(r!==null) ir(r||'home')});
+
+  /* aparición discreta al hacer scroll */
+  let obs;
+  function revelar(){
+    if(obs) obs.disconnect();
+    if(reduce){document.querySelectorAll('.ap').forEach(e=>e.classList.add('visible'));return}
+    obs=new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}
+    }),{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('[data-pagina]:not([hidden]) .ap').forEach(e=>{e.classList.remove('visible');obs.observe(e)});
+  }
+
+  /* la barra se fija al salir del hero */
+  const nav=document.getElementById('nav');
+  addEventListener('scroll',()=>nav.classList.toggle('fija',scrollY>420),{passive:true});
+
+  /* formularios de muestra */
+  document.querySelectorAll('[data-enviar]').forEach(b=>{
+    b.addEventListener('click',()=>{const t=b.textContent;b.textContent='Mensaje enviado';setTimeout(()=>b.textContent=t,2500)});
+  });
+
+  ir(leerRuta()||'home',true);
+})();
+</script>
+</body>
+</html>

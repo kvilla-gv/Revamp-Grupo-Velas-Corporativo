@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grupo Velas — Prototipo 1 · Horizonte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   GRUPO VELAS · PROTOTIPO 1 "HORIZONTE"
+   Dos vistas: Home (#/) y Velasur (#/velasur)
+   Estructura basada en los PDF de referencia.
+   Movimiento: entrada del hero + una aparición por sección.
+   ========================================================= */
+
+:root{
+  /* --- color --- */
+  --verde-900:#07231E;
+  --verde-700:#0C3A31;
+  --coral:#E8673F;
+  --coral-claro:#F2A183;
+  --arena:#F2E9DB;
+  --papel:#FBF7F0;
+
+  --bg:var(--papel);
+  --fg:#12201C;
+  --fg-suave:#4A5C56;
+  --superficie:var(--arena);
+  --linea:rgba(18,32,28,.14);
+  --linea-fina:rgba(18,32,28,.08);
+
+  /* --- tipografía --- */
+  --display:'Bricolage Grotesque',Georgia,serif;
+  --texto:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+
+  /* --- medidas --- */
+  --marco:clamp(18px,4vw,64px);
+  --ritmo:clamp(64px,8vw,120px);
+  --ancho:1380px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#081814;--fg:#EDE6D9;--fg-suave:#9FB3AC;--superficie:#0E241E;
+    --papel:#081814;--linea:rgba(237,230,217,.18);--linea-fina:rgba(237,230,217,.1);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#081814;--fg:#EDE6D9;--fg-suave:#9FB3AC;--superficie:#0E241E;
+  --papel:#081814;--linea:rgba(237,230,217,.18);--linea-fina:rgba(237,230,217,.1);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font-family:var(--texto);font-size:clamp(15px,1.02vw,16.5px);line-height:1.65;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;border:0;background:none;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:2px}
+img,svg{max-width:100%}
+
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.03em;line-height:.96;margin:0}
+h1{font-size:clamp(40px,6.6vw,92px)}
+h2{font-size:clamp(28px,3.8vw,52px)}
+h3{font-size:clamp(18px,1.6vw,22px);font-weight:700;letter-spacing:-.015em;line-height:1.2}
+p{margin:0 0 1em}
+
+.envoltura{max-width:var(--ancho);margin:0 auto;padding-inline:var(--marco)}
+.seccion{padding-block:var(--ritmo)}
+.rotulo{font-size:12.5px;letter-spacing:.06em;color:var(--coral);margin-bottom:12px;font-weight:500}
+.suave{color:var(--fg-suave)}
+
+/* ---------- aparición al hacer scroll (una sola vez) ---------- */
+.ap{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+.ap.visible{opacity:1;transform:none}
+
+/* ---------- botones ---------- */
+.btn{display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border-radius:999px;
+  font-size:14.5px;font-weight:500;transition:background .3s,color .3s,border-color .3s}
+.btn-coral{background:var(--coral);color:#fff}
+.btn-coral:hover{background:#D3552F}
+.btn-linea{border:1px solid var(--linea)}
+.btn-linea:hover{border-color:var(--coral);color:var(--coral)}
+.btn-claro{border:1px solid rgba(251,247,240,.45);color:#FBF7F0}
+.btn-claro:hover{background:rgba(251,247,240,.12)}
+
+/* ---------- navegación ---------- */
+.nav{position:fixed;inset:0 0 auto 0;z-index:80;display:flex;align-items:center;justify-content:space-between;
+  gap:22px;padding:18px var(--marco);color:#FBF7F0;transition:background .4s,color .4s,padding .4s,box-shadow .4s}
+.nav.fija{background:var(--bg);color:var(--fg);padding-block:12px;box-shadow:0 1px 0 var(--linea)}
+.marca{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:15px}
+.marca svg{width:28px;height:28px;flex:none}
+.nav-enlaces{display:flex;gap:28px;font-size:14px;font-weight:500}
+.nav-enlaces a{position:relative;padding-block:3px}
+.nav-enlaces a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:currentColor;
+  transform:scaleX(0);transform-origin:left;transition:transform .35s ease}
+.nav-enlaces a:hover::after,.nav-enlaces a.activo::after{transform:scaleX(1)}
+.nav-cta{border:1px solid currentColor;padding:9px 20px;border-radius:999px;font-size:13.5px;transition:background .3s,color .3s,border-color .3s}
+.nav-cta:hover{background:var(--coral);border-color:var(--coral);color:#fff}
+@media (max-width:920px){.nav-enlaces{display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:88svh;display:flex;align-items:flex-end;overflow:hidden;background:var(--verde-900);color:#FBF7F0}
+.hero-fondo{position:absolute;inset:0}
+.hero-fondo svg{position:absolute;inset:0;width:100%;height:100%}
+.hero-fondo::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(4,18,15,.82) 0%,rgba(4,18,15,.42) 52%,rgba(4,18,15,.12) 100%)}
+.hero-in{position:relative;z-index:2;width:100%;padding:130px var(--marco) clamp(44px,7vh,86px);max-width:var(--ancho);margin:0 auto}
+.hero h1{max-width:15ch}
+.hero .bajada{max-width:44ch;color:rgba(251,247,240,.82);margin-top:22px;font-size:clamp(15.5px,1.2vw,18px)}
+.hero .acciones{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.hero-kicker{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--coral-claro);margin-bottom:20px}
+.hero-kicker span{width:40px;height:1px;background:currentColor}
+.entra{opacity:0}
+
+/* ---------- barra de cifras ---------- */
+.cifras{background:var(--verde-700);color:#FBF7F0}
+.cifras-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(251,247,240,.18)}
+.cifra{background:var(--verde-700);padding:clamp(22px,2.6vw,36px) clamp(16px,2vw,30px)}
+.cifra b{display:block;font-family:var(--display);font-size:clamp(32px,4.2vw,58px);font-weight:700;letter-spacing:-.04em;line-height:1}
+.cifra span{display:block;margin-top:6px;font-size:13px;color:rgba(251,247,240,.66)}
+@media (max-width:760px){.cifras-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- encabezado de sección ---------- */
+.cab{display:flex;justify-content:space-between;align-items:flex-end;gap:22px;flex-wrap:wrap;margin-bottom:clamp(26px,3.4vw,44px)}
+.cab p{margin:0;max-width:42ch}
+
+/* ---------- ciudades ---------- */
+.ciudades{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.5vw,22px)}
+.ciudad{display:block;background:var(--bg);border:1px solid var(--linea-fina);border-radius:6px;overflow:hidden;
+  transition:border-color .35s,transform .35s ease}
+.ciudad:hover{border-color:var(--coral);transform:translateY(-4px)}
+.ciudad .img{position:relative;aspect-ratio:4/3;background:var(--verde-700)}
+.ciudad .img svg{position:absolute;inset:0;width:100%;height:100%}
+.ciudad .img i{position:absolute;right:12px;bottom:12px;width:30px;height:30px;border-radius:50%;background:var(--bg);
+  display:grid;place-items:center;font-style:normal;font-size:14px;color:var(--fg);transition:background .3s,color .3s}
+.ciudad:hover .img i{background:var(--coral);color:#fff}
+.ciudad .txt{padding:14px 16px 18px}
+.ciudad .txt b{display:block;font-size:14.5px;font-weight:600}
+.ciudad .txt span{font-size:12.5px;color:var(--fg-suave)}
+@media (max-width:980px){.ciudades{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- testimonio ---------- */
+.testimonio{background:var(--superficie);text-align:center}
+.testimonio blockquote{margin:0 auto;max-width:24ch;font-family:var(--display);font-weight:400;
+  font-size:clamp(24px,3.2vw,44px);line-height:1.18;letter-spacing:-.02em}
+.testimonio cite{display:block;margin-top:24px;font-style:normal;font-size:13.5px;color:var(--coral)}
+
+/* ---------- notas ---------- */
+.notas{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,26px)}
+.nota{display:block;border-top:1px solid var(--linea);padding-top:16px;transition:border-color .35s}
+.nota:hover{border-color:var(--coral)}
+.nota .img{position:relative;aspect-ratio:16/10;border-radius:5px;overflow:hidden;background:var(--verde-700);margin-bottom:14px}
+.nota .img svg{position:absolute;inset:0;width:100%;height:100%;transition:transform .8s cubic-bezier(.22,1,.36,1)}
+.nota:hover .img svg{transform:scale(1.04)}
+.nota time{font-size:12px;color:var(--coral)}
+.nota h3{margin-top:8px}
+@media (max-width:820px){.notas{grid-template-columns:1fr}}
+
+/* ---------- contacto ---------- */
+.contacto{background:var(--verde-700);color:#FBF7F0}
+.contacto-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(28px,5vw,74px)}
+.contacto .suave{color:rgba(251,247,240,.72)}
+.campos{display:grid;grid-template-columns:1fr 1fr;gap:22px 20px}
+.campo{display:flex;flex-direction:column;gap:5px}
+.campo.ancho{grid-column:span 2}
+.campo label{font-size:12px;color:rgba(251,247,240,.6)}
+.campo input,.campo select,.campo textarea{background:transparent;border:0;border-bottom:1px solid rgba(251,247,240,.3);
+  color:#FBF7F0;padding:9px 0;font:inherit;font-size:15px;transition:border-color .3s}
+.campo textarea{min-height:76px;resize:vertical}
+.campo select option{color:#12201C}
+.campo input:focus,.campo select:focus,.campo textarea:focus{outline:none;border-color:var(--coral)}
+@media (max-width:860px){.contacto-grid,.campos{grid-template-columns:1fr}.campo.ancho{grid-column:span 1}}
+
+/* ---------- newsletter ---------- */
+.news{background:var(--superficie);padding-block:clamp(34px,4vw,54px)}
+.news-in{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}
+.news h3{font-size:clamp(19px,2vw,26px);margin-bottom:6px}
+.news form{display:flex;gap:14px;align-items:flex-end;min-width:min(420px,100%)}
+.news input{flex:1;background:transparent;border:0;border-bottom:1px solid var(--linea);padding:9px 0;font:inherit;color:var(--fg)}
+.news input:focus{outline:none;border-color:var(--coral)}
+.news button{color:var(--coral);font-size:14px;font-weight:600;white-space:nowrap}
+@media (max-width:760px){.news-in{grid-template-columns:1fr}}
+
+/* ---------- pie ---------- */
+.pie{background:var(--verde-900);color:rgba(251,247,240,.7);padding-block:clamp(40px,5vw,64px);font-size:14px}
+.pie-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:32px}
+.pie h4{font-family:var(--texto);font-size:12.5px;font-weight:600;color:#FBF7F0;margin:0 0 13px;letter-spacing:.05em}
+.pie ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.pie a:hover{color:var(--coral-claro)}
+.pie-base{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:40px;padding-top:18px;
+  border-top:1px solid rgba(251,247,240,.14);font-size:12.5px}
+@media (max-width:760px){.pie-grid{grid-template-columns:1fr 1fr}}
+
+/* =========================================================
+   VISTA VELASUR
+   ========================================================= */
+.hero-proyecto{min-height:78svh}
+.hero-proyecto h1{font-size:clamp(46px,8vw,120px);letter-spacing:-.04em}
+
+.datos-barra{background:var(--verde-700);color:#FBF7F0}
+.datos-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(251,247,240,.18)}
+.dato{background:var(--verde-700);padding:clamp(18px,2.2vw,30px) clamp(14px,1.8vw,26px)}
+.dato b{display:block;font-family:var(--display);font-size:clamp(22px,2.6vw,34px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.dato span{display:block;margin-top:5px;font-size:12.5px;color:rgba(251,247,240,.62)}
+@media (max-width:860px){.datos-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:460px){.datos-grid{grid-template-columns:1fr}}
+
+.caracteristicas{border-top:1px solid var(--linea)}
+.caracteristica{display:grid;grid-template-columns:56px 1fr 1.3fr;gap:clamp(14px,2vw,32px);align-items:baseline;
+  padding:clamp(18px,2.2vw,28px) 0;border-bottom:1px solid var(--linea-fina);transition:padding-left .35s ease}
+.caracteristica:hover{padding-left:12px}
+.caracteristica .n{font-size:13px;color:var(--coral)}
+.caracteristica h3{margin:0}
+.caracteristica p{margin:0;color:var(--fg-suave);font-size:15px}
+@media (max-width:760px){.caracteristica{grid-template-columns:44px 1fr}.caracteristica p{grid-column:2}}
+
+.ubicacion{display:grid;grid-template-columns:1.25fr .75fr;align-items:stretch}
+.mapa{position:relative;background:var(--superficie);min-height:clamp(280px,42vh,420px)}
+.mapa svg{position:absolute;inset:0;width:100%;height:100%}
+.mapa-panel{background:var(--verde-700);color:#FBF7F0;padding:clamp(28px,3.4vw,52px);display:flex;flex-direction:column;justify-content:center}
+.mapa-panel p{color:rgba(251,247,240,.78);max-width:34ch}
+@media (max-width:900px){.ubicacion{grid-template-columns:1fr}}
+
+.amenidades{display:grid;grid-template-columns:repeat(5,1fr);background:var(--superficie);border-radius:6px;overflow:hidden}
+.amenidad{padding:clamp(22px,2.6vw,34px) clamp(16px,1.8vw,24px);border-right:1px solid var(--linea-fina)}
+.amenidad:last-child{border-right:0}
+.amenidad svg{width:26px;height:26px;stroke:var(--coral);fill:none;stroke-width:1.6;margin-bottom:14px}
+.amenidad b{display:block;font-size:15px;font-weight:600;line-height:1.25}
+@media (max-width:900px){.amenidades{grid-template-columns:repeat(2,1fr)}.amenidad{border-bottom:1px solid var(--linea-fina)}}
+@media (max-width:480px){.amenidades{grid-template-columns:1fr}.amenidad{border-right:0}}
+
+.galeria{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(8px,1vw,14px)}
+.galeria figure{margin:0;position:relative;overflow:hidden;border-radius:5px;background:var(--verde-700)}
+.galeria svg{position:absolute;inset:0;width:100%;height:100%;transition:transform .9s cubic-bezier(.22,1,.36,1)}
+.galeria figure:hover svg{transform:scale(1.05)}
+.galeria figcaption{position:absolute;left:0;bottom:0;width:100%;padding:12px 14px;font-size:12.5px;color:#FBF7F0;
+  background:linear-gradient(0deg,rgba(4,18,15,.82),transparent);opacity:0;transition:opacity .35s}
+.galeria figure:hover figcaption{opacity:1}
+.ga{grid-column:span 5;aspect-ratio:4/3}
+.gb{grid-column:span 7;aspect-ratio:16/9}
+.gc{grid-column:span 4;aspect-ratio:1}
+@media (max-width:820px){.ga,.gb{grid-column:span 12}.gc{grid-column:span 6}}
+
+.catalogo{background:var(--verde-700);color:#FBF7F0;border-radius:6px;overflow:hidden;display:grid;grid-template-columns:1fr .9fr}
+.catalogo .txt{padding:clamp(28px,3.4vw,54px)}
+.catalogo p{color:rgba(251,247,240,.78);max-width:34ch}
+.catalogo .acciones{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.catalogo .img{position:relative;min-height:240px}
+.catalogo .img svg{position:absolute;inset:0;width:100%;height:100%}
+@media (max-width:860px){.catalogo{grid-template-columns:1fr}}
+
+.volver{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--fg-suave);transition:color .3s}
+.volver:hover{color:var(--coral)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+  html{scroll-behavior:auto}
+  .ap,.entra{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= NAVEGACIÓN ================= -->
+<header class="nav" id="nav">
+  <a class="marca" href="#/">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M13 16 24 34 35 16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Grupo Velas
+  </a>
+  <nav class="nav-enlaces">
+    <a href="#/" data-ruta="home">Inicio</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#/velasur" data-ruta="velasur">Proyectos</a>
+    <a href="#ciudades">Ciudades</a>
+  </nav>
+  <a class="nav-cta" href="#contacto">Contacto</a>
+</header>
+
+<main>
+
+<!-- ================================================================
+     VISTA 1 · HOME
+     ================================================================ -->
+<div data-pagina="home">
+
+  <section class="hero">
+    <div class="hero-fondo"><svg data-escena="lobby" aria-hidden="true"></svg></div>
+    <div class="hero-in">
+      <div class="hero-kicker entra"><span></span>Grupo Velas · 45 años construyendo México</div>
+      <h1 class="entra">Desarrollos inmobiliarios en México</h1>
+      <p class="bajada entra">Transformamos ideas en desarrollos que destacan por su calidad excepcional, diseño innovador y ubicaciones estratégicas.</p>
+      <div class="acciones entra">
+        <a class="btn btn-coral" href="#ciudades">Ver ciudades</a>
+        <a class="btn btn-claro" href="#contacto">Contáctanos</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cifras">
+    <div class="envoltura">
+      <div class="cifras-grid">
+        <div class="cifra"><b>+15</b><span>Ciudades</span></div>
+        <div class="cifra"><b>+75</b><span>Desarrollos</span></div>
+        <div class="cifra"><b>+100 mil</b><span>Familias</span></div>
+        <div class="cifra"><b>45</b><span>Años de experiencia</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion envoltura" id="ciudades">
+    <div class="cab ap">
+      <div>
+        <div class="rotulo">Ciudades</div>
+        <h2>Elige tu ciudad</h2>
+      </div>
+      <p class="suave">Selecciona una ciudad para ver los desarrollos disponibles.</p>
+    </div>
+    <div class="ciudades" id="listaCiudades"></div>
+  </section>
+
+  <section class="testimonio seccion">
+    <div class="envoltura ap">
+      <div class="rotulo">Testimonios</div>
+      <blockquote>Qué está precioso para vivir. Las casas están hermosas y los departamentos espectaculares. Me encanta.</blockquote>
+      <cite>Rosa María Z. — Velasur</cite>
+    </div>
+  </section>
+
+  <section class="seccion envoltura" id="nosotros">
+    <div class="cab ap">
+      <div>
+        <div class="rotulo">Revista Horizonte</div>
+        <h2>Noticias y tendencias</h2>
+      </div>
+      <a class="btn btn-linea" href="#">Ver todos los artículos</a>
+    </div>
+    <div class="notas">
+      <a class="nota ap" href="#">
+        <div class="img"><svg data-escena="torre"></svg></div>
+        <time>31 agosto 2026</time>
+        <h3>¿Realidad o utopía? La infraestructura necesaria para el crecimiento urbano</h3>
+      </a>
+      <a class="nota ap" href="#" style="transition-delay:.08s">
+        <div class="img"><svg data-escena="interior"></svg></div>
+        <time>18 agosto 2026</time>
+        <h3>Cómo elegir el desarrollo ideal para tu próxima inversión</h3>
+      </a>
+      <a class="nota ap" href="#" style="transition-delay:.16s">
+        <div class="img"><svg data-escena="costa"></svg></div>
+        <time>2 agosto 2026</time>
+        <h3>Las ciudades con mayor plusvalía en México este año</h3>
+      </a>
+    </div>
+  </section>
+
+  <section class="contacto seccion" id="contacto">
+    <div class="envoltura contacto-grid">
+      <div class="ap">
+        <div class="rotulo">Contacto</div>
+        <h2>Resuelve tus dudas</h2>
+        <p class="suave" style="margin-top:18px">Más de 100 mil familias ya confían en nosotros. Escríbenos y un asesor te contactará.</p>
+      </div>
+      <div class="campos ap">
+        <div class="campo"><label for="h1">Nombre completo *</label><input id="h1" type="text"></div>
+        <div class="campo"><label for="h2">Correo *</label><input id="h2" type="email"></div>
+        <div class="campo"><label for="h3">Teléfono</label><input id="h3" type="tel"></div>
+        <div class="campo"><label for="h4">Ciudad de interés</label>
+          <select id="h4"><option>Cancún</option><option>Ciudad Juárez</option><option>Los Cabos</option><option>Matamoros</option><option>Playa del Carmen</option><option>Querétaro</option><option>Reynosa</option><option>Tampico</option></select>
+        </div>
+        <div class="campo ancho"><label for="h5">Mensaje</label><textarea id="h5"></textarea></div>
+        <div class="ancho"><button class="btn btn-coral" type="button" data-enviar>Quiero más información</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="news">
+    <div class="envoltura news-in">
+      <div>
+        <h3>Suscríbete a nuestro newsletter</h3>
+        <p class="suave" style="margin:0;font-size:14px">Nuevas tendencias, noticias de desarrollos y temas de interés directo en tu correo.</p>
+      </div>
+      <form onsubmit="return false">
+        <input type="email" placeholder="tu@correo.com" aria-label="Correo electrónico">
+        <button type="button" data-enviar>Enviar</button>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- ================================================================
+     VISTA 2 · VELASUR
+     ================================================================ -->
+<div data-pagina="velasur" hidden>
+
+  <section class="hero hero-proyecto">
+    <div class="hero-fondo"><svg data-escena="casa" aria-hidden="true"></svg></div>
+    <div class="hero-in">
+      <div class="hero-kicker entra"><span></span>Querétaro</div>
+      <h1 class="entra">Velasur</h1>
+      <p class="bajada entra">Un desarrollo que redefine el estándar de vivienda en Querétaro: espacios amplios, acabados modernos y una ubicación que conecta con todo.</p>
+      <div class="acciones entra">
+        <a class="btn btn-coral" href="#catalogo">Ver catálogo</a>
+        <a class="btn btn-claro" href="#galeria">Ver galería</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="datos-barra">
+    <div class="envoltura">
+      <div class="datos-grid">
+        <div class="dato"><b>3</b><span>Recámaras</span></div>
+        <div class="dato"><b>3</b><span>Baños</span></div>
+        <div class="dato"><b>264 m²</b><span>Superficie</span></div>
+        <div class="dato"><b>Nuevo proyecto</b><span>Estatus</span></div>
+        <div class="dato"><b>Disponible</b><span>Ventas</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion envoltura">
+    <div class="cab ap">
+      <div>
+        <div class="rotulo">Ventajas</div>
+        <h2>Características que elevan tu vida</h2>
+      </div>
+    </div>
+    <div class="caracteristicas">
+      <div class="caracteristica ap"><span class="n">01</span><h3>Comunidad</h3><p>Espacios pensados para la convivencia y la vida en familia.</p></div>
+      <div class="caracteristica ap"><span class="n">02</span><h3>Ubicación</h3><p>Cerca de servicios, vialidades principales y zonas de valor en Querétaro.</p></div>
+      <div class="caracteristica ap"><span class="n">03</span><h3>Seguridad</h3><p>Acceso controlado y vigilancia para brindar tranquilidad todos los días.</p></div>
+      <div class="caracteristica ap"><span class="n">04</span><h3>Diseño</h3><p>Acabados modernos y distribución funcional en cada espacio.</p></div>
+    </div>
+  </section>
+
+  <section class="ubicacion">
+    <div class="mapa"><svg data-escena="mapa" role="img" aria-label="Mapa de ubicación en Santiago de Querétaro"></svg></div>
+    <div class="mapa-panel">
+      <div class="rotulo">Ubicación</div>
+      <h2>Querétaro</h2>
+      <p style="margin-top:16px">Una ubicación pensada para el crecimiento y la plusvalía a largo plazo, en Santiago de Querétaro.</p>
+      <div><a class="btn btn-claro" href="#" style="margin-top:8px">Cómo llegar</a></div>
+    </div>
+  </section>
+
+  <section class="seccion envoltura">
+    <div class="cab ap">
+      <div>
+        <div class="rotulo">Amenidades</div>
+        <h2>Conoce nuestras amenidades</h2>
+      </div>
+    </div>
+    <div class="amenidades ap">
+      <div class="amenidad"><svg viewBox="0 0 24 24"><path d="M12 21c0-5 3-9 7-10-1 5-3 8-7 10Zm0 0c0-5-3-9-7-10 1 5 3 8 7 10Z"/><path d="M12 21v-6"/></svg><b>Áreas verdes</b></div>
+      <div class="amenidad"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.2 8.4 8 9 4.8-.6 8-4.5 8-9V6l-8-3Z"/></svg><b>Seguridad y control de acceso</b></div>
+      <div class="amenidad"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="10" r="2.4"/><path d="M3 20c0-3.3 2.7-5 6-5s6 1.7 6 5"/><path d="M15.5 20c0-2.4 1.6-3.6 4-3.6"/></svg><b>Espacios de convivencia</b></div>
+      <div class="amenidad"><svg viewBox="0 0 24 24"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg><b>Diseño moderno</b></div>
+      <div class="amenidad"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M9 16V8h3.5a2.5 2.5 0 0 1 0 5H9"/></svg><b>Estacionamiento</b></div>
+    </div>
+  </section>
+
+  <section class="seccion envoltura" id="galeria">
+    <div class="cab ap">
+      <div>
+        <div class="rotulo">Galería</div>
+        <h2>Fotografías del desarrollo</h2>
+      </div>
+    </div>
+    <div class="galeria ap">
+      <figure class="ga"><svg data-escena="casa"></svg><figcaption>Fachada principal</figcaption></figure>
+      <figure class="gb"><svg data-escena="interior"></svg><figcaption>Estancia y comedor</figcaption></figure>
+      <figure class="gc"><svg data-escena="alberca"></svg><figcaption>Alberca</figcaption></figure>
+      <figure class="gc"><svg data-escena="jardin"></svg><figcaption>Andador central</figcaption></figure>
+      <figure class="gc"><svg data-escena="acceso"></svg><figcaption>Acceso controlado</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="seccion envoltura" id="catalogo">
+    <div class="catalogo ap">
+      <div class="txt">
+        <div class="rotulo">Disponibilidad</div>
+        <h2>Descarga el catálogo de Velasur</h2>
+        <p style="margin-top:16px">Precios, especificaciones y ubicación en un solo documento.</p>
+        <div class="acciones">
+          <a class="btn btn-coral" href="#">Descargar brochure (PDF)</a>
+          <a class="btn btn-claro" href="#contacto-velasur">Cotizar ahora</a>
+        </div>
+      </div>
+      <div class="img"><svg data-escena="casa"></svg></div>
+    </div>
+  </section>
+
+  <section class="contacto seccion" id="contacto-velasur">
+    <div class="envoltura contacto-grid">
+      <div class="ap">
+        <div class="rotulo">Contacto</div>
+        <h2>Resuelve tus dudas</h2>
+        <p class="suave" style="margin-top:18px">Más de 100 mil familias ya confían en nosotros. Adquiere hoy la propiedad de tus sueños.</p>
+      </div>
+      <div class="campos ap">
+        <div class="campo"><label for="v1">Nombre completo *</label><input id="v1" type="text"></div>
+        <div class="campo"><label for="v2">Correo *</label><input id="v2" type="email"></div>
+        <div class="campo"><label for="v3">Teléfono</label><input id="v3" type="tel"></div>
+        <div class="campo"><label for="v4">Horario preferido</label>
+          <select id="v4"><option>9 am – 2 pm</option><option>2 pm – 6 pm</option><option>Sábado, 9 am – 2 pm</option></select>
+        </div>
+        <div class="campo ancho"><label for="v5">Mensaje</label><textarea id="v5"></textarea></div>
+        <div class="ancho"><button class="btn btn-coral" type="button" data-enviar>Quiero más información</button></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="envoltura" style="padding-bottom:var(--ritmo)">
+    <a class="volver" href="#/">← Volver al catálogo</a>
+  </div>
+</div>
+
+</main>
+
+<!-- ================= PIE ================= -->
+<footer class="pie">
+  <div class="envoltura">
+    <div class="pie-grid">
+      <div>
+        <a class="marca" href="#/" style="color:#FBF7F0">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M13 16 24 34 35 16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Grupo Velas
+        </a>
+        <p style="max-width:34ch;margin-top:14px">Transformamos ideas en desarrollos inmobiliarios que destacan por su calidad excepcional, diseño innovador y ubicaciones estratégicas en México.</p>
+      </div>
+      <div>
+        <h4>Sitio</h4>
+        <ul><li><a href="#/">Inicio</a></li><li><a href="#/velasur">Proyectos</a></li><li><a href="#ciudades">Ciudades</a></li><li><a href="#contacto">Contacto</a></li></ul>
+      </div>
+      <div>
+        <h4>Horario de atención</h4>
+        <ul><li>Lunes a viernes, 9:00 am – 6:00 pm</li><li>Sábado, 9:00 am – 2:00 pm</li><li><a href="#contacto">ventas@grupovelas.com.mx</a></li></ul>
+      </div>
+    </div>
+    <div class="pie-base"><span>© 2026 Grupo Velas. Todos los derechos reservados.</span><a href="#">Aviso de privacidad</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* =========================================================
+     1. ESCENAS SVG (marcadores de posición)
+     En producción: sustituir <svg data-escena="..."> por
+     <img src="ruta/foto.jpg" alt="...">
+     ========================================================= */
+  const escenas = {
+    lobby:`<defs><linearGradient id="h-lb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#07222B"/><stop offset=".45" stop-color="#1C4A43"/><stop offset=".72" stop-color="#8C4632"/><stop offset="1" stop-color="#E29354"/></linearGradient></defs>
+      <rect width="400" height="500" fill="url(#h-lb)"/>
+      <circle cx="286" cy="188" r="44" fill="#FBD9A0" opacity=".5"/>
+      <g fill="#05191A"><rect y="120" width="400" height="18"/><rect x="26" y="120" width="14" height="180"/><rect x="128" y="120" width="14" height="180"/><rect x="230" y="120" width="14" height="180"/><rect x="332" y="120" width="14" height="180"/></g>
+      <rect y="300" width="400" height="200" fill="#0A2B2A"/>
+      <g stroke="#E8A96B" stroke-opacity=".45" stroke-width="3" fill="none"><path d="M0 330 H400"/><path d="M0 366 H400"/><path d="M0 412 H400"/><path d="M0 464 H400"/></g>
+      <g fill="#F2C48A" opacity=".35"><rect x="60" y="150" width="60" height="6" rx="3"/><rect x="180" y="150" width="60" height="6" rx="3"/><rect x="290" y="150" width="60" height="6" rx="3"/></g>`,
+    casa:`<defs><linearGradient id="h-ca" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FA8C4"/><stop offset=".58" stop-color="#E9E1D3"/><stop offset="1" stop-color="#B9A98D"/></linearGradient></defs>
+      <rect width="400" height="500" fill="url(#h-ca)"/>
+      <rect x="22" y="140" width="240" height="270" fill="#F8F4EC"/>
+      <rect x="22" y="140" width="240" height="28" fill="#0C3A31"/>
+      <rect x="262" y="206" width="118" height="204" fill="#DED5C3"/>
+      <rect x="262" y="206" width="118" height="18" fill="#0C3A31" opacity=".8"/>
+      <g fill="#123F35"><rect x="46" y="198" width="90" height="78"/><rect x="150" y="198" width="90" height="78"/><rect x="290" y="248" width="62" height="54"/></g>
+      <g stroke="#F8F4EC" stroke-width="4"><path d="M91 198 V276"/><path d="M195 198 V276"/></g>
+      <rect x="46" y="302" width="194" height="13" fill="#8A6A48"/>
+      <rect x="116" y="330" width="56" height="80" fill="#7C6A52"/>
+      <rect y="410" width="400" height="90" fill="#7E8C6A"/>
+      <g stroke="#0B2B25" stroke-width="6" fill="none" stroke-linecap="round"><path d="M344 410 V350"/><path d="M344 350 q-22-16-36-6"/><path d="M344 350 q24-18 40-4"/></g>`,
+    torre:`<defs><linearGradient id="h-to" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0A2B36"/><stop offset=".64" stop-color="#3D717A"/><stop offset="1" stop-color="#D4945F"/></linearGradient></defs>
+      <rect width="400" height="500" fill="url(#h-to)"/>
+      <g fill="#07231E"><rect x="6" y="238" width="86" height="262"/><rect x="108" y="118" width="112" height="382"/><rect x="236" y="286" width="78" height="214"/><rect x="330" y="196" width="76" height="304"/></g>
+      <g fill="#F5C08A" opacity=".55"><rect x="126" y="150" width="12" height="8"/><rect x="158" y="190" width="12" height="8"/><rect x="190" y="150" width="12" height="8"/><rect x="126" y="240" width="12" height="8"/><rect x="26" y="272" width="12" height="8"/><rect x="254" y="320" width="12" height="8"/><rect x="350" y="232" width="12" height="8"/></g>`,
+    interior:`<defs><linearGradient id="h-in" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F3EADA"/><stop offset="1" stop-color="#CBB694"/></linearGradient></defs>
+      <rect width="400" height="500" fill="url(#h-in)"/>
+      <rect width="140" height="500" fill="#0C3A31"/>
+      <rect x="178" y="64" width="190" height="230" fill="#C3DEE2"/>
+      <g stroke="#7C6A52" stroke-width="5" fill="none"><rect x="178" y="64" width="190" height="230"/><path d="M273 64 V294"/><path d="M178 179 H368"/></g>
+      <rect x="34" y="336" width="332" height="22" fill="#8A6A48"/>
+      <rect x="64" y="358" width="158" height="94" fill="#E8673F"/>
+      <rect x="242" y="358" width="94" height="58" fill="#0C3A31" opacity=".22"/>`,
+    costa:`<defs><linearGradient id="h-co" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0D3C4C"/><stop offset=".55" stop-color="#4FA0A4"/><stop offset="1" stop-color="#F0C489"/></linearGradient></defs>
+      <rect width="400" height="500" fill="url(#h-co)"/>
+      <circle cx="296" cy="96" r="34" fill="#FDEDCB" opacity=".9"/>
+      <path d="M0 252 Q100 240 200 252 T400 248 L400 500 L0 500 Z" fill="#1C7E8C"/>
+      <path d="M0 404 Q120 386 240 404 T400 396 L400 500 L0 500 Z" fill="#E6D4AE"/>
+      <g stroke="#0B2B25" stroke-width="8" fill="none" stroke-linecap="round"><path d="M74 500 V296"/><path d="M74 296 q-32-24-54-8"/><path d="M74 296 q34-28 58-8"/><path d="M74 296 q-10-38 14-50"/></g>`,
+    alberca:`<defs><linearGradient id="h-al" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#37B0B8"/><stop offset="1" stop-color="#0C4F62"/></linearGradient></defs>
+      <rect width="400" height="500" fill="#E2D6BB"/>
+      <rect width="400" height="150" fill="#A9D2DA"/>
+      <g fill="#0B2B25"><rect y="116" width="400" height="15"/><rect x="40" y="116" width="11" height="100"/><rect x="156" y="116" width="11" height="100"/><rect x="272" y="116" width="11" height="100"/><rect x="380" y="116" width="11" height="100"/></g>
+      <rect y="131" width="400" height="7" fill="#E8673F" opacity=".8"/>
+      <rect y="256" width="400" height="244" fill="url(#h-al)"/>
+      <g stroke="#FFFFFF" stroke-opacity=".3" stroke-width="3" fill="none"><path d="M0 300 H400"/><path d="M0 350 H400"/><path d="M0 406 H400"/><path d="M0 464 H400"/></g>
+      <g fill="#F2E9DB"><rect x="40" y="226" width="60" height="10" rx="5"/><rect x="118" y="226" width="60" height="10" rx="5"/></g>`,
+    jardin:`<rect width="400" height="500" fill="#8FA478"/>
+      <rect width="400" height="205" fill="#B6D2DA"/>
+      <path d="M0 205 H400 V266 H0 Z" fill="#6F8259"/>
+      <g fill="#E8E2D2"><rect y="288" width="400" height="42"/><rect y="368" width="400" height="42"/></g>
+      <g fill="#4E6141"><circle cx="68" cy="178" r="48"/><circle cx="302" cy="164" r="60"/><circle cx="190" cy="194" r="36"/></g>
+      <rect x="150" y="432" width="100" height="16" rx="8" fill="#E8673F"/>`,
+    acceso:`<rect width="400" height="500" fill="#D9D3C4"/>
+      <rect width="400" height="200" fill="#9FC4D2"/>
+      <rect y="200" width="400" height="300" fill="#C9C2B0"/>
+      <rect y="240" width="400" height="26" fill="#0C3A31"/>
+      <g fill="#0C3A31"><rect x="40" y="120" width="26" height="170"/><rect x="334" y="120" width="26" height="170"/><rect x="40" y="120" width="320" height="24"/></g>
+      <rect x="86" y="252" width="228" height="8" fill="#E8673F"/>
+      <g fill="#F2E9DB"><rect x="150" y="330" width="100" height="70"/><rect x="170" y="352" width="60" height="26" fill="#0C3A31"/></g>`,
+    mapa:`<rect width="400" height="500" fill="#EDE7DA"/>
+      <g stroke="#D6CDBA" stroke-width="10" fill="none">
+        <path d="M-20 120 H420"/><path d="M-20 260 H420"/><path d="M-20 400 H420"/>
+        <path d="M80 -20 V520"/><path d="M220 -20 V520"/><path d="M330 -20 V520"/>
+      </g>
+      <g stroke="#C8BFA9" stroke-width="4" fill="none">
+        <path d="M-20 190 H420"/><path d="M-20 330 H420"/><path d="M150 -20 V520"/><path d="M280 -20 V520"/>
+      </g>
+      <path d="M-20 60 L420 200" stroke="#C6D8C0" stroke-width="16" fill="none"/>
+      <g fill="#DDD5C2"><rect x="96" y="136" width="40" height="38"/><rect x="236" y="276" width="78" height="38"/><rect x="96" y="346" width="40" height="40"/></g>
+      <g fill="#C6D8C0"><rect x="166" y="206" width="40" height="40"/><rect x="296" y="136" width="30" height="38"/></g>
+      <g transform="translate(220,260)">
+        <circle r="30" fill="#E8673F" opacity=".16"/>
+        <path d="M0 -22 c-9 0-16 7-16 16 0 12 16 26 16 26 s16-14 16-26c0-9-7-16-16-16Z" fill="#E8673F"/>
+        <circle cy="-6" r="5.5" fill="#FBF7F0"/>
+      </g>
+      <text x="246" y="268" font-family="Inter,sans-serif" font-size="14" fill="#0C3A31" font-weight="600">Velasur</text>
+      <text x="246" y="286" font-family="Inter,sans-serif" font-size="11" fill="#6A7169">Santiago de Querétaro</text>`
+  };
+  document.querySelectorAll('[data-escena]').forEach(s=>{
+    s.setAttribute('viewBox','0 0 400 500');
+    s.setAttribute('preserveAspectRatio','xMidYMid slice');
+    s.innerHTML = escenas[s.dataset.escena] || '';
+  });
+
+  /* =========================================================
+     2. TARJETAS DE CIUDAD (Home)
+     ========================================================= */
+  const ciudades=[
+    {n:'Cancún',d:1,s:'costa'},{n:'Ciudad Juárez',d:1,s:'casa'},
+    {n:'Los Cabos',d:2,s:'costa'},{n:'Matamoros',d:1,s:'acceso'},
+    {n:'Playa del Carmen',d:1,s:'alberca'},{n:'Querétaro',d:1,s:'casa'},
+    {n:'Reynosa',d:2,s:'jardin'},{n:'Tampico',d:10,s:'torre'}
+  ];
+  const lista=document.getElementById('listaCiudades');
+  ciudades.forEach((c,i)=>{
+    const a=document.createElement('a');
+    a.className='ciudad ap';
+    a.href='#/velasur';
+    a.style.transitionDelay=(i%4)*0.06+'s';
+    a.innerHTML=`<div class="img"><svg></svg><i>→</i></div>
+      <div class="txt"><b>${c.n}</b><span>${c.d} ${c.d===1?'desarrollo':'desarrollos'}</span></div>`;
+    const svg=a.querySelector('svg');
+    svg.setAttribute('viewBox','0 0 400 500');
+    svg.setAttribute('preserveAspectRatio','xMidYMid slice');
+    svg.innerHTML=escenas[c.s];
+    lista.appendChild(a);
+  });
+
+  /* =========================================================
+     3. RUTEO ENTRE LAS DOS VISTAS
+     #/        -> Home
+     #/velasur -> Ficha del desarrollo
+     ========================================================= */
+  const vistas=document.querySelectorAll('[data-pagina]');
+  function ir(nombre,silencioso){
+    vistas.forEach(v=>v.hidden = v.dataset.pagina!==nombre);
+    document.querySelectorAll('[data-ruta]').forEach(a=>a.classList.toggle('activo',a.dataset.ruta===nombre));
+    if(!silencioso) scrollTo({top:0,behavior:'auto'});
+    activarApariciones();
+    animarHero();
+  }
+  function leerRuta(){
+    const h=location.hash;
+    if(h.startsWith('#/')) return h.slice(2)||'home';
+    return null;              // ancla interna: no cambia de vista
+  }
+  addEventListener('hashchange',()=>{
+    const r=leerRuta();
+    if(r!==null) ir(r||'home');
+  });
+
+  /* =========================================================
+     4. MOVIMIENTO
+     ========================================================= */
+  let observador;
+  function activarApariciones(){
+    if(observador) observador.disconnect();
+    if(reduce){document.querySelectorAll('.ap').forEach(e=>e.classList.add('visible'));return}
+    observador=new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('visible');observador.unobserve(e.target)}
+    }),{threshold:.12,rootMargin:'0px 0px -60px 0px'});
+    document.querySelectorAll('[data-pagina]:not([hidden]) .ap').forEach(e=>{
+      e.classList.remove('visible');observador.observe(e);
+    });
+  }
+  function animarHero(){
+    const els=document.querySelectorAll('[data-pagina]:not([hidden]) .entra');
+    if(reduce){els.forEach(e=>e.style.opacity=1);return}
+    els.forEach((e,i)=>{
+      e.style.opacity=0;
+      e.animate([{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],
+        {duration:700,delay:120+i*110,easing:'cubic-bezier(.22,1,.36,1)',fill:'forwards'});
+    });
+  }
+
+  const nav=document.getElementById('nav');
+  addEventListener('scroll',()=>nav.classList.toggle('fija',scrollY>60),{passive:true});
+
+  document.querySelectorAll('[data-enviar]').forEach(b=>{
+    b.addEventListener('click',()=>{const t=b.textContent;b.textContent='Mensaje enviado';setTimeout(()=>b.textContent=t,2600)});
+  });
+
+  const inicial=leerRuta();
+  ir(inicial||'home',true);
+})();
+</script>
+</body>
+</html>

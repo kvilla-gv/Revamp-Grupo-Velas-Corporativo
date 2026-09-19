@@ -16,7 +16,7 @@
 :root{
   --verde:#0E3B32;          /* verde institucional (barras, pie, contacto) */
   --verde-osc:#0A2E27;
-  --coral:#E8663D;          /* acento */
+  --coral:#B8912B;          /* acento dorado */
   --crema:#F2E9DA;          /* bandas beige */
   --hueso:#FDFAF5;          /* fondo general */
   --tinta:#1C2320;          /* texto oscuro */
@@ -78,10 +78,13 @@ p{margin:0 0 1em}
   transition:opacity .5s ease,transform .5s ease,visibility .5s,box-shadow .25s ease,background .25s ease}
 .whatsapp-flotante.visible{opacity:1;visibility:visible;transform:none}
 .whatsapp-flotante:hover{background:#1EBE5A;box-shadow:0 14px 32px rgba(8,26,22,.36);transform:translateY(-3px)}
-.whatsapp-flotante svg{width:25px;height:25px;flex:none;position:relative}
-.whatsapp-flotante-anillo{position:absolute;inset:0;border-radius:50%;background:#25D366;
-  animation:whatsappPulso 2.6s ease-out infinite}
-.whatsapp-flotante.visible .whatsapp-flotante-anillo{animation-play-state:running}
+.whatsapp-flotante-icono{width:25px;height:25px;flex:none;display:flex;align-items:center;justify-content:center}
+.whatsapp-flotante svg{width:25px;height:25px;flex:none}
+.whatsapp-flotante-anillo{position:absolute;inset:-6px;z-index:-1;border-radius:50px;background:#25D366;
+  opacity:0;transition:opacity .2s ease}
+.whatsapp-flotante.visible .whatsapp-flotante-anillo{animation:whatsappPulso 2.6s ease-out infinite}
+.whatsapp-flotante:hover .whatsapp-flotante-anillo,
+.whatsapp-flotante:focus-visible .whatsapp-flotante-anillo{animation:none;opacity:0}
 .whatsapp-flotante-texto{font-family:var(--titulo);font-size:11px;font-weight:700;letter-spacing:.02em;
   white-space:nowrap;max-width:0;overflow:hidden;opacity:0;transition:max-width .35s ease,opacity .25s ease}
 .whatsapp-flotante:hover .whatsapp-flotante-texto,
@@ -95,8 +98,23 @@ p{margin:0 0 1em}
   .whatsapp-flotante-anillo{animation:none;display:none}
 }
 @media (max-width:520px){
-  .whatsapp-flotante{right:14px;bottom:14px;padding:13px}
+  .whatsapp-flotante{right:14px;padding:13px}
   .whatsapp-flotante-texto{display:none}
+}
+
+/* ---------- barra fija móvil: "Agenda tu visita" ---------- */
+.cta-movil{display:none}
+@media (max-width:640px){
+  [data-pagina="velasur"]{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+  .cta-movil{display:flex;align-items:center;justify-content:center;position:fixed;left:0;right:0;bottom:0;z-index:65;
+    background:var(--coral);color:#fff;font-family:var(--titulo);font-size:12px;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;padding:17px 20px;
+    padding-bottom:calc(17px + env(safe-area-inset-bottom));
+    box-shadow:0 -8px 20px rgba(8,26,22,.18);transition:background .2s ease}
+  .cta-movil:hover,.cta-movil:active{background:#9C7B25}
+  /* el botón de WhatsApp queda siempre visible, encima de la barra */
+  .whatsapp-flotante{opacity:1;visibility:visible;transform:none;
+    bottom:calc(60px + env(safe-area-inset-bottom))}
 }
 
 /* ---------- barra de navegación ---------- */
@@ -114,7 +132,7 @@ p{margin:0 0 1em}
 .menu .caja::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--coral);
   transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.65,0,.35,1)}
 .menu .caja:hover{border-color:var(--coral);color:#fff;opacity:1;transform:translateY(-2px);
-  box-shadow:0 10px 22px rgba(232,102,61,.35)}
+  box-shadow:0 10px 22px rgba(184,145,43,.35)}
 .menu .caja:hover::before{transform:scaleX(1)}
 
 .item-sub{position:relative;display:inline-flex;align-items:center}
@@ -162,15 +180,25 @@ p{margin:0 0 1em}
 .hero--velasur .datos-hero .datos-in>div{padding:22px 24px}
 @media (max-width:640px){
   .hero--velasur{height:auto;min-height:0}
-  .hero--velasur .hero-overlay{position:relative;gap:26px;padding-top:clamp(90px,30vh,150px)}
-  .hero--velasur .datos-hero .datos-in>div{padding:16px 18px}
+  .hero--velasur .hero-overlay{position:relative;gap:18px;padding-top:clamp(90px,30vh,150px)}
+  .hero--velasur .datos-hero .datos-in{display:flex;overflow-x:auto;max-width:none;margin:0;
+    scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+    padding-inline:var(--marco)}
+  .hero--velasur .datos-hero .datos-in::-webkit-scrollbar{display:none}
+  .hero--velasur .datos-hero .datos-in>div{flex:0 0 auto;min-width:114px;padding:12px 16px;
+    scroll-snap-align:start;border-right:1px solid rgba(255,255,255,.14)}
+  .hero--velasur .datos-hero .datos-in>div::before{display:none}
+  .hero--velasur .datos-hero .datos-in>div:last-child{border-right:0}
+  .hero--velasur .datos-hero .datos-in b{font-size:16px}
+  .hero--velasur .datos-hero .datos-in .raya{margin-top:8px}
+  .hero--velasur .datos-hero .datos-in span{margin-top:6px;font-size:9px}
 }
 
 /* ---------- buscador del hero ---------- */
 .buscador{position:relative;max-width:420px;margin-top:26px}
 .buscador-caja{display:flex;align-items:center;gap:10px;background:rgba(253,250,245,.97);border-radius:40px;
   padding:12px 20px;box-shadow:0 10px 30px rgba(8,26,22,.28);transition:box-shadow .3s ease}
-.buscador-caja:focus-within{box-shadow:0 14px 36px rgba(232,102,61,.4)}
+.buscador-caja:focus-within{box-shadow:0 14px 36px rgba(184,145,43,.4)}
 .buscador-icono{width:15px;height:15px;color:var(--gris);flex:none}
 .buscador-caja input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:12.5px;color:var(--tinta)}
 .buscador-caja input::placeholder{color:var(--gris)}
@@ -745,9 +773,13 @@ p{margin:0 0 1em}
     href="https://wa.me/524421089273?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20Velasur"
     target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp sobre Velasur">
     <span class="whatsapp-flotante-anillo" aria-hidden="true"></span>
-    <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.588-.525-.984-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.245.08.38-.058 1.171-.48 1.336-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/></svg>
+    <span class="whatsapp-flotante-icono">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.588-.525-.984-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.245.08.38-.058 1.171-.48 1.336-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/></svg>
+    </span>
     <span class="whatsapp-flotante-texto">¿Dudas sobre Velasur?</span>
   </a>
+
+  <a class="cta-movil" href="#contacto-velasur">Agenda tu visita</a>
 </div>
 
 </main>
@@ -873,7 +905,7 @@ p{margin:0 0 1em}
       <rect x="230" y="120" width="130" height="88" fill="#BFD9DD"/>
       <rect x="40" y="250" width="200" height="86" rx="6" fill="#8C9A86"/>
       <rect x="264" y="266" width="96" height="70" rx="6" fill="#6E5B47"/>
-      <circle cx="150" cy="60" r="22" fill="#E8663D" opacity=".8"/>
+      <circle cx="150" cy="60" r="22" fill="#B8912B" opacity=".8"/>
       <rect y="400" width="400" height="100" fill="#C3B394"/>`,
 
     alberca:`<defs><linearGradient id="e5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4FC0CC"/><stop offset="1" stop-color="#0E6A83"/></linearGradient></defs>
@@ -906,7 +938,7 @@ p{margin:0 0 1em}
       <path d="M0 200 H400 V254 H0 Z" fill="#5F7448"/>
       <g fill="#E7DFCB"><rect y="290" width="400" height="40"/><rect y="378" width="400" height="40"/></g>
       <g fill="#41522F"><circle cx="70" cy="176" r="50"/><circle cx="300" cy="160" r="62"/></g>
-      <rect x="150" y="440" width="104" height="16" rx="8" fill="#E8663D"/>`,
+      <rect x="150" y="440" width="104" height="16" rx="8" fill="#B8912B"/>`,
 
     /* mapa estilo Google Maps */
     mapa:`<rect width="400" height="500" fill="#EAE7DF"/>
@@ -922,7 +954,7 @@ p{margin:0 0 1em}
       <g fill="#E3DFD4"><rect x="130" y="160" width="60" height="52"/><rect x="212" y="232" width="60" height="58"/><rect x="72" y="310" width="42" height="46"/></g>
       <g transform="translate(206,258)">
         <ellipse cy="20" rx="9" ry="3.5" fill="rgba(0,0,0,.2)"/>
-        <path d="M0 18 C-12 2 -14 -4 -14 -10 a14 14 0 1 1 28 0 c0 6 -2 12 -14 28Z" fill="#E8663D"/>
+        <path d="M0 18 C-12 2 -14 -4 -14 -10 a14 14 0 1 1 28 0 c0 6 -2 12 -14 28Z" fill="#B8912B"/>
         <circle cy="-10" r="5" fill="#fff"/>
       </g>`
   };

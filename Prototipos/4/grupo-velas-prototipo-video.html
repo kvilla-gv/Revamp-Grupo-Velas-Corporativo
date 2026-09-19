@@ -71,6 +71,34 @@ p{margin:0 0 1em}
 .btn-whatsapp:hover{background:#1EBE5A}
 .btn-whatsapp svg{width:14px;height:14px;flex:none}
 
+/* ---------- botón flotante de WhatsApp ---------- */
+.whatsapp-flotante{position:fixed;z-index:70;right:20px;bottom:20px;display:flex;align-items:center;gap:10px;
+  background:#25D366;color:#fff;padding:14px;border-radius:50px;box-shadow:0 10px 26px rgba(8,26,22,.3);
+  opacity:0;visibility:hidden;transform:translateY(18px) scale(.92);
+  transition:opacity .5s ease,transform .5s ease,visibility .5s,box-shadow .25s ease,background .25s ease}
+.whatsapp-flotante.visible{opacity:1;visibility:visible;transform:none}
+.whatsapp-flotante:hover{background:#1EBE5A;box-shadow:0 14px 32px rgba(8,26,22,.36);transform:translateY(-3px)}
+.whatsapp-flotante svg{width:25px;height:25px;flex:none;position:relative}
+.whatsapp-flotante-anillo{position:absolute;inset:0;border-radius:50%;background:#25D366;
+  animation:whatsappPulso 2.6s ease-out infinite}
+.whatsapp-flotante.visible .whatsapp-flotante-anillo{animation-play-state:running}
+.whatsapp-flotante-texto{font-family:var(--titulo);font-size:11px;font-weight:700;letter-spacing:.02em;
+  white-space:nowrap;max-width:0;overflow:hidden;opacity:0;transition:max-width .35s ease,opacity .25s ease}
+.whatsapp-flotante:hover .whatsapp-flotante-texto,
+.whatsapp-flotante:focus-visible .whatsapp-flotante-texto{max-width:160px;opacity:1}
+@keyframes whatsappPulso{
+  0%{opacity:.45;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.9)}
+}
+@media (prefers-reduced-motion:reduce){
+  .whatsapp-flotante{transition:opacity .3s ease,visibility .3s}
+  .whatsapp-flotante-anillo{animation:none;display:none}
+}
+@media (max-width:520px){
+  .whatsapp-flotante{right:14px;bottom:14px;padding:13px}
+  .whatsapp-flotante-texto{display:none}
+}
+
 /* ---------- barra de navegación ---------- */
 .nav{position:absolute;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
   gap:24px;padding:22px var(--marco)}
@@ -124,6 +152,19 @@ p{margin:0 0 1em}
 .hero-txt .precio-desde{margin-top:16px;font-family:var(--texto);font-size:13px;color:rgba(255,255,255,.88)}
 .hero-txt .precio-desde strong{margin-left:5px;font-family:var(--titulo);font-size:23px;font-weight:800;color:var(--coral)}
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+
+/* ---------- hero con datos integrados (velasur) ---------- */
+.hero--velasur .hero-overlay{position:absolute;z-index:3;left:0;right:0;bottom:0;
+  display:flex;flex-direction:column;gap:clamp(22px,4vh,34px)}
+.hero--velasur .hero-txt{position:static;bottom:auto}
+.hero--velasur .datos-hero{background:rgba(8,26,22,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-top:1px solid rgba(255,255,255,.14)}
+.hero--velasur .datos-hero .datos-in>div{padding:22px 24px}
+@media (max-width:640px){
+  .hero--velasur{height:auto;min-height:0}
+  .hero--velasur .hero-overlay{position:relative;gap:26px;padding-top:clamp(90px,30vh,150px)}
+  .hero--velasur .datos-hero .datos-in>div{padding:16px 18px}
+}
 
 /* ---------- buscador del hero ---------- */
 .buscador{position:relative;max-width:420px;margin-top:26px}
@@ -536,30 +577,31 @@ p{margin:0 0 1em}
      ================================================================ -->
 <div data-pagina="velasur" hidden>
 
-  <section class="hero">
+  <section class="hero hero--velasur">
     <video
       src="video/hero-velasur.mp4"
       poster="img/hero-velasur.png"
       autoplay muted loop playsinline preload="metadata"
       aria-hidden="true"></video>
-    <div class="hero-txt">
-      <div class="sobre">Querétaro</div>
-      <h1>Velasur</h1>
-      <div class="precio-desde">Precio desde <strong>$</strong></div>
-      <div class="hero-btns">
-        <a class="btn btn-coral" href="#catalogo">Ver catálogo</a>
-        <a class="btn btn-blanco" href="#galeria">Ver galería</a>
+    <div class="hero-overlay">
+      <div class="hero-txt">
+        <div class="sobre">Querétaro</div>
+        <h1>Velasur</h1>
+        <div class="precio-desde">Precio desde <strong>$</strong></div>
+        <div class="hero-btns">
+          <a class="btn btn-coral" href="#catalogo">Ver catálogo</a>
+          <a class="btn btn-blanco" href="#galeria">Ver galería</a>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <section class="datos">
-    <div class="datos-in ap">
-      <div><b data-num="3">0</b><div class="raya"></div><span>Recámaras</span></div>
-      <div><b data-num="3">0</b><div class="raya"></div><span>Baños</span></div>
-      <div><b data-num="264" data-sufijo=" m²">0</b><div class="raya"></div><span>Superficie</span></div>
-      <div><b>Nuevo proyecto</b><div class="raya"></div><span>Estatus</span></div>
-      <div class="coral"><b>Disponible</b><div class="raya"></div><span>Ventas</span></div>
+      <div class="datos datos-hero">
+        <div class="datos-in ap">
+          <div><b data-num="3">0</b><div class="raya"></div><span>Recámaras</span></div>
+          <div><b data-num="3">0</b><div class="raya"></div><span>Baños</span></div>
+          <div><b data-num="264" data-sufijo=" m²">0</b><div class="raya"></div><span>Superficie</span></div>
+          <div><b>Nuevo proyecto</b><div class="raya"></div><span>Estatus</span></div>
+          <div class="coral"><b>Disponible</b><div class="raya"></div><span>Ventas</span></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -698,6 +740,14 @@ p{margin:0 0 1em}
     </div>
     <div class="envoltura"><a class="volver" href="#/">← Volver al catálogo</a></div>
   </section>
+
+  <a class="whatsapp-flotante" id="whatsappVelasur"
+    href="https://wa.me/524421089273?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20Velasur"
+    target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp sobre Velasur">
+    <span class="whatsapp-flotante-anillo" aria-hidden="true"></span>
+    <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.588-.525-.984-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.245.08.38-.058 1.171-.48 1.336-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/></svg>
+    <span class="whatsapp-flotante-texto">¿Dudas sobre Velasur?</span>
+  </a>
 </div>
 
 </main>
@@ -1036,6 +1086,16 @@ p{margin:0 0 1em}
   /* la barra se fija al salir del hero */
   const nav=document.getElementById('nav');
   addEventListener('scroll',()=>nav.classList.toggle('fija',scrollY>420),{passive:true});
+
+  /* botón flotante de WhatsApp: aparece al salir del hero de Velasur */
+  const wtsVelasur=document.getElementById('whatsappVelasur');
+  const heroVelasur=document.querySelector('[data-pagina="velasur"] .hero');
+  if(wtsVelasur&&heroVelasur){
+    new IntersectionObserver(
+      es=>es.forEach(e=>wtsVelasur.classList.toggle('visible',!e.isIntersecting)),
+      {threshold:0}
+    ).observe(heroVelasur);
+  }
 
   /* formularios de muestra */
   document.querySelectorAll('[data-enviar]').forEach(b=>{

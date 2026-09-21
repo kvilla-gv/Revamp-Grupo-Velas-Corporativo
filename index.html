@@ -307,7 +307,7 @@ p{margin:0 0 1em}
 .testimonio-puntos button.activo{background:var(--coral);transform:scale(1.35)}
 
 /* ---------- notas ---------- */
-.notas{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
+.notas{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .nota{display:flex;flex-direction:column;background:var(--verde);border-radius:7px;overflow:hidden;
   box-shadow:0 2px 10px rgba(28,35,32,.07);transition:transform .3s ease,box-shadow .3s ease}
 .nota:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(28,35,32,.13)}
@@ -315,10 +315,14 @@ p{margin:0 0 1em}
 .nota .foto span{font-family:var(--titulo);font-size:9.5px;font-weight:600;letter-spacing:.2em;
   text-transform:uppercase;color:rgba(255,255,255,.28)}
 .nota .foto img{display:block;width:100%;height:100%;object-fit:cover}
-.nota .pie{flex:1;background:#fff;padding:16px 18px 22px}
+.nota .pie{flex:1;display:flex;flex-direction:column;background:#fff;padding:16px 18px 20px}
 .nota .pie em{display:block;font-style:normal;font-size:10px;color:var(--coral);margin-bottom:8px;
   text-transform:uppercase;letter-spacing:.06em}
 .nota h3{color:var(--tinta)}
+.nota .leer-mas{margin-top:auto;padding-top:16px;display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--titulo);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--coral);transition:gap .25s ease}
+.nota:hover .leer-mas{gap:10px}
 @media (max-width:860px){.notas{grid-template-columns:1fr}}
 
 /* ---------- contacto verde (home) ---------- */
@@ -592,15 +596,15 @@ p{margin:0 0 1em}
     <div class="notas ap">
       <a class="nota" href="#">
         <div class="foto"><img src="Prototipos/4/img/blog/terreno-desarrollo-inmobiliario.webp" alt="Planeación de un desarrollo inmobiliario" loading="lazy"></div>
-        <div class="pie"><em>31 ago 2026</em><h3>¿Realidad o utopía? La infraestructura necesaria para el crecimiento urbano</h3></div>
+        <div class="pie"><em>31 ago 2026</em><h3>¿Realidad o utopía? La infraestructura necesaria para el crecimiento urbano</h3><span class="leer-mas">Leer más <span aria-hidden="true">→</span></span></div>
       </a>
       <a class="nota" href="#">
         <div class="foto"><img src="Prototipos/4/img/blog/sanitario-color-blanco-en-bano.jpeg" alt="Baño con acabados de un desarrollo Grupo Velas" loading="lazy"></div>
-        <div class="pie"><em>Grupo Velas</em><h3>Cómo elegir el desarrollo ideal para tu próxima inversión</h3></div>
+        <div class="pie"><em>Grupo Velas</em><h3>Cómo elegir el desarrollo ideal para tu próxima inversión</h3><span class="leer-mas">Leer más <span aria-hidden="true">→</span></span></div>
       </a>
       <a class="nota" href="#">
         <div class="foto"><img src="Prototipos/4/img/blog/01-ciudad-de-mexico-1024x473.webp" alt="Vista aérea de Ciudad de México" loading="lazy"></div>
-        <div class="pie"><em>Grupo Velas</em><h3>Las ciudades con mayor plusvalía en México este año</h3></div>
+        <div class="pie"><em>Grupo Velas</em><h3>Las ciudades con mayor plusvalía en México este año</h3><span class="leer-mas">Leer más <span aria-hidden="true">→</span></span></div>
       </a>
     </div>
   </section>

@@ -16,19 +16,19 @@
    ========================================================= */
 
 :root{
-  --papel:#F1F0EA;
-  --papel-2:#E7E5DB;
-  --tinta:#0C3A31;
-  --tinta-2:#38534B;
-  --grafito:#8C968F;
-  --coral:#E8673F;
-  --blanco:#FCFBF7;
+  --papel:#FDFAF5;
+  --papel-2:#F2E9DA;
+  --tinta:#0E3B32;
+  --tinta-2:#82857F;
+  --grafito:#82857F;
+  --coral:#B8912B;
+  --blanco:#FFFFFF;
 
   --bg:var(--papel);
   --fg:var(--tinta);
   --suave:var(--tinta-2);
-  --linea:rgba(12,58,49,.2);
-  --linea-fina:rgba(12,58,49,.1);
+  --linea:rgba(14,59,50,.2);
+  --linea-fina:rgba(14,59,50,.1);
 
   --display:'Syne',system-ui,sans-serif;
   --texto:'Manrope',system-ui,-apple-system,sans-serif;
@@ -39,13 +39,13 @@
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --papel:#0E1513;--papel-2:#16211D;--bg:#0E1513;--fg:#E9E7DE;--suave:#A6B2AC;
-    --blanco:#16211D;--grafito:#6E7B75;--linea:rgba(233,231,222,.22);--linea-fina:rgba(233,231,222,.12);
+    --papel:#081F1A;--papel-2:#0E2820;--bg:#081F1A;--fg:#F2E9DA;--suave:#A69C86;
+    --blanco:#0E2820;--grafito:#A69C86;--linea:rgba(242,233,218,.22);--linea-fina:rgba(242,233,218,.12);
   }
 }
 :root[data-theme="dark"]{
-  --papel:#0E1513;--papel-2:#16211D;--bg:#0E1513;--fg:#E9E7DE;--suave:#A6B2AC;
-  --blanco:#16211D;--grafito:#6E7B75;--linea:rgba(233,231,222,.22);--linea-fina:rgba(233,231,222,.12);
+  --papel:#081F1A;--papel-2:#0E2820;--bg:#081F1A;--fg:#F2E9DA;--suave:#A69C86;
+  --blanco:#0E2820;--grafito:#A69C86;--linea:rgba(242,233,218,.22);--linea-fina:rgba(242,233,218,.12);
 }
 
 *{box-sizing:border-box}
@@ -91,7 +91,10 @@ p{margin:0 0 1em}
 .nav{position:sticky;top:0;z-index:70;background:var(--bg);border-bottom:1px solid var(--linea)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px var(--marco);max-width:var(--ancho);margin:0 auto}
 .marca{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:15px}
-.marca svg{width:26px;height:26px;flex:none}
+.marca img{height:24px;display:block}
+.nav .marca img{filter:invert(1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav .marca img{filter:none}}
+:root[data-theme="dark"] .nav .marca img{filter:none}
 .nav-enlaces{display:flex;gap:26px;font-size:14px;font-weight:500}
 .nav-enlaces a{position:relative}
 .nav-enlaces a::before{content:"";position:absolute;left:-11px;top:50%;width:5px;height:5px;background:var(--coral);
@@ -108,7 +111,8 @@ p{margin:0 0 1em}
 .hero .bajada{max-width:42ch;margin-top:22px;color:var(--suave);font-size:clamp(15.5px,1.2vw,18px)}
 .hero .acciones{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
 .hero-img{position:relative;aspect-ratio:4/3;border:1px solid var(--linea);overflow:hidden;background:var(--papel-2)}
-.hero-img svg{position:absolute;inset:0;width:100%;height:100%}
+.hero-img svg,
+.hero-img video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .hero-img figcaption{position:absolute;right:10px;bottom:9px;font-size:11px;color:var(--blanco);
   background:rgba(12,58,49,.7);padding:4px 9px}
 @media (max-width:900px){.hero{grid-template-columns:1fr}}
@@ -130,7 +134,7 @@ p{margin:0 0 1em}
 .ciudad{display:block;border:1px solid var(--linea-fina);background:var(--blanco);transition:border-color .3s,transform .35s ease}
 .ciudad:hover{border-color:var(--coral);transform:translateY(-3px)}
 .ciudad .img{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--papel-2)}
-.ciudad .img svg{position:absolute;inset:0;width:100%;height:100%}
+.ciudad .img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .ciudad .txt{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:13px 15px 16px}
 .ciudad .txt b{font-size:14.5px;font-weight:600}
 .ciudad .txt span{font-size:12px;color:var(--grafito);white-space:nowrap}
@@ -149,7 +153,7 @@ p{margin:0 0 1em}
 .nota{display:block;border-top:1px solid var(--linea);padding-top:16px;transition:transform .4s cubic-bezier(.22,1,.36,1)}
 .nota:hover{transform:translateY(-4px)}
 .nota .img{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--papel-2);margin-bottom:14px}
-.nota .img svg{position:absolute;inset:0;width:100%;height:100%}
+.nota .img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .nota time{font-size:12px;color:var(--coral)}
 .nota h3{margin-top:8px}
 .nota p{font-size:14px;color:var(--suave);margin-top:7px}
@@ -214,7 +218,7 @@ p{margin:0 0 1em}
 
 .ubicacion{display:grid;grid-template-columns:1.25fr .75fr;align-items:stretch}
 .mapa{position:relative;min-height:clamp(280px,42vh,420px);background:var(--papel-2);border:1px solid var(--linea);border-right:0}
-.mapa svg{position:absolute;inset:0;width:100%;height:100%}
+.mapa iframe{position:absolute;inset:0;width:100%;height:100%}
 .mapa-panel{background:var(--tinta);color:var(--blanco);padding:clamp(26px,3.2vw,50px);display:flex;flex-direction:column;justify-content:center}
 .mapa-panel p{color:rgba(252,251,247,.78);max-width:34ch}
 @media (max-width:900px){.ubicacion{grid-template-columns:1fr}.mapa{border-right:1px solid var(--linea)}}
@@ -229,8 +233,8 @@ p{margin:0 0 1em}
 
 .galeria{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(8px,1vw,14px)}
 .galeria figure{margin:0;position:relative;overflow:hidden;background:var(--papel-2);border:1px solid var(--linea-fina)}
-.galeria svg{position:absolute;inset:0;width:100%;height:100%;transition:transform .9s cubic-bezier(.22,1,.36,1)}
-.galeria figure:hover svg{transform:scale(1.04)}
+.galeria img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.22,1,.36,1)}
+.galeria figure:hover img{transform:scale(1.04)}
 .galeria figcaption{position:absolute;left:0;bottom:0;width:100%;padding:11px 13px;font-size:12px;color:var(--blanco);
   background:linear-gradient(0deg,rgba(6,24,20,.8),transparent);opacity:0;transition:opacity .3s}
 .galeria figure:hover figcaption{opacity:1}
@@ -244,7 +248,7 @@ p{margin:0 0 1em}
 .catalogo p{color:rgba(252,251,247,.78);max-width:34ch}
 .catalogo .acciones{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
 .catalogo .img{position:relative;min-height:230px}
-.catalogo .img svg{position:absolute;inset:0;width:100%;height:100%}
+.catalogo .img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 @media (max-width:860px){.catalogo{grid-template-columns:1fr}}
 
 .volver{display:inline-flex;align-items:center;gap:9px;font-size:14px;color:var(--grafito);transition:color .3s}
@@ -262,8 +266,7 @@ p{margin:0 0 1em}
 <header class="nav">
   <div class="nav-in">
     <a class="marca" href="#/">
-      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="3" y="3" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M13 16 24 34 35 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Grupo Velas
+      <img src="../4/img/logo/GRUPO_VELAS_BLANCO_H.png" alt="Grupo Velas">
     </a>
     <nav class="nav-enlaces">
       <a href="#/" data-ruta="home">Inicio</a>
@@ -291,7 +294,7 @@ p{margin:0 0 1em}
       </div>
     </div>
     <figure class="hero-img entra" style="margin:0">
-      <svg data-escena="lobby" aria-hidden="true"></svg>
+      <video src="../4/video/hero-home.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
       <figcaption>Velasur · Querétaro</figcaption>
     </figure>
   </section>
@@ -332,9 +335,9 @@ p{margin:0 0 1em}
       <a class="btn btn-borde" href="#">Ver todos los artículos</a>
     </div>
     <div class="notas">
-      <a class="nota ap" href="#"><div class="img"><svg data-escena="torre"></svg></div><time>31 agosto 2026</time><h3>¿Realidad o utopía? La infraestructura necesaria para el crecimiento urbano</h3><p>Qué obras cambian el mapa de plusvalía en el Bajío.</p></a>
-      <a class="nota ap" href="#" style="transition-delay:.08s"><div class="img"><svg data-escena="interior"></svg></div><time>18 agosto 2026</time><h3>Cómo elegir el desarrollo ideal para tu próxima inversión</h3><p>Seis preguntas que conviene hacer antes de apartar.</p></a>
-      <a class="nota ap" href="#" style="transition-delay:.16s"><div class="img"><svg data-escena="costa"></svg></div><time>2 agosto 2026</time><h3>Las ciudades con mayor plusvalía en México este año</h3><p>Datos de cierre de semestre con comparativo.</p></a>
+      <a class="nota ap" href="#"><div class="img"><img src="../4/img/blog/terreno-desarrollo-inmobiliario.webp" alt="Planeación de un desarrollo inmobiliario" loading="lazy"></div><time>31 agosto 2026</time><h3>¿Realidad o utopía? La infraestructura necesaria para el crecimiento urbano</h3><p>Qué obras cambian el mapa de plusvalía en el Bajío.</p></a>
+      <a class="nota ap" href="#" style="transition-delay:.08s"><div class="img"><img src="../4/img/blog/sanitario-color-blanco-en-bano.jpeg" alt="Baño con acabados de un desarrollo Grupo Velas" loading="lazy"></div><time>18 agosto 2026</time><h3>Cómo elegir el desarrollo ideal para tu próxima inversión</h3><p>Seis preguntas que conviene hacer antes de apartar.</p></a>
+      <a class="nota ap" href="#" style="transition-delay:.16s"><div class="img"><img src="../4/img/blog/01-ciudad-de-mexico-1024x473.webp" alt="Vista aérea de Ciudad de México" loading="lazy"></div><time>2 agosto 2026</time><h3>Las ciudades con mayor plusvalía en México este año</h3><p>Datos de cierre de semestre con comparativo.</p></a>
     </div>
   </section>
 
@@ -387,7 +390,7 @@ p{margin:0 0 1em}
       </div>
     </div>
     <figure class="hero-img entra" style="margin:0">
-      <svg data-escena="casa" aria-hidden="true"></svg>
+      <video src="../4/video/hero-velasur.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
       <figcaption>Fachada tipo · 264 m²</figcaption>
     </figure>
   </section>
@@ -419,7 +422,7 @@ p{margin:0 0 1em}
 
   <section class="envoltura" style="padding-block:0 var(--ritmo)">
     <div class="ubicacion">
-      <div class="mapa"><svg data-escena="mapa" role="img" aria-label="Mapa de ubicación en Santiago de Querétaro"></svg></div>
+      <div class="mapa"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d959980.9385486755!2d-100.14089852296493!3d19.96963336937957!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d345f78a7a2f31%3A0x666013eb60f1d398!2sVelasur!5e0!3m2!1ses-419!2smx!4v1790007921711!5m2!1ses-419!2smx" style="border:0" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Ubicación de Velasur en Santiago de Querétaro"></iframe></div>
       <div class="mapa-panel">
         <div class="rotulo" style="color:rgba(252,251,247,.6)">Ubicación</div>
         <h2>Querétaro</h2>
@@ -453,11 +456,9 @@ p{margin:0 0 1em}
       </div>
     </div>
     <div class="galeria ap">
-      <figure class="ga"><svg data-escena="alberca"></svg><figcaption>Alberca y casa club</figcaption></figure>
-      <figure class="gb"><svg data-escena="interior"></svg><figcaption>Estancia principal</figcaption></figure>
-      <figure class="gc"><svg data-escena="casa"></svg><figcaption>Fachada poniente</figcaption></figure>
-      <figure class="gc"><svg data-escena="jardin"></svg><figcaption>Andador central</figcaption></figure>
-      <figure class="gc"><svg data-escena="acceso"></svg><figcaption>Acceso controlado</figcaption></figure>
+      <figure class="ga"><img src="../4/img/1.webp" alt="Alberca y camastros de Velasur" loading="lazy"><figcaption>Alberca y casa club</figcaption></figure>
+      <figure class="gb"><img src="../4/img/2.webp" alt="Alberca y terraza techada de Velasur al atardecer" loading="lazy"><figcaption>Terraza al atardecer</figcaption></figure>
+      <figure class="gc"><img src="../4/img/3.webp" alt="Fachada de una vivienda en Velasur" loading="lazy"><figcaption>Fachada poniente</figcaption></figure>
     </div>
   </section>
 
@@ -472,7 +473,7 @@ p{margin:0 0 1em}
           <a class="btn btn-claro" href="#contacto-velasur">Cotizar ahora</a>
         </div>
       </div>
-      <div class="img"><svg data-escena="casa"></svg></div>
+      <div class="img"><img src="../4/img/3.webp" alt="Fachada de una vivienda en Velasur" loading="lazy"></div>
     </div>
   </section>
 
@@ -507,9 +508,8 @@ p{margin:0 0 1em}
   <div class="envoltura">
     <div class="pie-grid">
       <div>
-        <a class="marca" href="#/" style="color:var(--blanco)">
-          <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="3" y="3" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M13 16 24 34 35 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Grupo Velas
+        <a class="marca" href="#/">
+          <img src="../4/img/logo/GRUPO_VELAS_BLANCO.png" alt="Grupo Velas">
         </a>
         <p style="max-width:34ch;margin-top:14px">Transformamos ideas en desarrollos inmobiliarios que destacan por su calidad excepcional, diseño innovador y ubicaciones estratégicas en México.</p>
       </div>
@@ -608,20 +608,17 @@ p{margin:0 0 1em}
 
   /* ---- tarjetas de ciudad ---- */
   const ciudades=[
-    {n:'Cancún',d:1,s:'costa'},{n:'Ciudad Juárez',d:1,s:'casa'},
-    {n:'Los Cabos',d:2,s:'costa'},{n:'Matamoros',d:1,s:'acceso'},
-    {n:'Playa del Carmen',d:1,s:'alberca'},{n:'Querétaro',d:1,s:'casa'},
-    {n:'Reynosa',d:2,s:'jardin'},{n:'Tampico',d:10,s:'torre'}
+    {n:'Cancún',d:1,img:'cancun.jpg'},{n:'Ciudad Juárez',d:1,img:'cd_juarez.jpg'},
+    {n:'Los Cabos',d:2,img:'los_cabos.jpg'},{n:'Matamoros',d:1,img:'matamoros.jpg'},
+    {n:'Playa del Carmen',d:1,img:'playta_del_carmen.jpg'},{n:'Querétaro',d:1,img:'queretaro.webp'},
+    {n:'Reynosa',d:2,img:'reynosa.jpg'},{n:'Tampico',d:10,img:'tampico.jpg'}
   ];
   const lista=document.getElementById('listaCiudades');
   ciudades.forEach((c,i)=>{
     const a=document.createElement('a');
     a.className='ciudad ap';a.href='#/velasur';a.style.transitionDelay=(i%4)*0.06+'s';
-    a.innerHTML=`<div class="img"><svg></svg></div>
+    a.innerHTML=`<div class="img"><img src="../4/img/ciudades/${c.img}" alt="${c.n}" loading="lazy"></div>
       <div class="txt"><b>${c.n}</b><span>${c.d} ${c.d===1?'desarrollo':'desarrollos'}</span></div>`;
-    const svg=a.querySelector('svg');
-    svg.setAttribute('viewBox','0 0 400 500');svg.setAttribute('preserveAspectRatio','xMidYMid slice');
-    svg.innerHTML=escenas[c.s];
     lista.appendChild(a);
   });
 

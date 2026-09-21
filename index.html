@@ -174,8 +174,11 @@ p{margin:0 0 1em}
   .item-sub{display:flex;flex-direction:column;align-items:stretch;width:100%}
   .item-sub>a{width:100%;justify-content:space-between}
   .item-sub.abierto .caret{transform:rotate(225deg) translateY(1px)}
-  .submenu{position:static;transform:none;padding-top:0;opacity:1;visibility:visible;pointer-events:auto;
-    max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .submenu,
+  .item-sub:hover .submenu,
+  .item-sub:focus-within .submenu{position:static;transform:none;padding-top:0;
+    opacity:1;visibility:visible;pointer-events:auto}
+  .submenu{max-height:0;overflow:hidden;transition:max-height .3s ease}
   .item-sub.abierto .submenu{max-height:220px}
   .submenu-in{background:none;box-shadow:none;border-radius:0;padding:2px 0 12px;gap:0}
   .submenu-in a{color:rgba(255,255,255,.75);padding:10px 6px}

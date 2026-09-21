@@ -446,7 +446,8 @@ p{margin:0 0 1em}
 .catalogo p{font-size:12px;color:rgba(255,255,255,.8);margin:16px 0 22px;max-width:30ch}
 .catalogo .btns{display:flex;gap:10px;flex-wrap:wrap}
 .catalogo .foto{position:relative;min-height:230px;background:var(--verde-osc)}
-.catalogo .foto svg{position:absolute;inset:0;width:100%;height:100%}
+.catalogo .foto svg,
+.catalogo .foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 @media (max-width:760px){.catalogo{grid-template-columns:1fr}}
 
 /* contacto crema (velasur) */
@@ -768,7 +769,7 @@ p{margin:0 0 1em}
           <a class="btn btn-borde" href="#contacto-velasur">Cotizar ahora</a>
         </div>
       </div>
-      <div class="foto"><svg data-escena="fachada"></svg></div>
+      <div class="foto"><img src="Prototipos/4/img/3.webp" alt="Fachada de una vivienda en Velasur" loading="lazy"></div>
     </div>
   </section>
 

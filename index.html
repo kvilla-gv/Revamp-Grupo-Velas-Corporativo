@@ -276,11 +276,12 @@ p{margin:0 0 1em}
   transition:transform .3s ease,box-shadow .3s ease}
 .ciudad:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(28,35,32,.13)}
 .ciudad .foto{position:relative;aspect-ratio:4/3;background:var(--verde)}
-.ciudad .foto svg{position:absolute;inset:0;width:100%;height:100%}
+.ciudad .foto svg,
+.ciudad .foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .ciudad .flecha{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;background:#fff;
   display:grid;place-items:center;font-size:11px;color:var(--tinta);transition:background .25s,color .25s}
 .ciudad:hover .flecha{background:var(--coral);color:#fff}
-.ciudad .pie{padding:13px 14px 16px}
+.ciudad .pie{padding:13px 14px 16px;background:#fff}
 .ciudad .pie b{display:block;font-family:var(--titulo);font-size:11.5px;font-weight:700;letter-spacing:.06em;
   text-transform:uppercase;color:var(--verde)}
 .ciudad .pie span{font-size:10.5px;color:var(--gris)}
@@ -1003,25 +1004,21 @@ p{margin:0 0 1em}
      TARJETAS DE CIUDAD (mismo orden que el PDF)
      ========================================================== */
   const ciudades=[
-    {n:'Cancún',d:1,s:'albercaAmplia'},
-    {n:'Ciudad Juárez',d:1,s:'fachada'},
-    {n:'Los Cabos',d:2,s:'atardecer'},
-    {n:'Matamoros',d:1,s:'terraza'},
-    {n:'Playa del Carmen',d:1,s:'alberca'},
-    {n:'Querétaro',d:1,s:'jardin'},
-    {n:'Reynosa',d:2,s:'interior'},
-    {n:'Tampico',d:10,s:'sala'}
+    {n:'Cancún',d:1,img:'cancun.jpg'},
+    {n:'Ciudad Juárez',d:1,img:'cd_juarez.jpg'},
+    {n:'Los Cabos',d:2,img:'los_cabos.jpg'},
+    {n:'Matamoros',d:1,img:'matamoros.jpg'},
+    {n:'Playa del Carmen',d:1,img:'playta_del_carmen.jpg'},
+    {n:'Querétaro',d:1,img:'queretaro.webp'},
+    {n:'Reynosa',d:2,img:'reynosa.jpg'},
+    {n:'Tampico',d:10,img:'tampico.jpg'}
   ];
   const lista=document.getElementById('listaCiudades');
   ciudades.forEach(c=>{
     const a=document.createElement('a');
     a.className='ciudad';a.href='#/velasur';
-    a.innerHTML=`<div class="foto"><svg></svg><span class="flecha">→</span></div>
+    a.innerHTML=`<div class="foto"><img src="Prototipos/4/img/ciudades/${c.img}" alt="${c.n}" loading="lazy"><span class="flecha">→</span></div>
       <div class="pie"><b>${c.n}</b><span>${c.d} ${c.d===1?'desarrollo':'desarrollos'}</span></div>`;
-    const svg=a.querySelector('svg');
-    svg.setAttribute('viewBox','0 0 400 500');
-    svg.setAttribute('preserveAspectRatio','xMidYMid slice');
-    svg.innerHTML=escenas[c.s];
     lista.appendChild(a);
   });
 

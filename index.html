@@ -307,7 +307,7 @@ p{margin:0 0 1em}
 .testimonio-puntos button.activo{background:var(--coral);transform:scale(1.35)}
 
 /* ---------- notas ---------- */
-.notas{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.notas{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
 .nota{display:flex;flex-direction:column;background:var(--verde);border-radius:7px;overflow:hidden;
   box-shadow:0 2px 10px rgba(28,35,32,.07);transition:transform .3s ease,box-shadow .3s ease}
 .nota:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(28,35,32,.13)}
@@ -318,7 +318,7 @@ p{margin:0 0 1em}
 .nota .pie{flex:1;background:#fff;padding:16px 18px 22px}
 .nota .pie em{display:block;font-style:normal;font-size:10px;color:var(--coral);margin-bottom:8px;
   text-transform:uppercase;letter-spacing:.06em}
-.nota h3{color:var(--tinta);min-height:4.05em}
+.nota h3{color:var(--tinta)}
 @media (max-width:860px){.notas{grid-template-columns:1fr}}
 
 /* ---------- contacto verde (home) ---------- */

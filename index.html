@@ -436,7 +436,10 @@ p{margin:0 0 1em}
 .galeria{columns:3;column-gap:12px;margin-top:26px}
 .galeria figure{margin:0 0 12px;break-inside:avoid;border-radius:3px;overflow:hidden;background:var(--verde);position:relative}
 .galeria svg,
-.galeria img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover}
+.galeria img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;transition:transform .9s cubic-bezier(.22,1,.36,1)}
+.galeria figure:hover svg,
+.galeria figure:hover img{transform:scale(1.06)}
+@media (prefers-reduced-motion:reduce){.galeria svg,.galeria img{transition:none}}
 .galeria .m{position:relative}
 .galeria .r43{aspect-ratio:4/3}
 .galeria .r11{aspect-ratio:1}

@@ -122,8 +122,7 @@ p{margin:0 0 1em}
   gap:24px;padding:22px var(--marco)}
 .nav.fija{position:fixed;background:var(--verde);padding-block:14px;box-shadow:0 2px 14px rgba(0,0,0,.14)}
 .logo{display:flex;align-items:center;gap:9px;color:#fff}
-.logo svg{width:26px;height:26px}
-.logo b{font-family:var(--titulo);font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.logo img{height:28px;width:auto;display:block}
 .menu{display:flex;align-items:center;gap:26px}
 .menu a{display:inline-flex;align-items:center;font-family:var(--titulo);font-size:10.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:#fff;opacity:.92;transition:color .25s,opacity .25s}
 .menu a:hover,.menu a.activo{color:var(--coral);opacity:1}
@@ -348,7 +347,7 @@ p{margin:0 0 1em}
 /* ---------- pie ---------- */
 .pie{background:var(--verde);color:rgba(255,255,255,.72);padding-block:48px 26px;font-size:12px}
 .pie-grid{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:36px;max-width:var(--ancho);margin:0 auto;padding-inline:var(--marco)}
-.pie-marca>svg{width:40px;height:40px;margin-bottom:16px}
+.pie-marca>img{width:170px;max-width:60%;height:auto;display:block;margin-bottom:18px}
 .pie-grid p{max-width:32ch;line-height:1.8;margin:0}
 .pie h4{font-family:var(--titulo);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
   color:#fff;margin:0 0 14px}
@@ -472,8 +471,7 @@ p{margin:0 0 1em}
 <!-- ============ NAVEGACIÓN ============ -->
 <header class="nav" id="nav">
   <a class="logo" href="#/">
-    <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13 16 24 34 35 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <b>Grupo Velas</b>
+    <img src="Prototipos/4/img/logo/GRUPO_VELAS_BLANCO_H.png" alt="Grupo Velas">
   </a>
   <button class="menu-boton" id="menuBoton" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menuPrincipal">
     <span></span><span></span><span></span>
@@ -816,7 +814,7 @@ p{margin:0 0 1em}
 <footer class="pie">
   <div class="pie-grid">
     <div class="pie-marca">
-      <svg viewBox="0 0 48 48" aria-hidden="true" style="color:#fff"><circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13 16 24 34 35 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <img src="Prototipos/4/img/logo/GRUPO_VELAS_BLANCO.png" alt="Grupo Velas">
       <p>Transformamos ideas en desarrollos inmobiliarios que destacan por su calidad excepcional, diseño innovador y ubicaciones estratégicas en México.</p>
       <div class="pie-social">
         <a href="#" aria-label="Facebook">

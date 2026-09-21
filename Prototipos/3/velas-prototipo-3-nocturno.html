@@ -564,6 +564,22 @@ p{margin:0 0 1em}
   const todasLasPalabras=document.querySelectorAll('.hero h1 .palabra>span');
   if(gsapOK && !reduce) gsap.set(todasLasPalabras,{yPercent:110});
 
+  /* ---- marca gigante del hero: se encoge lo necesario para que el
+         texto completo siempre quepa en el ancho disponible ---- */
+  function ajustarMarca(){
+    document.querySelectorAll('.hero-marca').forEach(el=>{
+      el.style.fontSize='';
+      const disponible=el.clientWidth;
+      const necesario=el.scrollWidth;
+      if(disponible>0 && necesario>disponible){
+        const actual=parseFloat(getComputedStyle(el).fontSize);
+        el.style.fontSize=(actual*disponible/necesario)+'px';
+      }
+    });
+  }
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(ajustarMarca);
+  addEventListener('resize',ajustarMarca);
+
   /* ---- escenas SVG: sustituir por <img> con fotografía real ---- */
   const escenas={
     lobby:`<defs><linearGradient id="n-lb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#061A20"/><stop offset=".45" stop-color="#14403C"/><stop offset=".74" stop-color="#7A3B27"/><stop offset="1" stop-color="#C97B41"/></linearGradient></defs>
@@ -670,7 +686,7 @@ p{margin:0 0 1em}
       vistas.forEach(v=>v.hidden=v.dataset.pagina!==nombre);
       document.querySelectorAll('[data-ruta]').forEach(a=>a.classList.toggle('activo',a.dataset.ruta===nombre));
       if(!silencioso) scrollTo({top:0,behavior:'auto'});
-      activarApariciones();animarHero();configurarScrollAnimaciones();actualizarProgreso();
+      activarApariciones();animarHero();configurarScrollAnimaciones();actualizarProgreso();ajustarMarca();
       /* ScrollTrigger.refresh() (dentro de configurarScrollAnimaciones) puede
          restaurar la posición de scroll previa; forzamos el tope de nuevo */
       if(!silencioso) scrollTo({top:0,behavior:'auto'});

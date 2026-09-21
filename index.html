@@ -153,7 +153,40 @@ p{margin:0 0 1em}
   letter-spacing:.08em;text-transform:uppercase;color:var(--tinta);border-radius:3px;
   transition:background .2s,color .2s}
 .submenu-in a:hover,.submenu-in a:focus-visible{background:var(--crema);color:var(--coral)}
-@media (max-width:900px){.menu a:not(.caja){display:none}.item-sub{display:none}}
+
+/* ---------- botón hamburguesa + menú móvil ---------- */
+.menu-boton{display:none;flex-direction:column;justify-content:center;gap:6px;width:32px;height:32px;
+  border:0;background:none;padding:0;cursor:pointer;flex:none;z-index:95}
+.menu-boton span{display:block;width:100%;height:2px;background:#fff;border-radius:2px;
+  transition:transform .3s ease,opacity .3s ease}
+.menu-boton[aria-expanded="true"] span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.menu-boton[aria-expanded="true"] span:nth-child(2){opacity:0}
+.menu-boton[aria-expanded="true"] span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+.menu-fondo{display:none}
+@media (max-width:900px){
+  .menu-boton{display:flex}
+  .menu{position:fixed;top:0;right:0;bottom:0;z-index:90;width:min(300px,82vw);
+    flex-direction:column;align-items:stretch;gap:0;background:var(--verde-osc);
+    padding:96px 28px 40px;overflow-y:auto;transform:translateX(100%);
+    transition:transform .35s ease;box-shadow:-14px 0 40px rgba(0,0,0,.3)}
+  .menu.abierto{transform:translateX(0)}
+  .menu a:not(.caja){display:flex;width:100%;padding:15px 0;font-size:12px;
+    border-bottom:1px solid rgba(255,255,255,.12)}
+  .item-sub{display:flex;flex-direction:column;align-items:stretch;width:100%}
+  .item-sub>a{width:100%;justify-content:space-between}
+  .item-sub.abierto .caret{transform:rotate(225deg) translateY(1px)}
+  .submenu{position:static;transform:none;padding-top:0;opacity:1;visibility:visible;pointer-events:auto;
+    max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .item-sub.abierto .submenu{max-height:220px}
+  .submenu-in{background:none;box-shadow:none;border-radius:0;padding:2px 0 12px;gap:0}
+  .submenu-in a{color:rgba(255,255,255,.75);padding:10px 6px}
+  .submenu-in a:hover,.submenu-in a:focus-visible{background:none;color:var(--coral)}
+  .menu .caja{margin-top:20px;justify-content:center;text-align:center}
+  .menu-fondo{display:block;position:fixed;inset:0;z-index:85;background:rgba(8,26,22,.55);
+    opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s}
+  .menu-fondo.visible{opacity:1;visibility:visible}
+  body.menu-abierto{overflow:hidden}
+}
 
 /* ---------- hero ---------- */
 .hero{position:relative;height:100vh;height:100dvh;min-height:420px;overflow:hidden;background:var(--verde-osc)}
@@ -442,7 +475,10 @@ p{margin:0 0 1em}
     <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13 16 24 34 35 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <b>Grupo Velas</b>
   </a>
-  <nav class="menu">
+  <button class="menu-boton" id="menuBoton" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menuPrincipal">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="menu" id="menuPrincipal">
     <a href="#/" data-ruta="home">Inicio</a>
     <a href="#nosotros">Nosotros</a>
     <div class="item-sub">
@@ -462,6 +498,7 @@ p{margin:0 0 1em}
     </div>
     <a class="caja" href="#contacto">Contacto</a>
   </nav>
+  <div class="menu-fondo" id="menuFondo"></div>
 </header>
 
 <main>
@@ -991,6 +1028,7 @@ p{margin:0 0 1em}
   });
 
   /* submenús del nav: aria-expanded + cierre con Escape (el hover/foco ya los abre por CSS) */
+  const mqMovil=matchMedia('(max-width:900px)');
   document.querySelectorAll('.item-sub').forEach(item=>{
     const toggle=item.querySelector('a');
     item.addEventListener('mouseenter',()=>toggle.setAttribute('aria-expanded','true'));
@@ -1002,7 +1040,48 @@ p{margin:0 0 1em}
     item.addEventListener('keydown',e=>{
       if(e.key==='Escape'){toggle.setAttribute('aria-expanded','false');toggle.blur()}
     });
+    /* en móvil el enlace despliega su submenú en vez de navegar */
+    toggle.addEventListener('click',e=>{
+      if(!mqMovil.matches) return;
+      e.preventDefault();
+      const abierto=item.classList.toggle('abierto');
+      toggle.setAttribute('aria-expanded',abierto?'true':'false');
+    });
   });
+
+  /* ==========================================================
+     MENÚ HAMBURGUESA (móvil)
+     ========================================================== */
+  const menuBoton=document.getElementById('menuBoton');
+  const menuPrincipal=document.getElementById('menuPrincipal');
+  const menuFondo=document.getElementById('menuFondo');
+  function cerrarMenu(){
+    menuBoton.setAttribute('aria-expanded','false');
+    menuPrincipal.classList.remove('abierto');
+    menuFondo.classList.remove('visible');
+    document.body.classList.remove('menu-abierto');
+    document.querySelectorAll('.item-sub.abierto').forEach(item=>{
+      item.classList.remove('abierto');
+      item.querySelector('a').setAttribute('aria-expanded','false');
+    });
+  }
+  function abrirMenu(){
+    menuBoton.setAttribute('aria-expanded','true');
+    menuPrincipal.classList.add('abierto');
+    menuFondo.classList.add('visible');
+    document.body.classList.add('menu-abierto');
+  }
+  menuBoton.addEventListener('click',()=>{
+    menuBoton.getAttribute('aria-expanded')==='true'?cerrarMenu():abrirMenu();
+  });
+  menuFondo.addEventListener('click',cerrarMenu);
+  menuPrincipal.addEventListener('click',e=>{
+    const a=e.target.closest('a');
+    if(!a||a.parentElement.classList.contains('item-sub')) return;
+    cerrarMenu();
+  });
+  addEventListener('keydown',e=>{if(e.key==='Escape') cerrarMenu()});
+  mqMovil.addEventListener('change',e=>{if(!e.matches) cerrarMenu()});
 
   /* ==========================================================
      CARRUSEL DE TESTIMONIOS
@@ -1091,6 +1170,7 @@ p{margin:0 0 1em}
     document.querySelectorAll('[data-ruta]').forEach(a=>a.classList.toggle('activo',a.dataset.ruta===nombre));
     if(!silencioso) scrollTo({top:0,behavior:'auto'});
     revelar();
+    cerrarMenu();
   }
   function leerRuta(){const h=location.hash;return h.startsWith('#/')?(h.slice(2)||'home'):null}
   addEventListener('hashchange',()=>{const r=leerRuta();if(r!==null) ir(r||'home')});

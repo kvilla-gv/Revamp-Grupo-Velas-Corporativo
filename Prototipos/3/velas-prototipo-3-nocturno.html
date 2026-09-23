@@ -81,6 +81,23 @@ p{margin:0 0 1em}
 .nav-enlaces a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--coral);
   transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
 .nav-enlaces a:hover::after,.nav-enlaces a.activo::after{transform:scaleX(1)}
+.nav-enlaces{align-items:center}
+.nav-sub{position:relative}
+.nav-sub>a{display:inline-flex;align-items:center;gap:7px}
+.nav-sub .caret{width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+  transform:rotate(45deg) translateY(-2px);transition:transform .25s ease}
+.nav-sub:hover .caret,.nav-sub:focus-within .caret{transform:rotate(225deg) translateY(1px)}
+.nav-sub-panel{position:absolute;top:100%;left:50%;padding-top:16px;min-width:230px;
+  transform:translateX(-50%) translateY(-8px);opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .25s ease,transform .3s ease,visibility .25s}
+.nav-sub:hover .nav-sub-panel,.nav-sub:focus-within .nav-sub-panel{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%)}
+.nav-sub-in{display:flex;flex-direction:column;gap:2px;padding:8px;border-radius:8px;
+  background:rgba(5,18,15,.96);border:1px solid var(--linea);box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.nav-sub-in a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:5px;transition:background .2s,color .2s}
+.nav-sub-in a::after{display:none}
+.nav-sub-in a:hover,.nav-sub-in a:focus-visible,.nav-sub-in a.activo{background:rgba(242,233,218,.07);color:var(--coral)}
+.nav-sub-in a[data-cat]::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--acento)}
+.nav-sub-in .sep{height:1px;background:var(--linea);margin:4px 8px}
 .nav-cta{border:1px solid var(--arena-25);border-radius:999px;padding:9px 19px;font-size:13px;font-weight:600;
   transition:background .3s,border-color .3s,color .3s}
 .nav-cta:hover{background:var(--coral);border-color:var(--coral);color:#fff}
@@ -90,6 +107,7 @@ p{margin:0 0 1em}
 .hero{position:relative;min-height:92svh;display:flex;align-items:flex-end;overflow:hidden;background:var(--verde-900)}
 .hero-fondo{position:absolute;inset:0}
 .hero-fondo svg,
+.hero-fondo img,
 .hero-fondo video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .hero-fondo::after{content:"";position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(5,18,15,.72) 0%,rgba(5,18,15,.28) 38%,rgba(5,18,15,.72) 76%,var(--negro) 100%)}
@@ -145,6 +163,142 @@ p{margin:0 0 1em}
 .ciudad .txt b{display:block;font-size:17px;font-weight:700;font-stretch:108%;letter-spacing:-.02em}
 .ciudad .txt span{font-size:12.5px;color:var(--arena-60)}
 @media (max-width:980px){.ciudades{grid-template-columns:repeat(2,1fr)}}
+
+/* =========================================================
+   CATEGORÍAS · acentos (mismos tonos que index.html, aclarados
+   lo justo para leerse sobre el fondo nocturno)
+   ========================================================= */
+:root{--cat-pv:#8FB996;--cat-res:#3F8F77;--cat-plus:#B8912B}
+[data-cat="pv"]{--acento:var(--cat-pv);--acento-tinta:#071F1A}
+[data-cat="res"]{--acento:var(--cat-res);--acento-tinta:#fff}
+[data-cat="plus"]{--acento:var(--cat-plus);--acento-tinta:#fff}
+
+.badge{display:inline-flex;align-items:center;gap:7px;padding:6px 12px 6px 10px;border-radius:999px;
+  background:var(--acento);color:var(--acento-tinta);font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;line-height:1;white-space:nowrap}
+.badge::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.7}
+.btn-cat{background:var(--acento);color:var(--acento-tinta)}
+.btn-cat:hover{filter:brightness(1.1)}
+
+/* ---------- hero dividido en tres categorías ---------- */
+.hero-cats{position:relative;display:flex;height:100svh;min-height:640px;overflow:hidden;background:var(--verde-900)}
+.hero-cats-titulo{position:absolute;z-index:4;left:0;right:0;top:0;max-width:var(--ancho);margin:0 auto;
+  padding:clamp(104px,15vh,150px) var(--marco) 0;pointer-events:none}
+.hero-cats-titulo h1{font-size:clamp(34px,4.8vw,80px);max-width:17ch}
+.panel-cat{position:relative;flex:1 1 0;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;
+  overflow:hidden;transition:flex-grow .7s cubic-bezier(.22,1,.36,1)}
+.panel-cat+.panel-cat{border-left:1px solid var(--linea)}
+.panel-cat>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.22,1,.36,1)}
+.panel-cat::before{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(5,18,15,.82) 0%,rgba(5,18,15,.3) 36%,rgba(5,18,15,.45) 58%,rgba(5,18,15,.95) 100%)}
+.panel-cat::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;z-index:3;background:var(--acento);
+  transform:scaleX(.2);transform-origin:left;transition:transform .5s ease}
+.panel-cat-txt{position:relative;z-index:2;padding:0 clamp(20px,2.6vw,44px) clamp(40px,7vh,72px)}
+.panel-cat .num{display:block;font-size:12.5px;font-weight:600;letter-spacing:.14em;color:var(--acento);margin-bottom:14px}
+.panel-cat h2{font-size:clamp(26px,2.9vw,48px)}
+.panel-cat p{margin:14px 0 0;max-width:34ch;color:var(--arena-60);font-size:14.5px}
+.panel-cat .conteo{display:block;margin-top:12px;font-size:12px;letter-spacing:.08em;color:var(--arena-60)}
+.panel-cat .btn{margin-top:22px}
+.panel-cat:focus-visible{outline-offset:-5px}
+@media (hover:hover) and (min-width:861px){
+  .hero-cats:hover .panel-cat{flex-grow:.85}
+  .hero-cats .panel-cat:hover,.hero-cats .panel-cat:focus-visible{flex-grow:1.45}
+  .panel-cat:hover>img{transform:scale(1.05)}
+  .panel-cat:hover::after,.panel-cat:focus-visible::after{transform:scaleX(1)}
+  .hero-cats .panel-cat p{min-height:6.5em}
+}
+@media (max-width:860px){
+  .hero-cats{flex-direction:column;height:auto;min-height:0}
+  .hero-cats-titulo{position:relative;padding-bottom:34px}
+  .panel-cat{flex:none;min-height:clamp(420px,80vw,520px)}
+  .panel-cat+.panel-cat{border-left:0;border-top:1px solid var(--linea)}
+  .panel-cat::before{background:linear-gradient(180deg,rgba(5,18,15,.3) 0%,rgba(5,18,15,.6) 40%,rgba(5,18,15,.95) 100%)}
+  .panel-cat::after{transform:scaleX(1)}
+}
+
+/* ---------- franja del buscador ---------- */
+.franja-busqueda{padding-block:clamp(28px,3.6vw,48px)}
+.franja-in{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,64px);align-items:center}
+.franja-in .rotulo{margin-bottom:8px}
+.franja-in h2{font-size:clamp(22px,2.2vw,34px)}
+@media (max-width:860px){.franja-in{grid-template-columns:1fr}}
+.buscador{position:relative}
+.buscador-caja{display:flex;align-items:stretch;border:1px solid var(--arena-25);border-radius:999px;padding:6px;
+  background:rgba(242,233,218,.04);transition:border-color .3s}
+.buscador-caja:focus-within{border-color:var(--coral)}
+.buscador-campo{display:flex;flex-direction:column;justify-content:center;gap:1px;padding:6px 22px;min-width:0}
+.buscador-campo+.buscador-campo{border-left:1px solid var(--linea)}
+.buscador-campo>span{font-size:11px;letter-spacing:.1em;color:var(--arena-60)}
+.buscador-cat{flex:0 0 230px}
+.buscador-texto{flex:1}
+.buscador-campo select,.buscador-campo input{border:0;background:none;font:inherit;font-size:15px;color:var(--arena);padding:2px 0;width:100%;min-width:0}
+.buscador-campo select option{color:#05120F}
+.buscador-campo input::placeholder{color:var(--arena-25)}
+.buscador-campo select:focus,.buscador-campo input:focus{outline:none}
+.buscador-resultados{position:absolute;top:calc(100% + 10px);left:0;right:0;z-index:20;max-height:320px;overflow-y:auto;
+  padding:8px;border-radius:10px;background:rgba(5,18,15,.97);border:1px solid var(--linea);box-shadow:0 18px 40px rgba(0,0,0,.4);
+  opacity:0;visibility:hidden;transform:translateY(-8px);pointer-events:none;transition:opacity .25s,transform .3s,visibility .25s}
+.buscador-resultados.mostrar{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.buscador-resultados a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:6px;font-size:14.5px;transition:background .2s,color .2s}
+.buscador-resultados a:hover,.buscador-resultados a:focus-visible{background:rgba(242,233,218,.07);color:var(--coral)}
+.buscador-resultados small{margin-left:auto;font-size:12px;color:var(--arena-60);white-space:nowrap}
+.buscador-resultados .badge{font-size:9.5px;padding:5px 9px 5px 8px}
+.buscador-resultados .vacio{padding:10px 12px;font-size:14px;color:var(--arena-60)}
+@media (max-width:640px){
+  .buscador-caja{flex-direction:column;border-radius:14px}
+  .buscador-cat{flex:none}
+  .buscador-campo{padding:10px 14px}
+  .buscador-campo+.buscador-campo{border-left:0;border-top:1px solid var(--linea)}
+  .buscador-caja .btn{justify-content:center;margin-top:6px}
+}
+
+/* ---------- pestañas + tarjetas de desarrollo ---------- */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--linea);margin-bottom:clamp(22px,2.6vw,36px);
+  overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{position:relative;display:inline-flex;align-items:center;gap:10px;flex:none;padding:14px 20px 18px;
+  font-size:clamp(15px,1.2vw,18px);font-weight:700;font-stretch:108%;letter-spacing:-.01em;color:var(--arena-60);transition:color .25s}
+.tab::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--acento);opacity:.45;transition:opacity .25s}
+.tab::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:var(--acento);transform:scaleX(0);transition:transform .35s ease}
+.tab .n{font-size:12px;font-weight:500;color:var(--arena-60)}
+.tab:hover,.tab[aria-selected="true"]{color:var(--arena)}
+.tab[aria-selected="true"]::before{opacity:1}
+.tab[aria-selected="true"]::after{transform:scaleX(1)}
+.tab:focus-visible{outline-offset:-3px}
+.tab-panel[hidden]{display:none}
+.tab-panel-pie{display:flex;justify-content:flex-end;margin-top:22px}
+.ver-cat{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--acento);transition:gap .25s}
+.ver-cat:hover{gap:12px}
+
+.desarrollos{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:clamp(10px,1.4vw,20px)}
+.desarrollo{position:relative;display:block;overflow:hidden;border-radius:6px;background:var(--verde-700);aspect-ratio:4/5;
+  border-bottom:3px solid var(--acento)}
+.desarrollo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.22,1,.36,1)}
+.desarrollo:hover img{transform:scale(1.05)}
+.desarrollo::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,18,15,.9) 6%,rgba(5,18,15,.05) 58%)}
+.desarrollo .badge{position:absolute;left:14px;top:14px;z-index:2}
+.desarrollo .txt{position:absolute;inset:auto 0 0 0;z-index:2;padding:18px}
+.desarrollo .txt b{display:block;font-size:18px;font-weight:700;font-stretch:108%;letter-spacing:-.02em;line-height:1.15}
+.desarrollo .txt span{font-size:12.5px;color:var(--arena-60)}
+@media (max-width:520px){.desarrollos{grid-template-columns:1fr 1fr}.desarrollo .badge{left:8px;top:8px;font-size:9px;padding:5px 8px}
+  .desarrollo .txt{padding:12px}.desarrollo .txt b{font-size:15px}}
+
+/* ---------- página de categoría ---------- */
+.hero--cat::before{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;z-index:3;background:var(--acento)}
+.hero--cat .badge{margin-bottom:20px}
+.hero--cat .conteo{margin-top:12px;font-size:13px;letter-spacing:.06em;color:var(--arena-60)}
+.vista-cat .rotulo{color:var(--acento)}
+.vista-cat .caracteristica .n{color:var(--acento)}
+.vista-cat .cta-cat .rotulo{color:var(--coral)}
+.otras-cats{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.4vw,20px)}
+.otras-cats .panel-cat{min-height:360px;border-radius:6px;border:0}
+.otras-cats .panel-cat::after{transform:scaleX(1)}
+.otras-cats .panel-cat:hover>img{transform:scale(1.05)}
+@media (max-width:760px){.otras-cats{grid-template-columns:1fr}}
+.cta-cat{background:var(--verde-900);text-align:center}
+.cta-cat h2{max-width:18ch;margin:0 auto}
+.cta-cat p{max-width:44ch;margin:18px auto 0}
+.cta-cat .acciones{display:flex;justify-content:center;margin-top:28px}
 
 /* ---------- testimonio ---------- */
 .testimonio{position:relative;overflow:hidden;padding-block:clamp(72px,10vw,150px);background:var(--verde-700)}
@@ -291,7 +445,18 @@ p{margin:0 0 1em}
   <nav class="nav-enlaces">
     <a href="#/" data-ruta="home">Inicio</a>
     <a href="#nosotros">Nosotros</a>
-    <a href="#/velasur" data-ruta="velasur">Proyectos</a>
+    <div class="nav-sub">
+      <a href="#desarrollos" data-ruta="desarrollos" aria-haspopup="true">Desarrollos<i class="caret" aria-hidden="true"></i></a>
+      <div class="nav-sub-panel">
+        <div class="nav-sub-in">
+          <a href="#/primera-vivienda" data-ruta="primera-vivienda" data-cat="pv">Primera Vivienda</a>
+          <a href="#/residencial" data-ruta="residencial" data-cat="res">Residencial</a>
+          <a href="#/residencial-plus" data-ruta="residencial-plus" data-cat="plus">Residencial Plus</a>
+          <div class="sep" role="presentation"></div>
+          <a href="#desarrollos">Ver todos los desarrollos</a>
+        </div>
+      </div>
+    </div>
     <a href="#ciudades">Ciudades</a>
   </nav>
   <a class="nav-cta" href="#contacto">Contacto</a>
@@ -302,19 +467,70 @@ p{margin:0 0 1em}
 <!-- ============ VISTA 1 · HOME ============ -->
 <div data-pagina="home">
 
-  <section class="hero">
-    <div class="hero-fondo"><video src="../4/video/hero-home.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video></div>
-    <div class="hero-marca" aria-hidden="true">GRUPO VELAS</div>
-    <div class="hero-in">
+  <!-- hero dividido: una puerta de entrada por categoría -->
+  <section class="hero-cats" aria-label="Categorías de vivienda">
+    <div class="hero-cats-titulo">
       <div class="hero-kicker entra"><span></span>45 años construyendo México</div>
-      <h1>Desarrollos inmobiliarios en México</h1>
-      <p class="bajada entra">Transformamos ideas en desarrollos que destacan por su calidad excepcional, diseño innovador y ubicaciones estratégicas.</p>
-      <div class="acciones entra">
-        <a class="btn btn-coral" href="#ciudades">Ver ciudades</a>
-        <a class="btn btn-fantasma" href="#contacto">Contáctanos</a>
-      </div>
+      <h1>Desarrollos para cada etapa de tu vida</h1>
     </div>
-    <div class="scroll-cue"><i></i>SCROLL</div>
+    <a class="panel-cat" data-cat="pv" href="#/primera-vivienda">
+      <img src="../4/img/desarrollos/arecas-matamoros.webp" alt="">
+      <div class="panel-cat-txt entra">
+        <span class="num">01</span>
+        <h2>Primera Vivienda</h2>
+        <p>Para familias jóvenes que compran su primera casa: espacios funcionales, comunidades seguras y un precio pensado para empezar su patrimonio.</p>
+        <span class="conteo" data-conteo="pv"></span>
+        <span class="btn btn-cat">Ver desarrollos</span>
+      </div>
+    </a>
+    <a class="panel-cat" data-cat="res" href="#/residencial">
+      <img src="../4/img/desarrollos/velasur.webp" alt="">
+      <div class="panel-cat-txt entra">
+        <span class="num">02</span>
+        <h2>Residencial</h2>
+        <p>Para familias que buscan crecer: casas y departamentos más amplios en cotos privados, con amenidades y ubicaciones consolidadas.</p>
+        <span class="conteo" data-conteo="res"></span>
+        <span class="btn btn-cat">Ver desarrollos</span>
+      </div>
+    </a>
+    <a class="panel-cat" data-cat="plus" href="#/residencial-plus">
+      <img src="../4/img/desarrollos/vistavela-iii.webp" alt="">
+      <div class="panel-cat-txt entra">
+        <span class="num">03</span>
+        <h2>Residencial Plus</h2>
+        <p>Para quien busca lo excepcional: departamentos y townhouses frente al mar o en las mejores zonas, con amenidades tipo resort y alta plusvalía.</p>
+        <span class="conteo" data-conteo="plus"></span>
+        <span class="btn btn-cat">Ver desarrollos</span>
+      </div>
+    </a>
+  </section>
+
+  <section class="franja-busqueda">
+    <div class="envoltura franja-in">
+      <div>
+        <div class="rotulo">Buscador</div>
+        <h2>Encuentra tu desarrollo</h2>
+      </div>
+      <form class="buscador" role="search" id="buscador">
+        <div class="buscador-caja">
+          <label class="buscador-campo buscador-cat">
+            <span>Categoría</span>
+            <select id="buscadorCategoria">
+              <option value="">Todas las categorías</option>
+              <option value="pv">Primera Vivienda</option>
+              <option value="res">Residencial</option>
+              <option value="plus">Residencial Plus</option>
+            </select>
+          </label>
+          <label class="buscador-campo buscador-texto">
+            <span>Ciudad o desarrollo</span>
+            <input type="text" id="buscadorInput" placeholder="Ej. Tampico, Velasur…" autocomplete="off">
+          </label>
+          <button class="btn btn-coral" type="submit">Buscar</button>
+        </div>
+        <div class="buscador-resultados" id="buscadorResultados" aria-live="polite"></div>
+      </form>
+    </div>
   </section>
 
   <div class="envoltura">
@@ -326,10 +542,25 @@ p{margin:0 0 1em}
     </div>
   </div>
 
-  <section class="seccion envoltura" id="ciudades">
+  <section class="seccion envoltura" id="desarrollos">
     <div class="cab ap">
       <div class="cab-txt">
         <span class="cab-num">01</span>
+        <div class="rotulo">Desarrollos</div>
+        <h2>Explora nuestros desarrollos</h2>
+      </div>
+      <p class="suave">Elige una categoría para ver los desarrollos que mejor se ajustan a lo que buscas.</p>
+    </div>
+    <div class="ap">
+      <div class="tabs" role="tablist" aria-label="Categorías de vivienda" id="tabsCat"></div>
+      <div id="panelesCat"></div>
+    </div>
+  </section>
+
+  <section class="seccion envoltura" id="ciudades" style="padding-top:0">
+    <div class="cab ap">
+      <div class="cab-txt">
+        <span class="cab-num">02</span>
         <div class="rotulo">Ciudades</div>
         <h2>Elige tu ciudad</h2>
       </div>
@@ -352,7 +583,7 @@ p{margin:0 0 1em}
   <section class="seccion envoltura" id="nosotros">
     <div class="cab ap">
       <div class="cab-txt">
-        <span class="cab-num">02</span>
+        <span class="cab-num">03</span>
         <div class="rotulo">Revista Horizonte</div>
         <h2>Noticias y tendencias</h2>
       </div>
@@ -379,6 +610,12 @@ p{margin:0 0 1em}
         <div class="campo"><label for="h3">Teléfono</label><input id="h3" type="tel"></div>
         <div class="campo"><label for="h4">Ciudad de interés</label>
           <select id="h4"><option>Cancún</option><option>Ciudad Juárez</option><option>Los Cabos</option><option>Matamoros</option><option>Playa del Carmen</option><option>Querétaro</option><option>Reynosa</option><option>Tampico</option></select>
+        </div>
+        <div class="campo"><label for="h7">Categoría de interés</label>
+          <select id="h7" data-filtra="h6"><option value="">Todas</option><option value="pv">Primera Vivienda</option><option value="res">Residencial</option><option value="plus">Residencial Plus</option></select>
+        </div>
+        <div class="campo"><label for="h6">Desarrollo de interés</label>
+          <select id="h6" data-desarrollos></select>
         </div>
         <div class="campo ancho"><label for="h5">Mensaje</label><textarea id="h5"></textarea></div>
         <div class="ancho"><button class="btn btn-coral" type="button" data-enviar>Quiero más información</button></div>
@@ -407,6 +644,7 @@ p{margin:0 0 1em}
     <div class="hero-fondo"><video src="../4/video/hero-velasur.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video></div>
     <div class="hero-marca" aria-hidden="true">VELASUR</div>
     <div class="hero-in">
+      <a class="badge entra" data-cat="res" href="#/residencial" style="margin-bottom:18px">Residencial</a>
       <div class="hero-kicker entra"><span></span>Querétaro</div>
       <h1>Velasur</h1>
       <p class="bajada entra">Un desarrollo que redefine el estándar de vivienda en Querétaro: espacios amplios, acabados modernos y una ubicación que conecta con todo.</p>
@@ -525,9 +763,12 @@ p{margin:0 0 1em}
   </section>
 
   <div class="envoltura" style="padding-block:clamp(26px,3vw,40px) var(--ritmo)">
-    <a class="volver" href="#/">← Volver al catálogo</a>
+    <a class="volver" href="#/residencial">← Volver a Residencial</a>
   </div>
 </div>
+
+<!-- ============ VISTA 3 · CATEGORÍA (#/primera-vivienda, #/residencial, #/residencial-plus) ============ -->
+<div data-pagina="categoria" class="vista-cat" id="vistaCategoria" hidden></div>
 
 </main>
 
@@ -540,7 +781,7 @@ p{margin:0 0 1em}
         </a>
         <p style="max-width:34ch;margin-top:14px">Transformamos ideas en desarrollos inmobiliarios que destacan por su calidad excepcional, diseño innovador y ubicaciones estratégicas en México.</p>
       </div>
-      <div><h4>Sitio</h4><ul><li><a href="#/">Inicio</a></li><li><a href="#/velasur">Proyectos</a></li><li><a href="#ciudades">Ciudades</a></li><li><a href="#contacto">Contacto</a></li></ul></div>
+      <div><h4>Sitio</h4><ul><li><a href="#/">Inicio</a></li><li><a href="#/primera-vivienda">Primera Vivienda</a></li><li><a href="#/residencial">Residencial</a></li><li><a href="#/residencial-plus">Residencial Plus</a></li><li><a href="#ciudades">Ciudades</a></li><li><a href="#contacto">Contacto</a></li></ul></div>
       <div><h4>Horario de atención</h4><ul><li>Lunes a viernes, 9:00 am – 6:00 pm</li><li>Sábado, 9:00 am – 2:00 pm</li><li><a href="#contacto">ventas@grupovelas.com.mx</a></li></ul></div>
     </div>
     <div class="pie-base"><span>© 2026 Grupo Velas. Todos los derechos reservados.</span><a href="#">Aviso de privacidad</a></div>
@@ -563,9 +804,11 @@ p{margin:0 0 1em}
     const palabras=el.textContent.trim().split(/\s+/);
     el.innerHTML=palabras.map(p=>`<span class="palabra"><span>${p}</span></span>`).join(' ');
   }
-  document.querySelectorAll('.hero h1').forEach(dividirPalabras);
-  const todasLasPalabras=document.querySelectorAll('.hero h1 .palabra>span');
-  if(gsapOK && !reduce) gsap.set(todasLasPalabras,{yPercent:110});
+  function prepararTitulares(raiz){
+    raiz.querySelectorAll('h1').forEach(dividirPalabras);
+    if(gsapOK && !reduce) gsap.set(raiz.querySelectorAll('h1 .palabra>span'),{yPercent:110});
+  }
+  prepararTitulares(document);
 
   /* ---- marca gigante del hero: se encoge lo necesario para que el
          texto completo siempre quepa en el ancho disponible ---- */
@@ -681,13 +924,227 @@ p{margin:0 0 1em}
     lista.appendChild(a);
   });
 
+  /* =========================================================
+     CATEGORÍAS Y DESARROLLOS (mismos datos y mapeo que index.html)
+     ========================================================= */
+  const IMG='../4/img/desarrollos/';
+  const CATEGORIAS=[
+    {id:'pv',slug:'primera-vivienda',n:'Primera Vivienda',img:'arecas-matamoros.webp',
+      perfil:'Para familias jóvenes que compran su primera casa: espacios funcionales, comunidades seguras y un precio pensado para empezar su patrimonio.',
+      titular:'Tu primer patrimonio, bien pensado',
+      puntos:[['Tu primera casa','Viviendas pensadas para dar el primer paso con un pago accesible.'],
+              ['Comunidad segura','Fraccionamientos con control de acceso y áreas comunes para la familia.'],
+              ['Espacios funcionales','Distribuciones eficientes que aprovechan cada metro.']]},
+    {id:'res',slug:'residencial',n:'Residencial',img:'velasur.webp',
+      perfil:'Para familias que buscan crecer: casas y departamentos más amplios en cotos privados, con amenidades y ubicaciones consolidadas.',
+      titular:'Más espacio para la siguiente etapa',
+      puntos:[['Más espacio para crecer','Casas y departamentos amplios para familias en expansión.'],
+              ['Cotos privados con amenidades','Albercas, casa club y áreas verdes dentro del desarrollo.'],
+              ['Ubicación consolidada','Cerca de escuelas, servicios y vialidades principales.']]},
+    {id:'plus',slug:'residencial-plus',n:'Residencial Plus',img:'vistavela-iii.webp',
+      perfil:'Para quien busca lo excepcional: departamentos y townhouses frente al mar o en las mejores zonas, con amenidades tipo resort y alta plusvalía.',
+      titular:'Vivir donde otros vacacionan',
+      puntos:[['Vistas y ubicaciones únicas','Frente al mar, en destinos de playa o en las zonas más cotizadas.'],
+              ['Amenidades tipo resort','Albercas, terrazas y espacios de bienestar de primer nivel.'],
+              ['Alta plusvalía','Un patrimonio que también funciona como inversión.']]}
+  ];
+  const CAT=Object.fromEntries(CATEGORIAS.map(c=>[c.id,c]));
+  const DESARROLLOS=[
+    {n:'Loma Bonita',c:'Reynosa',cat:'pv',tipo:'Casas',img:'loma-bonita.webp'},
+    {n:'Fraccionamiento Arecas',c:'Matamoros',cat:'pv',tipo:'Casas',img:'arecas-matamoros.webp'},
+    {n:'Arecas Altamira',c:'Altamira',cat:'pv',tipo:'Casas',img:'arecas-altamira.webp'},
+    {n:'Valle Esmeralda',c:'Tampico',cat:'pv',tipo:'Casas',img:'valle-esmeralda.webp'},
+    {n:'Velasur',c:'Querétaro',cat:'res',tipo:'Casas y terrenos',img:'velasur.webp',href:'#/velasur'},
+    {n:'Coto Jade',c:'Tampico',cat:'res',tipo:'Casas',img:'coto-jade.webp'},
+    {n:'Encinos Residencial',c:'Tampico',cat:'res',tipo:'Casas',img:'encinos.webp'},
+    {n:'Punta Vela Residencial',c:'Ciudad Juárez',cat:'res',tipo:'Casas',img:'punta-vela.webp'},
+    {n:'Selvanova Residencial',c:'Playa del Carmen',cat:'res',tipo:'Casas',img:'selvanova.webp'},
+    {n:'Florencia Residencial',c:'Reynosa',cat:'res',tipo:'Departamentos',img:'florencia.webp'},
+    {n:'Vista Laguna',c:'Tampico',cat:'res',tipo:'Casas y departamentos',img:'vista-laguna.webp'},
+    {n:'Vela Towers',c:'Cancún',cat:'plus',tipo:'Departamentos',img:'vela-towers.webp'},
+    {n:'Vistavela III',c:'Los Cabos',cat:'plus',tipo:'Departamentos',img:'vistavela-iii.webp'},
+    {n:'Vistavela Sunset',c:'Los Cabos',cat:'plus',tipo:'Departamentos',img:'vistavela-sunset.webp'},
+    {n:'Townhouses Velamar',c:'Altamira',cat:'plus',tipo:'Townhouses frente al mar',img:'velamar.webp'},
+    {n:'Torre Milos',c:'Altamira',cat:'plus',tipo:'Departamentos frente al mar',img:'torre-milos.webp'},
+    {n:'Torre 829',c:'Tampico',cat:'plus',tipo:'Departamentos',img:'torre-829.webp'},
+    {n:'Conjunto Roma 401',c:'Tampico',cat:'plus',tipo:'Departamentos',img:'conjunto-roma-401.webp'}
+  ];
+  const porCat=id=>DESARROLLOS.filter(d=>d.cat===id);
+  const plural=(n,s,p)=>`${n} ${n===1?s:p}`;
+  function conteo(id){
+    const ds=porCat(id);
+    return `${plural(ds.length,'desarrollo','desarrollos')} · ${plural(new Set(ds.map(d=>d.c)).size,'ciudad','ciudades')}`;
+  }
+  const tarjeta=d=>`<a class="desarrollo" data-cat="${d.cat}" href="${d.href||'#contacto'}" data-desarrollo="${d.n}">
+      <img src="${IMG}${d.img}" alt="${d.n}, ${d.c}" loading="lazy"><span class="badge">${CAT[d.cat].n}</span>
+      <div class="txt"><b>${d.n}</b><span>${d.c} · ${d.tipo}</span></div>
+    </a>`;
+  document.querySelectorAll('[data-conteo]').forEach(el=>el.textContent=conteo(el.dataset.conteo));
+
+  /* ---- pestañas "Explora nuestros desarrollos" ---- */
+  const tabsCat=document.getElementById('tabsCat');
+  const panelesCat=document.getElementById('panelesCat');
+  CATEGORIAS.forEach((c,i)=>{
+    tabsCat.insertAdjacentHTML('beforeend',
+      `<button class="tab" type="button" role="tab" id="tab-${c.id}" data-cat="${c.id}" aria-controls="panel-${c.id}"
+        aria-selected="${i===0}" tabindex="${i===0?0:-1}">${c.n}<span class="n">${porCat(c.id).length}</span></button>`);
+    panelesCat.insertAdjacentHTML('beforeend',
+      `<div class="tab-panel" role="tabpanel" id="panel-${c.id}" aria-labelledby="tab-${c.id}" data-cat="${c.id}"${i?' hidden':''}>
+        <div class="desarrollos">${porCat(c.id).map(tarjeta).join('')}</div>
+        <div class="tab-panel-pie"><a class="ver-cat" href="#/${c.slug}">Ver todo ${c.n} <span aria-hidden="true">→</span></a></div>
+      </div>`);
+  });
+  function elegirTab(id,foco){
+    tabsCat.querySelectorAll('.tab').forEach(t=>{
+      const sel=t.dataset.cat===id;
+      t.setAttribute('aria-selected',sel);
+      t.tabIndex=sel?0:-1;
+      if(sel&&foco) t.focus();
+    });
+    panelesCat.querySelectorAll('.tab-panel').forEach(p=>p.hidden=p.dataset.cat!==id);
+    if(gsapOK) ScrollTrigger.refresh();
+  }
+  tabsCat.addEventListener('click',e=>{const t=e.target.closest('.tab');if(t) elegirTab(t.dataset.cat)});
+  tabsCat.addEventListener('keydown',e=>{
+    const ts=[...tabsCat.querySelectorAll('.tab')];
+    let i=ts.indexOf(document.activeElement);
+    if(i<0) return;
+    if(e.key==='ArrowRight') i=(i+1)%ts.length;
+    else if(e.key==='ArrowLeft') i=(i-1+ts.length)%ts.length;
+    else if(e.key==='Home') i=0;
+    else if(e.key==='End') i=ts.length-1;
+    else return;
+    e.preventDefault();
+    elegirTab(ts[i].dataset.cat,true);
+  });
+
+  /* ---- página de categoría ---- */
+  const vistaCategoria=document.getElementById('vistaCategoria');
+  const panelCompacto=c=>`<a class="panel-cat" data-cat="${c.id}" href="#/${c.slug}">
+      <img src="${IMG}${c.img}" alt="" loading="lazy">
+      <div class="panel-cat-txt"><h2>${c.n}</h2><span class="conteo">${conteo(c.id)}</span><span class="btn btn-cat">Ver desarrollos</span></div>
+    </a>`;
+  function pintarCategoria(c){
+    vistaCategoria.dataset.cat=c.id;
+    vistaCategoria.innerHTML=`
+      <section class="hero hero--cat">
+        <div class="hero-fondo"><img src="${IMG}${c.img}" alt=""></div>
+        <div class="hero-marca" aria-hidden="true">${c.n.toUpperCase()}</div>
+        <div class="hero-in">
+          <span class="badge entra">Categoría</span>
+          <h1>${c.n}</h1>
+          <p class="bajada entra">${c.perfil}</p>
+          <div class="conteo entra">${conteo(c.id)}</div>
+          <div class="acciones entra">
+            <a class="btn btn-cat" href="#cat-desarrollos" data-desplazar>Ver desarrollos</a>
+            <a class="btn btn-fantasma" href="#contacto" data-categoria="${c.id}">Agenda tu visita</a>
+          </div>
+        </div>
+      </section>
+      <section class="seccion envoltura">
+        <div class="cab ap"><div class="cab-txt"><span class="cab-num">01</span><div class="rotulo">Para quién es</div><h2>${c.titular}</h2></div></div>
+        <div class="caracteristicas">${c.puntos.map(([t,p],i)=>
+          `<div class="caracteristica ap"><span class="n">0${i+1}</span><h3>${t}</h3><p>${p}</p></div>`).join('')}</div>
+      </section>
+      <section class="seccion envoltura" id="cat-desarrollos" style="padding-top:0">
+        <div class="cab ap"><div class="cab-txt"><span class="cab-num">02</span><div class="rotulo">Desarrollos</div><h2>Desarrollos ${c.n}</h2></div>
+          <p class="suave">${conteo(c.id)}.</p></div>
+        <div class="desarrollos ap">${porCat(c.id).map(tarjeta).join('')}</div>
+      </section>
+      <section class="seccion envoltura" style="padding-top:0">
+        <div class="cab ap"><div class="cab-txt"><span class="cab-num">03</span><div class="rotulo">Otras categorías</div><h2>Explora también</h2></div></div>
+        <div class="otras-cats ap">${CATEGORIAS.filter(o=>o!==c).map(panelCompacto).join('')}</div>
+      </section>
+      <section class="cta-cat seccion">
+        <div class="envoltura ap">
+          <div class="rotulo">Contacto</div>
+          <h2>¿Te interesa ${c.n}? Agenda tu visita</h2>
+          <p class="suave">Un asesor te ayuda a elegir el desarrollo y el esquema de compra que mejor se ajusta a ti.</p>
+          <div class="acciones"><a class="btn btn-coral" href="#contacto" data-categoria="${c.id}">Quiero más información</a></div>
+        </div>
+      </section>`;
+    prepararTitulares(vistaCategoria);
+  }
+
+  /* desplazamiento dentro de la vista actual sin perder la ruta #/… */
+  document.addEventListener('click',e=>{
+    const a=e.target.closest('a[data-desplazar]');
+    if(!a) return;
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:reduce?'auto':'smooth'});
+  });
+
+  /* ---- selects de desarrollo + preselección desde tarjetas y CTAs ---- */
+  function llenarDesarrollos(sel,cat){
+    const actual=sel.value;
+    const ds=cat?porCat(cat):DESARROLLOS;
+    sel.innerHTML=ds.map(d=>`<option value="${d.n}">${d.n} — ${d.c}</option>`).join('');
+    if(ds.some(d=>d.n===actual)) sel.value=actual;
+  }
+  document.querySelectorAll('select[data-desarrollos]').forEach(s=>llenarDesarrollos(s,''));
+  document.querySelectorAll('select[data-filtra]').forEach(s=>
+    s.addEventListener('change',()=>llenarDesarrollos(document.getElementById(s.dataset.filtra),s.value)));
+  const formCat=document.getElementById('h7');
+  const formDes=document.getElementById('h6');
+  document.addEventListener('click',e=>{
+    const a=e.target.closest('[data-desarrollo],[data-categoria]');
+    if(!a) return;
+    const d=DESARROLLOS.find(x=>x.n===a.dataset.desarrollo);
+    formCat.value=d?d.cat:a.dataset.categoria;
+    llenarDesarrollos(formDes,formCat.value);
+    if(d) formDes.value=d.n;
+  });
+
+  /* ---- buscador (categoría + ciudad o desarrollo) ---- */
+  const buscador=document.getElementById('buscador');
+  const buscadorCategoria=document.getElementById('buscadorCategoria');
+  const buscadorInput=document.getElementById('buscadorInput');
+  const buscadorResultados=document.getElementById('buscadorResultados');
+  const normal=s=>s.normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase().trim();
+  const escapar=s=>s.replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+  function pintarBusqueda(){
+    const q=normal(buscadorInput.value);
+    const cat=buscadorCategoria.value;
+    const ds=DESARROLLOS.filter(d=>(!cat||d.cat===cat)&&(!q||normal(d.n+' '+d.c).includes(q)));
+    const cs=q&&!cat?ciudades.filter(c=>normal(c.n).includes(q)):[];
+    buscadorResultados.innerHTML=cs.length+ds.length
+      ? cs.map(c=>`<a href="#ciudades">${c.n}<small>Ciudad</small></a>`).join('')
+        + ds.map(d=>`<a href="${d.href||'#contacto'}" data-desarrollo="${d.n}" data-cat="${d.cat}"><span class="badge">${CAT[d.cat].n}</span>${d.n}<small>${d.c}</small></a>`).join('')
+      : `<div class="vacio">Sin resultados para “${escapar(buscadorInput.value)}”</div>`;
+  }
+  function mostrarBusqueda(){pintarBusqueda();buscadorResultados.classList.add('mostrar')}
+  buscadorInput.addEventListener('focus',mostrarBusqueda);
+  buscadorInput.addEventListener('input',mostrarBusqueda);
+  buscadorCategoria.addEventListener('change',()=>{if(buscadorInput.value.trim()) mostrarBusqueda()});
+  buscadorInput.addEventListener('blur',()=>setTimeout(()=>buscadorResultados.classList.remove('mostrar'),150));
+  buscadorInput.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){buscadorResultados.classList.remove('mostrar');buscadorInput.blur()}
+  });
+  buscador.addEventListener('submit',e=>{
+    e.preventDefault();
+    if(buscadorInput.value.trim()){
+      pintarBusqueda();
+      const primero=buscadorResultados.querySelector('a');
+      if(primero) primero.click(); else buscadorResultados.classList.add('mostrar');
+      return;
+    }
+    const cat=buscadorCategoria.value;
+    location.hash=cat?'#/'+CAT[cat].slug:'#desarrollos';
+  });
+
   /* ---- ruteo entre vistas (con transición de cortina) ---- */
   const vistas=document.querySelectorAll('[data-pagina]');
   const cambio=document.getElementById('cambio');
-  function ir(nombre,silencioso){
+  const tituloBase=document.title;
+  function ir(ruta,silencioso){
     const aplicar=()=>{
+      const cat=CATEGORIAS.find(c=>c.slug===ruta);
+      if(cat) pintarCategoria(cat);
+      const nombre=cat?'categoria':(document.querySelector(`[data-pagina="${ruta}"]`)?ruta:'home');
       vistas.forEach(v=>v.hidden=v.dataset.pagina!==nombre);
-      document.querySelectorAll('[data-ruta]').forEach(a=>a.classList.toggle('activo',a.dataset.ruta===nombre));
+      document.querySelectorAll('[data-ruta]').forEach(a=>a.classList.toggle('activo',
+        a.dataset.ruta===ruta||(a.dataset.ruta==='desarrollos'&&(!!cat||ruta==='velasur'))));
+      document.title=cat?`${cat.n} — Grupo Velas · Prototipo 3`:tituloBase;
       if(!silencioso) scrollTo({top:0,behavior:'auto'});
       activarApariciones();animarHero();configurarScrollAnimaciones();actualizarProgreso();ajustarMarca();
       /* ScrollTrigger.refresh() (dentro de configurarScrollAnimaciones) puede
@@ -703,7 +1160,14 @@ p{margin:0 0 1em}
       .to(cambio,{scaleY:0,duration:.42,ease:'power3.inOut'});
   }
   function leerRuta(){const h=location.hash;return h.startsWith('#/')?(h.slice(2)||'home'):null}
-  addEventListener('hashchange',()=>{const r=leerRuta();if(r!==null) ir(r||'home')});
+  /* un ancla (#contacto, #desarrollos…) que vive en otra vista: cambia de vista y desplaza */
+  function irAncla(hash){
+    const el=hash.length>1&&document.getElementById(decodeURIComponent(hash.slice(1)));
+    if(!el) return;
+    const vista=el.closest('[data-pagina]');
+    if(vista&&vista.hidden){ir(vista.dataset.pagina,true);el.scrollIntoView()}
+  }
+  addEventListener('hashchange',()=>{const r=leerRuta();if(r!==null) ir(r||'home');else irAncla(location.hash)});
 
   /* ---- movimiento: apariciones de texto (.ap) ---- */
   let observador;
@@ -719,7 +1183,7 @@ p{margin:0 0 1em}
     const pagina=document.querySelector('[data-pagina]:not([hidden])');
     if(!pagina) return;
     const els=pagina.querySelectorAll('.entra');
-    const palabras=pagina.querySelectorAll('.hero h1 .palabra>span');
+    const palabras=pagina.querySelectorAll('h1 .palabra>span');
     if(reduce){
       els.forEach(e=>e.style.opacity=1);
       palabras.forEach(p=>p.style.transform='none');

@@ -6,1093 +6,1076 @@
 <title>Grupo Velas · Desarrollos Inmobiliarios en México</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================
-   GRUPO VELAS — Prototipo fiel a los PDF de referencia
-   Vistas: Home (#/) y Velasur (#/velasur)
+   GRUPO VELAS — Sitio corporativo
+   Sistema visual compartido con las páginas de desarrollo
+   (referencia: prototipo Vela Towers Cancún v2).
+   Mismos tokens, tipografía y componentes; el verde institucional
+   ocupa el rol que el navy tiene en Vela Towers.
+   Vistas: Home (#/), Categoría (#/primera-vivienda, #/residencial,
+   #/residencial-plus) y Desarrollo (#/velasur).
    ========================================================== */
 
 :root{
-  --verde:#0E3B32;          /* verde institucional (barras, pie, contacto) */
-  --verde-osc:#0A2E27;
-  --coral:#B8912B;          /* acento dorado */
-  --crema:#F2E9DA;          /* bandas beige */
-  --hueso:#FDFAF5;          /* fondo general */
-  --tinta:#1C2320;          /* texto oscuro */
-  --gris:#82857F;           /* texto secundario */
-  --linea:#E2DBCC;
+  --marca:#0E3B32;          /* verde institucional (rol "navy" de las páginas de desarrollo) */
+  --marca-2:#1F5446;
+  --deep:#0A2E27;
+  --ink:#1d2433;
+  --muted:#667085;
+  --sand:#f4efe8;
+  --sand-2:#ebe3d7;
+  --line:#e4ddd2;
+  --gold:#b8976a;
+  --gold-2:#d7bf98;
 
-  --titulo:'Montserrat',system-ui,sans-serif;
-  --texto:'Inter',system-ui,-apple-system,sans-serif;
+  /* acento por categoría */
+  --cat-pv:#5E8C6A;         /* Primera Vivienda · salvia */
+  --cat-res:#0E3B32;        /* Residencial · verde institucional */
+  --cat-plus:#b8976a;       /* Residencial Plus · dorado */
 
-  --marco:clamp(18px,5vw,90px);
-  --ancho:1240px;
+  --serif:"Cormorant Garamond",Georgia,serif;
+  --sans:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease:cubic-bezier(.22,.8,.2,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --r:14px;
+  --wrap:1200px;
+  --shadow:0 1px 2px rgba(14,59,50,.06),0 12px 32px -12px rgba(14,59,50,.2);
 }
+[data-cat="pv"]{--acento:var(--cat-pv);--acento-tinta:#fff}
+[data-cat="res"]{--acento:var(--cat-res);--acento-tinta:#fff}
+[data-cat="plus"]{--acento:var(--cat-plus);--acento-tinta:var(--ink)}
 
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;background:var(--hueso);color:var(--tinta);
-  font-family:var(--texto);font-size:14px;line-height:1.7;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;
-}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);color:var(--ink);background:#fff;line-height:1.6;font-size:16px;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
-button{font:inherit;border:0;background:none;color:inherit;cursor:pointer}
-:focus-visible{outline:2px solid var(--coral);outline-offset:3px}
-img,svg{max-width:100%;display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+[hidden]{display:none!important}
 
-h1,h2,h3{margin:0;font-family:var(--titulo);font-weight:700;text-transform:uppercase;line-height:1.08}
-h1{font-size:clamp(34px,5vw,58px);letter-spacing:-.01em;font-weight:700}
-h2{font-size:clamp(22px,2.6vw,32px);letter-spacing:.01em}
-h3{font-size:14px;letter-spacing:.02em;line-height:1.35}
-p{margin:0 0 1em}
+.wrap{width:min(var(--wrap),100% - 32px);margin-inline:auto}
+.eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--marca-2);font-weight:600;
+  display:inline-flex;align-items:center;gap:12px}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--gold);flex:none}
+.dark .eyebrow,.hero .eyebrow,.hero-cats .eyebrow,.final .eyebrow{color:var(--gold-2)}
+h1,h2,h3{font-family:var(--serif);font-weight:500;color:var(--marca);line-height:1.05;letter-spacing:-.01em}
+h2{font-size:clamp(34px,4.4vw,54px);margin:10px 0 12px}
+h1 em,h2 em{font-style:italic;color:var(--gold)}
+.dark h2,.dark h3{color:#fff}
+.lead{color:var(--muted);max-width:54ch}
+.dark .lead{color:rgba(255,255,255,.75)}
+section{position:relative}
+.sec{padding:clamp(72px,9vw,120px) 0}
+.sec.arena{background:var(--sand)}
+.center{text-align:center}.center .lead{margin-inline:auto}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:36px;flex-wrap:wrap}
 
-.envoltura{max-width:var(--ancho);margin:0 auto;padding-inline:var(--marco)}
-.estrecho{max-width:1000px;margin:0 auto;padding-inline:var(--marco)}
+/* ---------- botones ---------- */
+.btn{--bg:var(--marca);--fg:#fff;position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:14px 24px;border-radius:6px;background:var(--bg);color:var(--fg);font-weight:600;font-size:14px;letter-spacing:.01em;
+  border:1px solid var(--bg);cursor:pointer;overflow:hidden;isolation:isolate;white-space:nowrap;
+  transition:transform .4s var(--ease),box-shadow .4s var(--ease),color .4s var(--ease),border-color .4s}
+.btn::before{content:"";position:absolute;inset:0;background:var(--gold);transform:translateY(101%);transition:transform .5s var(--ease-out);z-index:-1}
+.btn:hover::before{transform:translateY(0)}
+.btn:hover{box-shadow:0 10px 24px -10px rgba(14,59,50,.5);border-color:var(--gold)}
+.btn:active{transform:scale(.97)}
+.btn .arr{transition:transform .4s var(--ease)}
+.btn:hover .arr{transform:translateX(4px)}
+.btn.ghost{--bg:transparent;--fg:var(--marca);border-color:rgba(14,59,50,.25);background:rgba(255,255,255,.7)}
+.btn.ghost::before{background:var(--marca)}
+.btn.ghost:hover{color:#fff;border-color:var(--marca)}
+.btn.glass{--bg:rgba(255,255,255,.1);--fg:#fff;border-color:rgba(255,255,255,.4);backdrop-filter:blur(8px)}
+.btn.glass::before{background:#fff}
+.btn.glass:hover{color:var(--marca);border-color:#fff}
+.btn.blanco{--bg:#fff;--fg:var(--marca)}
+.btn.blanco::before{background:var(--gold-2)}
+.btn.sm{padding:10px 16px;font-size:13px}
+.btn-cat{--bg:var(--acento);--fg:var(--acento-tinta)}
+.btn-cat::before{background:#fff}
+.btn-cat:hover{color:var(--marca);border-color:#fff}
+.btn svg{width:17px;height:17px;flex:none}
+.link{font-size:13px;font-weight:600;color:var(--marca);display:inline-flex;gap:8px;align-items:center;
+  background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .5s var(--ease-out);padding-bottom:2px}
+.link:hover,a:hover>.link{background-size:100% 1px}
+.link .arr{transition:transform .4s var(--ease)}
+.link:hover .arr,a:hover>* .link .arr,a:hover .link .arr{transform:translateX(4px)}
 
-/* etiqueta coral + título + filete */
-.etiqueta{font-family:var(--texto);font-size:11px;color:var(--coral);margin-bottom:10px;letter-spacing:.02em}
-.filete{width:44px;height:3px;background:var(--coral);margin-top:14px}
-.filete.claro{background:var(--coral)}
+/* chips (hero) */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 30px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(8px);font-size:13px;font-weight:500;color:#fff}
+.chip b{font-weight:700}
+.chip.live{background:rgba(255,255,255,.95);color:var(--marca);border-color:#fff}
+.chip.live i{width:8px;height:8px;border-radius:50%;background:#2e9d6a;animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(46,157,106,.55)}70%{box-shadow:0 0 0 10px rgba(46,157,106,0)}100%{box-shadow:0 0 0 0 rgba(46,157,106,0)}}
 
-/* botones */
-.btn{display:inline-block;padding:11px 22px;border-radius:3px;font-family:var(--titulo);
-  font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:background .25s,color .25s,border-color .25s}
-.btn-coral{background:var(--coral);color:#fff}
-.btn-coral:hover{background:#D2552F}
-.btn-blanco{background:#fff;color:var(--tinta)}
-.btn-blanco:hover{background:#EDE6DA}
-.btn-borde{border:1px solid rgba(255,255,255,.65);color:#fff}
-.btn-borde:hover{background:rgba(255,255,255,.14)}
-.btn-verde{background:var(--verde);color:#fff}
-.btn-verde:hover{background:#0A2E27}
-.btn-whatsapp{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff}
-.btn-whatsapp:hover{background:#1EBE5A}
-.btn-whatsapp svg{width:14px;height:14px;flex:none}
+/* badge de categoría (mismo en tarjeta, página y buscador) */
+.badge{display:inline-flex;align-items:center;gap:7px;padding:6px 12px 6px 10px;border-radius:999px;background:var(--acento);
+  color:var(--acento-tinta);font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  line-height:1;white-space:nowrap;box-shadow:0 0 0 1px rgba(255,255,255,.35)}
+.badge::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.7}
 
-/* ---------- botón flotante de WhatsApp ---------- */
-.whatsapp-flotante{position:fixed;z-index:70;right:20px;bottom:20px;display:flex;align-items:center;gap:10px;
-  background:#25D366;color:#fff;padding:14px;border-radius:50px;box-shadow:0 10px 26px rgba(8,26,22,.3);
-  opacity:0;visibility:hidden;transform:translateY(18px) scale(.92);
-  transition:opacity .5s ease,transform .5s ease,visibility .5s,box-shadow .25s ease,background .25s ease}
-.whatsapp-flotante.visible{opacity:1;visibility:visible;transform:none}
-.whatsapp-flotante:hover{background:#1EBE5A;box-shadow:0 14px 32px rgba(8,26,22,.36);transform:translateY(-3px)}
-.whatsapp-flotante-icono{width:25px;height:25px;flex:none;display:flex;align-items:center;justify-content:center}
-.whatsapp-flotante svg{width:25px;height:25px;flex:none}
-.whatsapp-flotante-anillo{position:absolute;inset:-6px;z-index:-1;border-radius:50px;background:#25D366;
-  opacity:0;transition:opacity .2s ease}
-.whatsapp-flotante.visible .whatsapp-flotante-anillo{animation:whatsappPulso 2.6s ease-out infinite}
-.whatsapp-flotante:hover .whatsapp-flotante-anillo,
-.whatsapp-flotante:focus-visible .whatsapp-flotante-anillo{animation:none;opacity:0}
-.whatsapp-flotante-texto{font-family:var(--titulo);font-size:11px;font-weight:700;letter-spacing:.02em;
-  white-space:nowrap;max-width:0;overflow:hidden;opacity:0;transition:max-width .35s ease,opacity .25s ease}
-.whatsapp-flotante:hover .whatsapp-flotante-texto,
-.whatsapp-flotante:focus-visible .whatsapp-flotante-texto{max-width:160px;opacity:1}
-@keyframes whatsappPulso{
-  0%{opacity:.45;transform:scale(1)}
-  100%{opacity:0;transform:scale(1.9)}
-}
-@media (prefers-reduced-motion:reduce){
-  .whatsapp-flotante{transition:opacity .3s ease,visibility .3s}
-  .whatsapp-flotante-anillo{animation:none;display:none}
-}
-@media (max-width:520px){
-  .whatsapp-flotante{right:14px;padding:13px}
-  .whatsapp-flotante-texto{display:none}
-}
+/* ---------- aparición al hacer scroll ---------- */
+.ap{opacity:0;transform:translateY(40px);transition:opacity 1s var(--ease-out),transform 1.1s var(--ease-out);transition-delay:var(--d,0s)}
+.ap.visible{opacity:1;transform:none}
+.ap .eyebrow::before{transform:scaleX(0);transform-origin:left;transition:transform 1s var(--ease-out) .2s}
+.ap.visible .eyebrow::before{transform:scaleX(1)}
+/* entrada del hero en cada cambio de vista */
+.fade-seq>*{opacity:0;transform:translateY(18px);transition:opacity 1s var(--ease-out),transform 1s var(--ease-out)}
+.cargado .fade-seq>*{opacity:1;transform:none}
+.cargado .fade-seq>*:nth-child(2){transition-delay:.12s}
+.cargado .fade-seq>*:nth-child(3){transition-delay:.3s}
+.cargado .fade-seq>*:nth-child(4){transition-delay:.45s}
+.cargado .fade-seq>*:nth-child(5){transition-delay:.6s}
+.cargado .fade-seq>*:nth-child(6){transition-delay:.75s}
 
-/* ---------- barra fija móvil: "Agenda tu visita" ---------- */
-.cta-movil{display:none}
-@media (max-width:640px){
-  [data-pagina="velasur"]{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
-  .cta-movil{display:flex;align-items:center;justify-content:center;position:fixed;left:0;right:0;bottom:0;z-index:65;
-    background:var(--coral);color:#fff;font-family:var(--titulo);font-size:12px;font-weight:700;
-    letter-spacing:.1em;text-transform:uppercase;padding:17px 20px;
-    padding-bottom:calc(17px + env(safe-area-inset-bottom));
-    box-shadow:0 -8px 20px rgba(8,26,22,.18);transition:background .2s ease}
-  .cta-movil:hover,.cta-movil:active{background:#9C7B25}
-  /* el botón de WhatsApp queda siempre visible, encima de la barra */
-  .whatsapp-flotante{opacity:1;visibility:visible;transform:none;
-    bottom:calc(60px + env(safe-area-inset-bottom))}
-}
-
-/* ---------- barra de navegación ---------- */
-.nav{position:absolute;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
-  gap:24px;padding:22px var(--marco)}
-.nav.fija{position:fixed;background:var(--verde);padding-block:14px;box-shadow:0 2px 14px rgba(0,0,0,.14)}
-.logo{display:flex;align-items:center;gap:9px;color:#fff}
-.logo img{height:28px;width:auto;display:block}
-.menu{display:flex;align-items:center;gap:26px}
-.menu a{display:inline-flex;align-items:center;font-family:var(--titulo);font-size:10.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:#fff;opacity:.92;transition:color .25s,opacity .25s}
-.menu a:hover,.menu a.activo{color:var(--coral);opacity:1}
-.menu .caja{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.7);padding:9px 18px;border-radius:2px;
-  z-index:0;transition:border-color .3s ease,color .3s ease,opacity .3s ease,transform .3s ease,box-shadow .3s ease}
-.menu .caja::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--coral);
-  transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.65,0,.35,1)}
-.menu .caja:hover{border-color:var(--coral);color:#fff;opacity:1;transform:translateY(-2px);
-  box-shadow:0 10px 22px rgba(184,145,43,.35)}
-.menu .caja:hover::before{transform:scaleX(1)}
-
-.item-sub{position:relative;display:inline-flex;align-items:center}
-.item-sub>a{gap:5px}
+/* ---------- header ---------- */
+.progreso{position:fixed;top:0;left:0;height:2px;width:100%;background:var(--gold);transform-origin:left;transform:scaleX(0);z-index:60}
+header.top{position:fixed;inset:0 0 auto;z-index:50;padding:18px 0;
+  transition:background .5s var(--ease),padding .5s var(--ease),box-shadow .5s var(--ease)}
+header.top.scrolled{background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(14px);box-shadow:0 1px 0 var(--line);padding:10px 0}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo img{height:38px;width:auto;transition:filter .5s,height .5s var(--ease)}
+/* el logotipo es blanco: sobre fondo claro se tiñe al verde institucional */
+header.top.scrolled .logo img,.pie-logo{filter:brightness(0) saturate(100%) invert(17%) sepia(22%) saturate(1500%) hue-rotate(118deg) brightness(92%)}
+header.top.scrolled .logo img{height:32px}
+.menu{display:flex;align-items:center;gap:26px;font-size:13px;font-weight:500}
+.menu>a:not(.btn),.item-sub>a{position:relative;display:inline-flex;align-items:center;gap:7px;padding:6px 0;opacity:.88;transition:opacity .3s,color .5s}
+header.top:not(.scrolled) .menu>a:not(.btn),header.top:not(.scrolled) .item-sub>a{color:#fff}
+.menu>a:not(.btn)::after,.item-sub>a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold);
+  transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease-out)}
+.menu>a:not(.btn):hover,.menu a.activo,.item-sub>a:hover{opacity:1}
+.menu>a:not(.btn):hover::after,.menu>a.activo::after,.item-sub>a:hover::after,.item-sub>a.activo::after{transform:scaleX(1);transform-origin:left}
+header.top:not(.scrolled) .btn.desk{--bg:#fff;--fg:var(--marca)}
+.menu .menu-cta{display:none}
 .caret{width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
-  transform:rotate(45deg) translateY(-2px);transition:transform .25s ease}
+  transform:rotate(45deg) translateY(-2px);transition:transform .3s var(--ease)}
+.item-sub{position:relative}
 .item-sub:hover .caret,.item-sub:focus-within .caret{transform:rotate(225deg) translateY(1px)}
-
-.submenu{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(-8px);
-  padding-top:14px;opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity .25s ease,transform .3s ease,visibility .25s}
-.item-sub:hover .submenu,.item-sub:focus-within .submenu{
-  opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0)}
-
-.submenu-in{display:flex;flex-direction:column;min-width:200px;background:#fff;border-radius:7px;
-  box-shadow:0 10px 24px rgba(28,35,32,.13);padding:10px;gap:2px}
-.submenu-in a{display:block;padding:9px 14px;font-family:var(--titulo);font-size:10.5px;font-weight:600;
-  letter-spacing:.08em;text-transform:uppercase;color:var(--tinta);border-radius:3px;
-  transition:background .2s,color .2s}
-.submenu-in a:hover,.submenu-in a:focus-visible{background:var(--crema);color:var(--coral)}
-.submenu-in a[data-cat]{display:flex;align-items:center;gap:10px}
-.submenu-in a[data-cat]::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--acento);
-  box-shadow:0 0 0 1px rgba(255,255,255,.35)}
-.submenu-in .sep{height:1px;background:var(--linea);margin:6px 8px}
-
-/* ---------- botón hamburguesa + menú móvil ---------- */
-.menu-boton{display:none;flex-direction:column;justify-content:center;gap:6px;width:32px;height:32px;
-  border:0;background:none;padding:0;cursor:pointer;flex:none;z-index:95}
-.menu-boton span{display:block;width:100%;height:2px;background:#fff;border-radius:2px;
-  transition:transform .3s ease,opacity .3s ease}
-.menu-boton[aria-expanded="true"] span:nth-child(1){transform:translateY(8px) rotate(45deg)}
-.menu-boton[aria-expanded="true"] span:nth-child(2){opacity:0}
-.menu-boton[aria-expanded="true"] span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+.submenu{position:absolute;top:100%;left:50%;padding-top:14px;transform:translateX(-50%) translateY(-8px);
+  opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s var(--ease),transform .4s var(--ease-out),visibility .3s}
+.item-sub:hover .submenu,.item-sub:focus-within .submenu{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%)}
+.submenu-in{display:flex;flex-direction:column;gap:2px;min-width:230px;padding:8px;background:#fff;border-radius:12px;
+  border:1px solid var(--line);box-shadow:var(--shadow)}
+.submenu-in a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;color:var(--ink);
+  transition:background .25s,color .25s}
+.submenu-in a:hover,.submenu-in a:focus-visible,.submenu-in a.activo{background:var(--sand);color:var(--marca)}
+.submenu-in a[data-cat]::before{content:"";flex:none;width:9px;height:9px;border-radius:50%;background:var(--acento)}
+.submenu-in .sep{height:1px;background:var(--line);margin:4px 8px}
+.burger{display:none;width:42px;height:42px;position:relative;z-index:95}
+.burger span{position:absolute;left:10px;right:10px;height:1.5px;background:var(--marca);transition:transform .4s var(--ease),opacity .3s,background .4s}
+header.top:not(.scrolled) .burger span{background:#fff}
+body.menu-abierto .burger span{background:var(--marca)}
+.burger span:nth-child(1){top:15px}.burger span:nth-child(2){top:20px}.burger span:nth-child(3){top:25px}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
 .menu-fondo{display:none}
-@media (max-width:900px){
-  .menu-boton{display:flex}
-  .menu{position:fixed;top:0;right:0;bottom:0;z-index:90;width:min(300px,82vw);
-    flex-direction:column;align-items:stretch;gap:0;background:var(--verde-osc);
-    padding:96px 28px 40px;overflow-y:auto;transform:translateX(100%);
-    transition:transform .35s ease;box-shadow:-14px 0 40px rgba(0,0,0,.3)}
-  .menu.abierto{transform:translateX(0)}
-  .menu a:not(.caja){display:flex;width:100%;padding:15px 0;font-size:12px;
-    border-bottom:1px solid rgba(255,255,255,.12)}
-  .item-sub{display:flex;flex-direction:column;align-items:stretch;width:100%}
-  .item-sub>a{width:100%;justify-content:space-between}
+@media (max-width:980px){
+  .nav>.btn.desk{display:none}
+  .burger{display:block}
+  .menu{position:fixed;top:0;right:0;bottom:0;z-index:90;width:min(340px,86vw);flex-direction:column;align-items:stretch;gap:0;
+    background:#fff;padding:88px 24px 32px;overflow-y:auto;transform:translateX(100%);transition:transform .45s var(--ease-out);
+    box-shadow:-20px 0 40px -20px rgba(0,0,0,.3)}
+  .menu.abierto{transform:none}
+  .menu>a:not(.btn),.item-sub>a,header.top:not(.scrolled) .menu>a:not(.btn),header.top:not(.scrolled) .item-sub>a{
+    color:var(--ink);font-size:17px;padding:13px 0;width:100%;justify-content:space-between;border-bottom:1px solid var(--line);opacity:1}
+  .menu>a:not(.btn)::after,.item-sub>a::after{display:none}
+  .item-sub{display:flex;flex-direction:column}
+  .submenu,.item-sub:hover .submenu,.item-sub:focus-within .submenu{position:static;transform:none;padding-top:0;
+    opacity:1;visibility:visible;pointer-events:auto;max-height:0;overflow:hidden;transition:max-height .4s var(--ease-out)}
+  .item-sub.abierto .submenu{max-height:320px}
   .item-sub.abierto .caret{transform:rotate(225deg) translateY(1px)}
-  .submenu,
-  .item-sub:hover .submenu,
-  .item-sub:focus-within .submenu{position:static;transform:none;padding-top:0;
-    opacity:1;visibility:visible;pointer-events:auto}
-  .submenu{max-height:0;overflow:hidden;transition:max-height .3s ease}
-  .item-sub.abierto .submenu{max-height:220px}
-  .submenu-in{background:none;box-shadow:none;border-radius:0;padding:2px 0 12px;gap:0}
-  .submenu-in a{color:rgba(255,255,255,.75);padding:10px 6px}
-  .submenu-in a:hover,.submenu-in a:focus-visible{background:none;color:var(--coral)}
-  .submenu-in .sep{background:rgba(255,255,255,.12);margin-inline:6px}
-  .menu .caja{margin-top:20px;justify-content:center;text-align:center}
-  .menu-fondo{display:block;position:fixed;inset:0;z-index:85;background:rgba(8,26,22,.55);
-    opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s}
+  .submenu-in{border:0;box-shadow:none;padding:6px 0 10px;min-width:0}
+  .menu .menu-cta{display:inline-flex;margin-top:22px}
+  .menu-fondo{display:block;position:fixed;inset:0;z-index:85;background:rgba(10,46,39,.5);opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
   .menu-fondo.visible{opacity:1;visibility:visible}
   body.menu-abierto{overflow:hidden}
 }
 
-/* ---------- hero ---------- */
-.hero{position:relative;height:100vh;height:100dvh;min-height:420px;overflow:hidden;background:var(--verde-osc)}
-.hero>svg,
-.hero>img,
-.hero>video{position:absolute;inset:0;width:100%;height:100%;z-index:1}
-.hero>img,
-.hero>video{object-fit:cover}
-.hero::after{content:"";position:absolute;inset:0;z-index:2;
-  background:linear-gradient(90deg,rgba(8,26,22,.74) 0%,rgba(8,26,22,.42) 48%,rgba(8,26,22,.12) 100%)}
-.hero-txt{position:absolute;z-index:3;left:0;right:0;bottom:clamp(40px,9vh,86px);
-  max-width:var(--ancho);margin:0 auto;padding-inline:var(--marco);color:#fff}
-.hero-txt .sobre{font-size:11px;color:var(--coral);margin-bottom:12px;letter-spacing:.02em}
-.hero-txt h1{max-width:16ch}
-.hero-txt p{max-width:38ch;font-size:12.5px;line-height:1.75;color:rgba(255,255,255,.88);margin:16px 0 0}
-.hero-txt .precio-desde{margin-top:16px;font-family:var(--texto);font-size:13px;color:rgba(255,255,255,.88)}
-.hero-txt .precio-desde strong{margin-left:5px;font-family:var(--titulo);font-size:23px;font-weight:800;color:var(--coral)}
-.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
-
-/* ---------- hero con datos integrados (velasur) ---------- */
-.hero--velasur .hero-overlay{position:absolute;z-index:3;left:0;right:0;bottom:0;
-  display:flex;flex-direction:column;gap:clamp(22px,4vh,34px)}
-.hero--velasur .hero-txt{position:static;bottom:auto;margin-left:0;margin-right:0}
-.hero--velasur .badge{margin-bottom:14px}
-.hero--velasur .datos-hero{background:rgba(8,26,22,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  border-top:1px solid rgba(255,255,255,.14)}
-.hero--velasur .datos-hero .datos-in>div{padding:22px 24px}
-@media (max-width:640px){
-  .hero--velasur{height:auto;min-height:0}
-  .hero--velasur .hero-overlay{position:relative;gap:18px;padding-top:clamp(90px,30vh,150px)}
-  .hero--velasur .datos-hero .datos-in{display:flex;overflow-x:auto;max-width:none;margin:0;
-    scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none;
-    padding-inline:var(--marco)}
-  .hero--velasur .datos-hero .datos-in::-webkit-scrollbar{display:none}
-  .hero--velasur .datos-hero .datos-in>div{flex:0 0 auto;min-width:114px;padding:12px 16px;
-    scroll-snap-align:start;border-right:1px solid rgba(255,255,255,.14)}
-  .hero--velasur .datos-hero .datos-in>div::before{display:none}
-  .hero--velasur .datos-hero .datos-in>div:last-child{border-right:0}
-  .hero--velasur .datos-hero .datos-in b{font-size:16px}
-  .hero--velasur .datos-hero .datos-in .raya{margin-top:8px}
-  .hero--velasur .datos-hero .datos-in span{margin-top:6px;font-size:9px}
-}
-
 /* ==========================================================
-   CATEGORÍAS · colores de acento
-   Primera Vivienda = salvia · Residencial = verde · Residencial Plus = dorado
-   Cualquier elemento con data-cat="pv|res|plus" expone --acento.
+   HOME
    ========================================================== */
-:root{--cat-pv:#5E8C6A;--cat-res:#0E3B32;--cat-plus:#B8912B}
-[data-cat="pv"]{--acento:var(--cat-pv)}
-[data-cat="res"]{--acento:var(--cat-res)}
-[data-cat="plus"]{--acento:var(--cat-plus)}
-
-.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 11px 6px 9px;border-radius:30px;
-  background:var(--acento);color:#fff;font-family:var(--titulo);font-size:9px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;line-height:1;white-space:nowrap;
-  box-shadow:0 0 0 1px rgba(255,255,255,.35)}
-.badge::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.7}
-
-/* ---------- hero dividido en tres categorías (home) ---------- */
-.hero-cats{position:relative;display:flex;height:100vh;height:100dvh;min-height:580px;
-  background:var(--verde-osc);overflow:hidden}
-.hero-cats-titulo{position:absolute;z-index:4;left:0;width:33.34%;top:clamp(96px,15vh,140px);
-  padding-inline:clamp(20px,2.6vw,40px);color:#fff;pointer-events:none}
-.hero-cats-titulo .sobre{font-size:11px;color:var(--coral);margin-bottom:12px;letter-spacing:.02em}
-.hero-cats-titulo h1{font-size:clamp(22px,2.2vw,32px);max-width:18ch;text-shadow:0 2px 18px rgba(8,26,22,.35)}
-
-.panel-cat{position:relative;flex:1 1 0;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;
-  color:#fff;overflow:hidden;transition:flex-grow .6s cubic-bezier(.22,1,.36,1)}
+/* ---------- hero dividido en tres categorías ---------- */
+.hero-cats{position:relative;display:flex;height:100svh;min-height:640px;max-height:980px;background:var(--deep);overflow:hidden;color:#fff}
+.hero-cats-titulo{position:absolute;z-index:4;left:0;width:33.34%;top:clamp(104px,15vh,150px);padding-inline:clamp(20px,2.8vw,44px);pointer-events:none}
+.hero-cats-titulo h1{font-size:clamp(34px,3.3vw,52px);color:#fff;margin-top:16px;max-width:13ch;text-shadow:0 2px 24px rgba(10,46,39,.7)}
+.hero-cats-titulo h1 em{color:var(--gold-2)}
+.panel-cat{position:relative;flex:1 1 0;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;
+  transition:flex-grow .8s var(--ease-out)}
 .panel-cat+.panel-cat{border-left:1px solid rgba(255,255,255,.14)}
-.panel-cat>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  transition:transform 1.2s cubic-bezier(.22,1,.36,1)}
+.panel-cat>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform 1.6s var(--ease-out)}
 .panel-cat::before{content:"";position:absolute;inset:0;z-index:1;
-  background:linear-gradient(180deg,rgba(8,26,22,.66) 0%,rgba(8,26,22,.2) 32%,rgba(8,26,22,.32) 52%,rgba(8,26,22,.9) 100%)}
+  background:linear-gradient(180deg,rgba(10,46,39,.82) 0%,rgba(10,46,39,.5) 36%,rgba(10,46,39,.38) 55%,rgba(10,46,39,.92) 100%)}
 .panel-cat::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;z-index:3;background:var(--acento);
-  box-shadow:0 -1px 0 rgba(255,255,255,.18);transform:scaleX(.22);transform-origin:left;transition:transform .5s ease}
-.panel-cat-txt{position:relative;z-index:2;padding:0 clamp(20px,2.6vw,40px) clamp(42px,8vh,76px)}
-.panel-cat .num{display:block;font-family:var(--titulo);font-size:10.5px;font-weight:600;letter-spacing:.16em;
-  color:rgba(255,255,255,.68);margin-bottom:12px}
-.panel-cat h2{font-size:clamp(22px,2.3vw,34px);color:#fff}
-.panel-cat p{font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.86);max-width:36ch;margin:14px 0 0}
-.panel-cat .conteo{display:block;margin-top:12px;font-size:10px;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:rgba(255,255,255,.62)}
-.btn-cat{background:var(--acento);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3);
-  transition:background .25s,box-shadow .25s,transform .25s}
-.panel-cat .btn-cat{margin-top:22px}
-.panel-cat:hover .btn-cat,.btn-cat:hover{box-shadow:inset 0 0 0 1px rgba(255,255,255,.7);transform:translateY(-2px)}
+  box-shadow:0 -1px 0 rgba(255,255,255,.2);transform:scaleX(.22);transform-origin:left;transition:transform .7s var(--ease-out)}
+.panel-cat-txt{position:relative;z-index:2;padding:0 clamp(20px,2.8vw,44px) clamp(44px,8vh,80px)}
+.panel-cat .num{font-size:11px;letter-spacing:.32em;text-transform:uppercase;font-weight:600;color:var(--gold-2);display:flex;align-items:center;gap:12px}
+.panel-cat .num::before{content:"";width:28px;height:1px;background:var(--acento);box-shadow:0 0 0 .5px rgba(255,255,255,.3)}
+.panel-cat h2{font-size:clamp(34px,3.3vw,52px);color:#fff;margin:14px 0 0}
+.panel-cat p{font-size:14.5px;color:rgba(255,255,255,.86);max-width:36ch;margin-top:14px}
+.panel-cat .chips{margin:18px 0 22px}
+.panel-cat .chip{font-size:12px;padding:6px 12px}
+.panel-cat:hover .btn-cat::before,.panel-cat:focus-visible .btn-cat::before{transform:translateY(0)}
+.panel-cat:hover .btn-cat,.panel-cat:focus-visible .btn-cat{color:var(--marca);border-color:#fff}
+.panel-cat:hover .btn-cat .arr{transform:translateX(4px)}
 .panel-cat:focus-visible{outline-offset:-5px}
-@media (hover:hover) and (min-width:861px){
+@media (hover:hover) and (min-width:901px){
   .hero-cats:hover .panel-cat{flex-grow:.85}
   .hero-cats .panel-cat:hover,.hero-cats .panel-cat:focus-visible{flex-grow:1.45}
-  .panel-cat:hover>img{transform:scale(1.05)}
+  .panel-cat:hover>img{transform:scale(1.1)}
   .panel-cat:hover::after,.panel-cat:focus-visible::after{transform:scaleX(1)}
-  .hero-cats .panel-cat p{min-height:6.8em} /* alinea los tres bloques aunque el texto varíe */
+  .hero-cats .panel-cat p{min-height:6.6em}
 }
-@media (max-width:860px){
-  .hero-cats{flex-direction:column;height:auto;min-height:0}
-  .hero-cats-titulo{position:relative;top:auto;width:100%;padding:108px var(--marco) 30px}
-  .hero-cats-titulo h1{font-size:clamp(24px,6.4vw,32px)}
-  .panel-cat{flex:none;min-height:clamp(400px,78vw,500px)}
+@media (max-width:900px){
+  .hero-cats{flex-direction:column;height:auto;max-height:none;min-height:0}
+  .hero-cats-titulo{position:relative;top:auto;width:100%;padding:112px 16px 34px}
+  .hero-cats-titulo h1{max-width:16ch}
+  .panel-cat{flex:none;min-height:clamp(440px,100vw,540px)}
   .panel-cat+.panel-cat{border-left:0;border-top:1px solid rgba(255,255,255,.14)}
+  .panel-cat::before{background:linear-gradient(180deg,rgba(10,46,39,.25) 0%,rgba(10,46,39,.55) 42%,rgba(10,46,39,.92) 100%)}
   .panel-cat::after{transform:scaleX(1)}
-  .panel-cat::before{background:linear-gradient(180deg,rgba(8,26,22,.25) 0%,rgba(8,26,22,.55) 40%,rgba(8,26,22,.9) 100%)}
-  .panel-cat-txt{padding-bottom:40px}
+  .panel-cat-txt{padding:0 16px 40px}
 }
-@media (prefers-reduced-motion:reduce){.panel-cat,.panel-cat>img{transition:none}}
 
-/* ---------- franja del buscador (home) ---------- */
-.franja-busqueda{background:var(--verde);color:#fff;padding-block:clamp(30px,4vw,44px)}
-.franja-in{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,56px);align-items:center}
-.franja-in .etiqueta{margin-bottom:6px}
-.franja-in h2{font-size:clamp(17px,1.7vw,21px);color:#fff}
-@media (max-width:860px){.franja-in{grid-template-columns:1fr}}
-
+/* ---------- buscador ---------- */
+.buscar{background:var(--sand);border-bottom:1px solid var(--line);padding:30px 0}
+.buscar-in{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,56px);align-items:center}
+.buscar-in h2{font-size:clamp(26px,2.4vw,34px);margin:8px 0 0}
 .buscador{position:relative}
-.buscador-caja{display:flex;align-items:stretch;background:var(--hueso);border-radius:6px;padding:6px;
-  box-shadow:0 10px 30px rgba(8,26,22,.28);transition:box-shadow .3s ease}
-.buscador-caja:focus-within{box-shadow:0 14px 36px rgba(184,145,43,.4)}
-.buscador-campo{display:flex;flex-direction:column;justify-content:center;gap:2px;padding:8px 18px;min-width:0}
-.buscador-campo+.buscador-campo{border-left:1px solid var(--linea)}
-.buscador-campo>span{font-family:var(--titulo);font-size:9px;font-weight:700;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--gris)}
-.buscador-cat{flex:0 0 210px}
-.buscador-texto{flex:1}
-.buscador-campo select,.buscador-campo input{border:0;background:none;font:inherit;font-size:13px;color:var(--tinta);
-  padding:2px 0;min-width:0;width:100%}
-.buscador-campo select{cursor:pointer}
-.buscador-campo input::placeholder{color:var(--gris)}
-.buscador-campo select:focus,.buscador-campo input:focus{outline:none}
-.buscador-caja .btn{display:inline-flex;align-items:center;gap:8px;padding-inline:26px}
-.buscador-icono{width:14px;height:14px;flex:none}
+.buscador-caja{display:flex;gap:10px;align-items:stretch;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;box-shadow:var(--shadow)}
+.buscador-caja .fld{margin:0}
+.buscador-caja .fld-cat{flex:0 0 230px}
+.buscador-caja .fld-texto{flex:1;min-width:0}
+.buscador-caja .btn{flex:none}
+.buscador-resultados{position:absolute;top:calc(100% + 10px);left:0;right:0;z-index:30;max-height:320px;overflow-y:auto;padding:8px;
+  background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);
+  opacity:0;visibility:hidden;transform:translateY(-8px);pointer-events:none;transition:opacity .3s,transform .4s var(--ease-out),visibility .3s}
+.buscador-resultados.mostrar{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.buscador-resultados a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;font-size:14.5px;transition:background .25s,color .25s}
+.buscador-resultados a:hover,.buscador-resultados a:focus-visible{background:var(--sand);color:var(--marca)}
+.buscador-resultados small{margin-left:auto;font-size:12.5px;color:var(--muted);white-space:nowrap}
+.buscador-resultados .badge{font-size:9px;padding:5px 9px 5px 8px}
+.buscador-resultados .vacio{padding:10px 12px;font-size:14px;color:var(--muted)}
+@media (max-width:900px){.buscar-in{grid-template-columns:1fr}}
 @media (max-width:640px){
   .buscador-caja{flex-direction:column}
-  .buscador-cat{flex:none}
-  .buscador-campo+.buscador-campo{border-left:0;border-top:1px solid var(--linea)}
-  .buscador-caja .btn{justify-content:center;padding-block:14px;margin-top:4px}
+  .buscador-caja .fld-cat{flex:none}
 }
 
-.buscador-resultados{position:absolute;top:calc(100% + 10px);left:0;right:0;background:#fff;border-radius:7px;
-  box-shadow:0 10px 24px rgba(28,35,32,.18);padding:8px;max-height:280px;overflow-y:auto;
-  opacity:0;visibility:hidden;transform:translateY(-8px);pointer-events:none;
-  transition:opacity .25s ease,transform .3s ease,visibility .25s}
-.buscador-resultados.mostrar{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
-.buscador-resultados a{display:flex;align-items:center;justify-content:flex-start;gap:10px;padding:9px 12px;
-  border-radius:4px;font-size:12px;color:var(--tinta);transition:background .2s,color .2s}
-.buscador-resultados a:hover,.buscador-resultados a:focus-visible{background:var(--crema);color:var(--coral)}
-.buscador-resultados a small{margin-left:auto;font-size:9.5px;color:var(--gris);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.buscador-resultados .badge{font-size:8px;padding:5px 8px 5px 7px}
-.buscador-resultados .vacio{padding:9px 12px;font-size:11.5px;color:var(--gris)}
-@media (max-width:520px){.buscador{max-width:none}}
+/* campos de formulario (etiqueta flotante, como en las páginas de desarrollo) */
+.fld{position:relative;margin-bottom:14px}
+.fld input,.fld select,.fld textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:22px 14px 8px;background:#fbfaf8;
+  font-size:14.5px;transition:border-color .3s,box-shadow .3s,background .3s;appearance:none}
+.fld textarea{min-height:92px;resize:vertical}
+.fld select{padding-right:36px;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--marca) 50%),linear-gradient(135deg,var(--marca) 50%,transparent 50%);
+  background-position:calc(100% - 20px) 55%,calc(100% - 15px) 55%;background-size:5px 5px;background-repeat:no-repeat}
+.fld label{position:absolute;left:14px;top:16px;font-size:14px;color:var(--muted);pointer-events:none;transition:all .3s var(--ease)}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--marca);background-color:#fff;box-shadow:0 0 0 4px rgba(14,59,50,.08)}
+.fld input:focus+label,.fld input:not(:placeholder-shown)+label,.fld textarea:focus+label,.fld textarea:not(:placeholder-shown)+label,.fld select+label{
+  top:7px;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--marca-2)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
 
-/* ---------- banda de cifras (home) ---------- */
-.cifras{background:var(--crema)}
-.cifras-in{display:grid;grid-template-columns:repeat(4,1fr);max-width:var(--ancho);margin:0 auto}
-.cifras-in>div{position:relative;padding:40px 20px;text-align:center}
-.cifras-in>div+div::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
-  width:1px;height:36px;background:rgba(14,59,50,.16)}
-.cifras-in b{display:flex;align-items:baseline;justify-content:center;gap:2px;
-  font-family:var(--titulo);font-size:clamp(28px,3.4vw,40px);font-weight:800;letter-spacing:-.01em;color:var(--verde)}
-.cifras-in .raya{width:26px;height:2px;background:var(--coral);margin:14px auto 0}
-.cifras-in span{display:block;margin-top:10px;font-size:10.5px;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--gris)}
-@media (max-width:760px){.cifras-in{grid-template-columns:1fr 1fr}.cifras-in>div:nth-child(3)::before{display:none}}
+/* ---------- pestañas por categoría (control segmentado) ---------- */
+.tabs{position:relative;display:inline-grid;grid-template-columns:repeat(3,1fr);padding:4px;border:1px solid var(--line);border-radius:8px;background:var(--sand)}
+.tab{position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;
+  font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap;transition:color .45s}
+.tab .n{font-size:11px;font-weight:700;opacity:.7}
+.tab[aria-selected="true"]{color:var(--acento-tinta)}
+.tab:focus-visible{outline-offset:-3px;border-radius:5px}
+.tabs .ind{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px)/3);border-radius:5px;background:var(--acento);
+  transition:transform .6s var(--ease-out),background .6s var(--ease-out)}
+.tab-panel-pie{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:28px;
+  padding-top:22px;border-top:1px solid var(--line)}
+.tab-panel-pie p{font-size:14px;color:var(--muted);max-width:60ch}
+@media (max-width:640px){.tabs{width:100%}.tab{padding:12px 8px;font-size:13px}.tab .n{display:none}}
 
-/* ---------- secciones ---------- */
-.seccion{padding-block:clamp(52px,7vw,90px)}
-.seccion.fondo-crema{background:var(--crema)}
-.seccion.sin-arriba{padding-top:clamp(10px,2vw,24px)}
-.cab{margin-bottom:30px}
-.cab p{color:var(--gris);font-size:13px;margin:22px 0 0}
+/* ---------- tarjetas de desarrollo ---------- */
+.dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.dcard{display:flex;flex-direction:column;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);
+  transition:transform .6s var(--ease),box-shadow .6s var(--ease)}
+.dcard:hover{transform:translateY(-6px);box-shadow:0 1px 2px rgba(14,59,50,.06),0 22px 40px -16px rgba(14,59,50,.28)}
+.dcard-img{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--sand-2)}
+.dcard-img img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease-out)}
+.dcard:hover .dcard-img img{transform:scale(1.08)}
+.dcard-img .badge{position:absolute;left:12px;top:12px}
+.dcard-body{flex:1;display:flex;flex-direction:column;padding:18px 18px 20px;border-top:3px solid var(--acento)}
+.dcard-loc{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.dcard h3{font-size:27px;margin:6px 0 14px}
+.dcard .link{margin-top:auto;align-self:flex-start}
+@media (max-width:1080px){.dgrid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:760px){.dgrid{grid-template-columns:repeat(2,1fr);gap:12px}.dcard h3{font-size:22px}.dcard-body{padding:14px}}
+@media (max-width:420px){.dcard-img .badge{left:8px;top:8px;font-size:8.5px;padding:5px 8px 5px 7px}.dcard .link{font-size:12px}}
 
-/* ---------- tarjetas de ciudad ---------- */
-.ciudades{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.ciudad{background:#fff;border-radius:7px;overflow:hidden;box-shadow:0 2px 10px rgba(28,35,32,.07);
-  transition:transform .3s ease,box-shadow .3s ease}
-.ciudad:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(28,35,32,.13)}
-.ciudad .foto{position:relative;aspect-ratio:4/3;background:var(--verde)}
-.ciudad .foto svg,
-.ciudad .foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.ciudad .flecha{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;background:#fff;
-  display:grid;place-items:center;font-size:11px;color:var(--tinta);transition:background .25s,color .25s}
-.ciudad:hover .flecha{background:var(--coral);color:#fff}
-.ciudad .pie{padding:13px 14px 16px;background:#fff}
-.ciudad .pie b{display:block;font-family:var(--titulo);font-size:11.5px;font-weight:700;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--verde)}
-.ciudad .pie span{font-size:10.5px;color:var(--gris)}
-@media (max-width:980px){.ciudades{grid-template-columns:repeat(2,1fr)}}
+/* ---------- ciudades ---------- */
+.cgrid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:240px;gap:14px}
+.ccard{position:relative;border-radius:var(--r);overflow:hidden;background:var(--marca);color:#fff;text-align:left}
+.ccard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.6s var(--ease-out)}
+.ccard:hover img{transform:scale(1.08)}
+.ccard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(10,46,39,.85))}
+.ccard .t{position:absolute;z-index:1;left:20px;right:20px;bottom:18px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.ccard b{font-family:var(--serif);font-weight:600;font-size:28px;line-height:1.05;display:block}
+.ccard .t span{font-size:12px;opacity:.85;display:block;margin-top:4px}
+.ccard .arr{width:34px;height:34px;flex:none;border-radius:50%;border:1px solid rgba(255,255,255,.5);display:grid;place-items:center;font-size:14px;
+  transition:background .4s,color .4s,transform .4s var(--ease)}
+.ccard:hover .arr{background:#fff;color:var(--marca);transform:translateX(3px)}
+@media (max-width:980px){.cgrid{grid-template-columns:repeat(2,1fr);grid-auto-rows:200px}}
+@media (max-width:520px){.cgrid{grid-auto-rows:170px;gap:10px}.ccard b{font-size:22px}.ccard .t{left:14px;right:14px;bottom:14px}.ccard .arr{display:none}}
 
-/* ---------- pestañas por categoría ---------- */
-.tabs{display:flex;gap:6px;border-bottom:1px solid var(--linea);margin-bottom:28px;
-  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.tabs::-webkit-scrollbar{display:none}
-.tab{position:relative;display:inline-flex;align-items:center;gap:9px;flex:none;padding:14px 20px 16px;
-  font-family:var(--titulo);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--gris);transition:color .25s}
-.tab::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--acento);opacity:.45;transition:opacity .25s}
-.tab::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:var(--acento);
-  transform:scaleX(0);transition:transform .35s ease}
-.tab .n{font-family:var(--texto);font-size:10px;font-weight:600;letter-spacing:0;color:var(--gris)}
-.tab:hover{color:var(--tinta)}
-.tab[aria-selected="true"]{color:var(--tinta)}
-.tab[aria-selected="true"]::before{opacity:1}
-.tab[aria-selected="true"]::after{transform:scaleX(1)}
-.tab:focus-visible{outline-offset:-3px}
-.tab-panel[hidden]{display:none}
-.tab-panel-pie{display:flex;justify-content:flex-end;margin-top:22px}
-.ver-cat{display:inline-flex;align-items:center;gap:6px;font-family:var(--titulo);font-size:10.5px;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--acento);transition:gap .25s ease}
-.ver-cat:hover{gap:10px}
+/* ---------- respaldo Grupo Velas ---------- */
+.gv{display:grid;grid-template-columns:1fr 1.15fr;background:var(--sand);overflow:hidden}
+.gv .ph{position:relative;overflow:hidden;min-height:480px}
+.gv .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gv .txt{padding:clamp(40px,6vw,86px) clamp(20px,5vw,72px);display:flex;flex-direction:column;justify-content:center}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);margin-top:30px;border-top:1px solid var(--line)}
+.stat{padding:22px 10px 0}
+.stat+.stat{border-left:1px solid var(--line);padding-left:20px}
+.stat b{display:block;font-family:var(--serif);font-size:clamp(34px,3.6vw,50px);font-weight:600;color:var(--marca);line-height:1;white-space:nowrap}
+.stat>span{font-size:12px;color:var(--muted);display:block;margin-top:6px;line-height:1.4}
+.gv .acts{margin-top:30px}
+@media (max-width:900px){.gv{grid-template-columns:1fr}.gv .ph{min-height:300px}}
+@media (max-width:640px){.stats{grid-template-columns:1fr 1fr}.stat:nth-child(3){border-left:0;padding-left:10px}}
 
-/* ---------- tarjetas de desarrollo (badge + acento por categoría) ---------- */
-.desarrollos{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
-.desarrollo{display:flex;flex-direction:column;background:#fff;border-radius:7px;overflow:hidden;
-  box-shadow:0 2px 10px rgba(28,35,32,.07);border-bottom:3px solid var(--acento);
-  transition:transform .3s ease,box-shadow .3s ease}
-.desarrollo:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(28,35,32,.13)}
-.desarrollo .foto{position:relative;aspect-ratio:4/3;background:var(--verde);overflow:hidden}
-.desarrollo .foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  transition:transform .9s cubic-bezier(.22,1,.36,1)}
-.desarrollo:hover .foto img{transform:scale(1.05)}
-.desarrollo .badge{position:absolute;left:10px;top:10px}
-.desarrollo .flecha{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;background:#fff;
-  display:grid;place-items:center;font-size:11px;color:var(--tinta);transition:background .25s,color .25s}
-.desarrollo:hover .flecha{background:var(--acento);color:#fff}
-.desarrollo .pie{flex:1;padding:13px 14px 15px;background:#fff}
-.desarrollo .pie b{display:block;font-family:var(--titulo);font-size:11.5px;font-weight:700;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--tinta)}
-.desarrollo .pie span{display:block;margin-top:2px;font-size:10.5px;color:var(--gris)}
-@media (max-width:520px){.desarrollos{grid-template-columns:1fr 1fr;gap:12px}
-  .desarrollo .badge{left:8px;top:8px;font-size:7.5px;padding:5px 8px 5px 7px}
-  .desarrollo .flecha{display:none}}
-@media (prefers-reduced-motion:reduce){.desarrollo .foto img{transition:none}}
+.marquee{padding:36px 0;border-top:1px solid var(--line);background:#fff;overflow:hidden;position:relative}
+.marquee p{text-align:center;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.track{display:flex;gap:56px;width:max-content;animation:marq 48s linear infinite;align-items:center}
+.marquee:hover .track{animation-play-state:paused}
+@keyframes marq{to{transform:translateX(-50%)}}
+.track a{font-family:var(--serif);font-size:28px;font-weight:500;white-space:nowrap;color:var(--muted);opacity:.7;transition:color .4s,opacity .4s}
+.track a:hover{color:var(--acento);opacity:1}
+.marquee::before,.marquee::after{content:"";position:absolute;top:0;bottom:0;width:120px;z-index:1;pointer-events:none}
+.marquee::before{left:0;background:linear-gradient(90deg,#fff,transparent)}
+.marquee::after{right:0;background:linear-gradient(-90deg,#fff,transparent)}
 
-/* ---------- página de categoría ---------- */
-.hero--cat{height:78vh;height:78dvh;min-height:500px}
-.hero--cat::before{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;z-index:4;background:var(--acento)}
-.hero--cat .badge{margin-bottom:16px}
-.hero--cat .hero-txt p{max-width:44ch;font-size:13px}
-.hero--cat .conteo{margin-top:14px;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(255,255,255,.65)}
-.vista-cat .etiqueta{color:var(--acento)}
-.vista-cat .filete{background:var(--acento)}
-.vista-cat .caract .n{color:var(--acento)}
-.otras-cats{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.otras-cats .panel-cat{min-height:320px;border-radius:7px;border:0}
-.otras-cats .panel-cat::after{transform:scaleX(1)}
-.otras-cats .panel-cat-txt{padding:0 26px 30px}
-.otras-cats .panel-cat:hover>img{transform:scale(1.05)}
-@media (max-width:760px){.otras-cats{grid-template-columns:1fr}}
-.cta-cat{background:var(--verde);color:#fff;padding-block:clamp(48px,6vw,76px);text-align:center}
-.cta-cat h2{color:#fff;max-width:24ch;margin:0 auto}
-.vista-cat .cta-cat .etiqueta{color:var(--coral)}
-.vista-cat .cta-cat .filete{margin:16px auto 0;background:var(--coral)}
-.cta-cat p{font-size:12.5px;color:rgba(255,255,255,.82);max-width:46ch;margin:18px auto 0}
-.cta-cat .hero-btns{justify-content:center}
+/* ---------- testimonios ---------- */
+.testimonios{background:#fff}
+.carrusel{position:relative;max-width:820px;margin:26px auto 0;min-height:clamp(250px,26vw,280px)}
+.slide{position:absolute;inset:0;opacity:0;transform:translateY(14px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);pointer-events:none}
+.slide.activo{opacity:1;transform:none;pointer-events:auto}
+.slide blockquote{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(26px,3.2vw,40px);line-height:1.2;color:var(--marca)}
+.slide cite{display:block;margin-top:22px;font-style:normal;font-size:13px;color:var(--muted)}
+.slide cite b{color:var(--marca);font-weight:700}
+.estrellas{color:var(--gold);letter-spacing:4px;font-size:14px;margin-bottom:14px}
+.puntos{display:flex;justify-content:center;gap:10px;margin-top:10px}
+.puntos button{width:28px;height:3px;border-radius:2px;background:var(--line);transition:background .4s,width .4s var(--ease-out)}
+.puntos button.activo{background:var(--gold);width:44px}
 
-/* ---------- testimonio ---------- */
-.testimonio{background:var(--crema);text-align:center;padding-block:clamp(56px,7vw,96px)}
-.testimonio .etiqueta{margin-bottom:22px}
-.testimonio blockquote{margin:0 auto;max-width:620px;font-family:var(--titulo);font-weight:500;
-  font-size:clamp(18px,2.1vw,25px);line-height:1.45;color:var(--verde);text-transform:none}
-.testimonio cite{display:block;margin-top:22px;font-style:normal;font-size:11px;color:var(--coral)}
+/* ---------- revista ---------- */
+.ngrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.ncard{display:flex;flex-direction:column;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);transition:transform .6s var(--ease)}
+.ncard:hover{transform:translateY(-6px)}
+.ncard .img{aspect-ratio:16/10;overflow:hidden;background:var(--sand-2)}
+.ncard .img img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease-out)}
+.ncard:hover .img img{transform:scale(1.08)}
+.ncard .b{flex:1;display:flex;flex-direction:column;padding:20px 22px 24px}
+.ncard time,.ncard .cat{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.ncard h3{font-size:25px;margin:8px 0 16px}
+.ncard .link{margin-top:auto;align-self:flex-start}
+@media (max-width:860px){.ngrid{grid-template-columns:1fr}}
 
-.testimonio-carrusel{position:relative;max-width:620px;margin:0 auto;min-height:clamp(260px,34vw,310px)}
-.testimonio-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-  opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
-.testimonio-slide.activo{opacity:1;transform:none;pointer-events:auto}
-.testimonio-avatar{width:52px;height:52px;border-radius:50%;background:var(--verde);color:#fff;
-  display:grid;place-items:center;font-family:var(--titulo);font-size:14px;font-weight:700;margin-bottom:16px}
-.testimonio-estrellas{color:var(--coral);font-size:14px;letter-spacing:3px;margin-bottom:16px}
-.testimonio-puntos{display:flex;justify-content:center;gap:8px;margin-top:20px}
-.testimonio-puntos button{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:rgba(14,59,50,.2);
-  transition:background .25s ease,transform .25s ease}
-.testimonio-puntos button.activo{background:var(--coral);transform:scale(1.35)}
+/* ---------- CTA final + formulario ---------- */
+.final{position:relative;overflow:hidden;color:#fff;padding:clamp(80px,10vw,130px) 0}
+.final .bg{position:absolute;inset:0;background:center/cover no-repeat}
+.final::before{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(100deg,rgba(10,46,39,.96) 0%,rgba(10,46,39,.86) 45%,rgba(10,46,39,.55) 100%)}
+.final .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:center}
+.final h2{color:#fff}
+.final p{opacity:.86;max-width:44ch}
+.script{font-family:var(--serif);font-style:italic;font-size:clamp(26px,3vw,34px);color:var(--gold-2);margin-top:26px;display:inline-block}
+.contacts{list-style:none;margin-top:26px;display:grid;gap:10px;font-size:14px}
+.contacts a,.contacts li{display:flex;gap:12px;align-items:center}
+.contacts svg{width:18px;height:18px;color:var(--gold-2);flex:none}
+.contacts a:hover{color:var(--gold-2)}
+.final.solo .wrap{grid-template-columns:1fr;text-align:center;justify-items:center}
+.final.solo .ctas{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:30px}
+.form{background:#fff;color:var(--ink);border-radius:18px;padding:clamp(22px,3vw,34px);box-shadow:0 30px 60px -20px rgba(0,0,0,.45);position:relative}
+.form h3{font-family:var(--sans);font-size:18px;font-weight:700;letter-spacing:0;margin-bottom:4px;color:var(--marca)}
+.form .hint{font-size:12.5px;color:var(--muted);margin-bottom:18px;opacity:1}
+.form .btn{width:100%;margin-top:6px;padding:16px}
+.form .alt{display:flex;gap:10px;margin-top:12px}
+.form .alt .btn{margin:0;flex:1;padding:13px}
+.form .legal{font-size:10.5px;color:var(--muted);margin-top:12px;text-align:center;max-width:none;opacity:1}
+.form .legal a{text-decoration:underline}
+.form .ok{position:absolute;inset:0;background:#fff;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:30px;opacity:0;pointer-events:none;transition:opacity .6s}
+.form.sent .ok{opacity:1;pointer-events:auto}
+.ok svg{width:70px;height:70px}
+.ok circle{stroke-dasharray:190;stroke-dashoffset:190;transition:stroke-dashoffset .9s var(--ease-out) .2s}
+.ok path{stroke-dasharray:50;stroke-dashoffset:50;transition:stroke-dashoffset .6s var(--ease-out) .9s}
+.form.sent .ok circle,.form.sent .ok path{stroke-dashoffset:0}
+.ok h3{font-family:var(--serif);font-size:28px;font-weight:500;margin-top:16px}
+.ok p{color:var(--muted);font-size:14px;margin-top:6px;opacity:1}
+@media (max-width:900px){.final .wrap{grid-template-columns:1fr}}
 
-/* ---------- notas ---------- */
-.notas{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.nota{display:flex;flex-direction:column;background:var(--verde);border-radius:7px;overflow:hidden;
-  box-shadow:0 2px 10px rgba(28,35,32,.07);transition:transform .3s ease,box-shadow .3s ease}
-.nota:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(28,35,32,.13)}
-.nota .foto{flex:none;aspect-ratio:16/9;display:grid;place-items:center}
-.nota .foto span{font-family:var(--titulo);font-size:9.5px;font-weight:600;letter-spacing:.2em;
-  text-transform:uppercase;color:rgba(255,255,255,.28)}
-.nota .foto img{display:block;width:100%;height:100%;object-fit:cover}
-.nota .pie{flex:1;display:flex;flex-direction:column;background:#fff;padding:16px 18px 20px}
-.nota .pie em{display:block;font-style:normal;font-size:10px;color:var(--coral);margin-bottom:8px;
-  text-transform:uppercase;letter-spacing:.06em}
-.nota h3{color:var(--tinta)}
-.nota .leer-mas{margin-top:auto;padding-top:16px;display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--titulo);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--coral);transition:gap .25s ease}
-.nota:hover .leer-mas{gap:10px}
-@media (max-width:860px){.notas{grid-template-columns:1fr}}
-
-/* ---------- contacto verde (home) ---------- */
-.contacto-verde{background:var(--verde);color:#fff;padding-block:clamp(56px,7vw,92px)}
-.contacto-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(30px,6vw,86px);max-width:var(--ancho);margin:0 auto;padding-inline:var(--marco)}
-.contacto-verde h2{color:#fff}
-.contacto-verde .intro{font-size:12.5px;color:rgba(255,255,255,.82);max-width:34ch;margin-top:22px}
-.campos{display:grid;grid-template-columns:1fr 1fr;gap:26px 30px;align-content:start}
-.campo{display:flex;flex-direction:column;gap:4px}
-.campo.ancho{grid-column:span 2}
-.campo label{font-family:var(--titulo);font-size:9.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.72)}
-.campo input,.campo select,.campo textarea{background:transparent;border:0;border-bottom:1px solid rgba(255,255,255,.4);
-  color:#fff;padding:7px 0;font:inherit;font-size:13px;transition:border-color .25s}
-.campo textarea{min-height:64px;resize:vertical}
-.campo select option{color:var(--tinta)}
-.campo input:focus,.campo select:focus,.campo textarea:focus{outline:none;border-color:var(--coral)}
-.contacto-verde .btn{margin-top:4px}
-.campos-acciones{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
-@media (max-width:880px){.contacto-grid,.campos{grid-template-columns:1fr}.campo.ancho{grid-column:span 1}}
-
-/* ---------- newsletter ---------- */
-.news{background:var(--crema);padding-block:34px}
-.news-in{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;max-width:var(--ancho);margin:0 auto;padding-inline:var(--marco)}
-.news h3{font-size:15px;color:var(--tinta);letter-spacing:.01em}
-.news p{font-size:11.5px;color:var(--gris);margin:6px 0 0}
-.news form{display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(14,59,50,.3);padding-bottom:6px}
-.news input{flex:1;background:transparent;border:0;font:inherit;font-size:12.5px;color:var(--tinta)}
-.news input:focus{outline:none}
-.news button{font-size:11px;color:var(--coral);font-weight:600;white-space:nowrap}
-@media (max-width:760px){.news-in{grid-template-columns:1fr}}
-
-/* ---------- pie ---------- */
-.pie{background:var(--verde);color:rgba(255,255,255,.72);padding-block:48px 26px;font-size:12px}
-.pie-grid{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:36px;max-width:var(--ancho);margin:0 auto;padding-inline:var(--marco)}
-.pie-marca>img{width:170px;max-width:60%;height:auto;display:block;margin-bottom:18px}
-.pie-grid p{max-width:32ch;line-height:1.8;margin:0}
-.pie h4{font-family:var(--titulo);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:#fff;margin:0 0 14px}
-.pie ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
-.pie a:hover{color:var(--coral)}
-.pie-social{display:flex;gap:12px;margin-top:22px}
-.pie-social a{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;
-  border:1px solid rgba(255,255,255,.24);color:rgba(255,255,255,.82);
-  transition:background .25s ease,border-color .25s ease,color .25s ease,transform .25s ease}
-.pie-social svg{width:16px;height:16px}
-.pie-social a:hover{background:var(--coral);border-color:var(--coral);color:#fff;transform:translateY(-3px)}
-.pie-base{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:10.5px;
-  max-width:var(--ancho);margin:40px auto 0;padding:18px var(--marco) 0;border-top:1px solid rgba(255,255,255,.12)}
-@media (max-width:760px){.pie-grid{grid-template-columns:1fr 1fr}}
+/* ---------- newsletter + pie ---------- */
+.news{background:var(--sand);border-top:1px solid var(--line);padding:34px 0}
+.news .wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+.news h3{font-size:28px}
+.news p{font-size:14px;color:var(--muted)}
+.news form{display:flex;gap:10px}
+.news .fld{flex:1;margin:0}
+@media (max-width:760px){.news .wrap{grid-template-columns:1fr}.news form{flex-direction:column}}
+footer.pie{padding:48px 0 30px;border-top:1px solid var(--line);font-size:13px;background:#fff}
+.fgrid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:30px;align-items:start}
+.pie-logo{width:170px;height:auto;margin-bottom:16px}
+.fgrid h4{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.fgrid p,.fgrid a{color:var(--muted);display:block;line-height:1.9}
+.fgrid a:hover{color:var(--marca)}
+.fgrid p.desc{max-width:36ch;line-height:1.7}
+.social{display:flex;gap:10px;margin-top:18px}
+.social a{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--marca);
+  transition:background .4s,color .4s,border-color .4s,transform .4s var(--ease)}
+.social a:hover{background:var(--marca);border-color:var(--marca);color:#fff;transform:translateY(-3px)}
+.social svg{width:15px;height:15px}
+footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (max-width:760px){.fgrid{grid-template-columns:1fr}}
 
 /* ==========================================================
-   VISTA VELASUR
+   PÁGINAS DE CATEGORÍA Y DE DESARROLLO (plantilla Vela Towers)
    ========================================================== */
-/* barra verde de datos */
-.datos{background:var(--verde);color:#fff}
-.datos-in{display:grid;grid-template-columns:repeat(5,1fr);max-width:var(--ancho);margin:0 auto}
-.datos-in>div{position:relative;padding:28px 24px}
-.datos-in>div+div::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
-  width:1px;height:30px;background:rgba(255,255,255,.18)}
-.datos-in b{display:block;font-family:var(--titulo);font-size:clamp(18px,2vw,22px);font-weight:800;letter-spacing:-.01em}
-.datos-in .raya{width:22px;height:2px;background:var(--coral);margin:12px 0 0}
-.datos-in span{display:block;margin-top:10px;font-size:10px;font-weight:600;letter-spacing:.08em;
-  text-transform:uppercase;color:rgba(255,255,255,.55)}
-.datos-in .coral b{color:var(--coral)}
-@media (max-width:860px){.datos-in{grid-template-columns:repeat(2,1fr)}
-  .datos-in>div:nth-child(3)::before,.datos-in>div:nth-child(5)::before{display:none}}
-@media (max-width:460px){.datos-in{grid-template-columns:1fr}.datos-in>div::before{display:none}}
+.hero{min-height:min(100svh,920px);display:flex;align-items:center;overflow:hidden;background:var(--deep);color:#fff}
+.hero-media{position:absolute;inset:0}
+.hero-media img,.hero-media video{width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 3s var(--ease-out)}
+.cargado .hero-media img,.cargado .hero-media video{transform:scale(1.02)}
+.hero::before{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(90deg,rgba(10,46,39,0) 20%,rgba(10,46,39,.55) 55%,rgba(10,46,39,.85) 100%),linear-gradient(0deg,rgba(10,46,39,.6),transparent 35%)}
+.hero>.wrap{position:relative;z-index:2;display:flex;justify-content:flex-end}
+.hero-inner{max-width:580px;padding:140px 0 130px}
+.hero h1{font-size:clamp(50px,7vw,92px);margin:18px 0 20px;color:#fff}
+.hero h1 em{color:var(--gold-2)}
+.hero .sub{font-size:clamp(16px,1.5vw,19px);color:rgba(255,255,255,.88);max-width:44ch}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px}
+.hero .badge{box-shadow:0 0 0 1px rgba(255,255,255,.5)}
+.hero-stats{position:absolute;z-index:2;left:0;right:0;bottom:0;border-top:1px solid rgba(255,255,255,.18);background:rgba(10,46,39,.4);backdrop-filter:blur(10px)}
+.hero-stats .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.hs{padding:18px 20px;display:flex;align-items:baseline;gap:10px}
+.hs+.hs{border-left:1px solid rgba(255,255,255,.15)}
+.hs b{font-family:var(--serif);font-size:34px;font-weight:600;line-height:1;white-space:nowrap}
+.hs>span,.hs small{font-size:12px;opacity:.8}
+.hero--cat::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;z-index:3;background:var(--acento)}
+@media (max-width:900px){
+  .hero{align-items:flex-end;min-height:100svh}
+  .hero::before{background:linear-gradient(180deg,rgba(10,46,39,.3) 0%,rgba(10,46,39,.25) 30%,rgba(10,46,39,.9) 70%)}
+  .hero>.wrap{justify-content:flex-start}
+  .hero-inner{padding:110px 0 140px}
+  .hero .sub{font-size:15px}
+  .chips{margin:16px 0 22px}
+  .hs{flex-direction:column;gap:2px;padding:12px 6px;align-items:center;text-align:center}
+  .hs b{font-size:22px}.hs>span,.hs small{font-size:10.5px}
+}
 
-/* características numeradas */
-.caracteristicas{border-top:1px solid var(--linea);margin-top:26px}
-.caract{display:grid;grid-template-columns:44px 1fr;gap:10px;padding:18px 0;border-bottom:1px solid var(--linea)}
-.caract .n{font-size:10.5px;color:var(--coral);font-weight:600;padding-top:2px}
-.caract b{display:block;font-family:var(--titulo);font-size:12.5px;font-weight:700;color:var(--tinta);margin-bottom:4px}
-.caract p{margin:0;font-size:11.5px;color:var(--gris);max-width:46ch;line-height:1.7}
+.perks{background:var(--sand);border-bottom:1px solid var(--line)}
+.perks .grid{display:grid;grid-template-columns:repeat(var(--cols,4),1fr)}
+.perk{display:flex;gap:16px;align-items:flex-start;padding:30px 24px;position:relative}
+.perk+.perk::before{content:"";position:absolute;left:0;top:24%;bottom:24%;width:1px;background:var(--line)}
+.perk svg{width:34px;height:34px;flex:none;color:var(--acento,var(--marca));transition:transform .6s var(--ease)}
+.perk:hover svg{transform:translateY(-4px) rotate(-4deg)}
+.perk b{display:block;font-size:15px;color:var(--marca);line-height:1.3;margin-bottom:4px}
+.perk span{font-size:12.5px;color:var(--muted);line-height:1.5;display:block}
+@media (max-width:900px){.perks .grid{grid-template-columns:1fr 1fr}.perk{flex-direction:column;gap:10px;padding:22px 12px}.perk:nth-child(3)::before{display:none}}
+@media (max-width:520px){.perks .grid{grid-template-columns:1fr}.perk+.perk::before{left:12px;right:12px;top:0;bottom:auto;width:auto;height:1px}}
 
-/* mapa + panel */
-.ubicacion{display:grid;grid-template-columns:1fr 1fr}
-.mapa{position:relative;min-height:clamp(260px,38vw,330px);background:#E8EDE4}
-.mapa iframe{position:absolute;inset:0;width:100%;height:100%}
-.mapa-panel{background:var(--verde);color:#fff;padding:clamp(28px,4vw,54px);display:flex;flex-direction:column;justify-content:center}
-.mapa-panel h2{color:#fff}
-.mapa-panel p{font-size:12.5px;color:rgba(255,255,255,.82);max-width:34ch;margin:18px 0 22px}
-.mapa-panel .btn{align-self:flex-start}
-@media (max-width:860px){.ubicacion{grid-template-columns:1fr}}
+.ocats{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ocats .panel-cat{min-height:360px;border-radius:var(--r);border:0}
+.ocats .panel-cat::after{transform:scaleX(1)}
+.ocats .panel-cat:hover>img{transform:scale(1.1)}
+.ocats .panel-cat h2{font-size:clamp(32px,3vw,44px)}
+@media (max-width:760px){.ocats{grid-template-columns:1fr}}
 
-/* amenidades */
-.amenidades{display:grid;grid-template-columns:repeat(5,1fr);background:var(--crema);margin-top:26px}
-.amenidades>div{padding:24px 20px 56px;border-right:1px solid rgba(14,59,50,.13)}
-.amenidades>div:last-child{border-right:0}
-.amenidad-icono{width:42px;height:42px;border-radius:50%;background:#fff;color:var(--verde);
-  display:grid;place-items:center;margin-bottom:14px;box-shadow:0 2px 8px rgba(14,59,50,.08);
-  opacity:0;transform:scale(.6);transition:opacity .4s ease,transform .4s ease}
-.amenidad-icono svg{width:20px;height:20px}
-.amenidades.visible .amenidad-icono{opacity:1;transform:scale(1)}
-.amenidades>div:nth-child(1) .amenidad-icono{transition-delay:0s}
-.amenidades>div:nth-child(2) .amenidad-icono{transition-delay:.08s}
-.amenidades>div:nth-child(3) .amenidad-icono{transition-delay:.16s}
-.amenidades>div:nth-child(4) .amenidad-icono{transition-delay:.24s}
-.amenidades>div:nth-child(5) .amenidad-icono{transition-delay:.32s}
-.amenidades b{font-family:var(--titulo);font-size:11.5px;font-weight:700;color:var(--tinta);line-height:1.45}
-@media (max-width:860px){.amenidades{grid-template-columns:repeat(2,1fr)}.amenidades>div{padding-bottom:28px;border-bottom:1px solid rgba(14,59,50,.13)}}
-@media (max-width:480px){.amenidades{grid-template-columns:1fr}.amenidades>div{border-right:0}}
+/* sobre el desarrollo */
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:center}
+.intro-grid .ph{border-radius:20px;overflow:hidden;aspect-ratio:4/3;box-shadow:var(--shadow)}
+.intro-grid .ph img{width:100%;height:100%;object-fit:cover}
+.intro-grid .acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+@media (max-width:900px){.intro-grid{grid-template-columns:1fr}}
 
-/* galería tipo mosaico */
-.galeria{columns:3;column-gap:12px;margin-top:26px}
-.galeria figure{margin:0 0 12px;break-inside:avoid;border-radius:3px;overflow:hidden;background:var(--verde);position:relative}
-.galeria svg,
-.galeria img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;transition:transform .9s cubic-bezier(.22,1,.36,1)}
-.galeria figure:hover svg,
-.galeria figure:hover img{transform:scale(1.06)}
-@media (prefers-reduced-motion:reduce){.galeria svg,.galeria img{transition:none}}
-.galeria .m{position:relative}
-.galeria .r43{aspect-ratio:4/3}
-.galeria .r11{aspect-ratio:1}
-.galeria .r34{aspect-ratio:3/4}
-.galeria .r169{aspect-ratio:16/10}
-@media (max-width:820px){.galeria{columns:2}}
-@media (max-width:480px){.galeria{columns:1}}
+/* galería con filtros */
+.filters{position:relative;display:flex;gap:6px;background:var(--sand);padding:4px;border-radius:999px}
+.filters button{position:relative;z-index:1;padding:9px 18px;border-radius:999px;font-size:13px;font-weight:600;color:var(--muted);transition:color .4s}
+.filters button.on{color:#fff}
+.filters .pill{position:absolute;top:4px;bottom:4px;left:0;border-radius:999px;background:var(--marca);transition:transform .55s var(--ease-out),width .55s var(--ease-out)}
+.gal{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:210px;grid-auto-flow:dense;gap:12px}
+.g{position:relative;border-radius:12px;overflow:hidden;cursor:zoom-in;background:var(--sand-2)}
+.g.w2{grid-column:span 2}.g.h2{grid-row:span 2}
+.g img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease-out)}
+.g:hover img{transform:scale(1.08)}
+.g figcaption{position:absolute;left:0;right:0;bottom:0;padding:30px 16px 14px;background:linear-gradient(180deg,transparent,rgba(10,46,39,.78));
+  color:#fff;font-size:13px;font-weight:600;transform:translateY(100%);transition:transform .6s var(--ease-out)}
+.g:hover figcaption,.g:focus-visible figcaption{transform:none}
+.g.out{display:none}
+@media (max-width:1080px){.gal{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:900px){.gal{grid-template-columns:repeat(2,1fr);grid-auto-rows:160px}}
+@media (max-width:560px){.sec-head .filters{width:100%}.sec-head .filters button{flex:1;padding:9px 6px}}
 
-/* bloque catálogo */
-.catalogo{display:grid;grid-template-columns:1.05fr .95fr;max-width:920px;margin:0 auto;overflow:hidden}
-.catalogo .txt{background:var(--verde);color:#fff;padding:clamp(28px,3.6vw,46px)}
-.catalogo h2{color:#fff;max-width:11ch}
-.catalogo p{font-size:12px;color:rgba(255,255,255,.8);margin:16px 0 22px;max-width:30ch}
-.catalogo .btns{display:flex;gap:10px;flex-wrap:wrap}
-.catalogo .foto{position:relative;min-height:230px;background:var(--verde-osc)}
-.catalogo .foto svg,
-.catalogo .foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-@media (max-width:760px){.catalogo{grid-template-columns:1fr}}
+/* lightbox */
+#lb{border:0;padding:0;margin:auto;background:transparent;max-width:min(1200px,94vw);width:100%;max-height:92vh;overflow:visible}
+#lb::backdrop{background:rgba(10,46,39,.9);backdrop-filter:blur(4px)}
+#lb .stage{position:relative;display:flex;align-items:center;justify-content:center}
+#lb img{max-width:100%;max-height:82vh;border-radius:10px;box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
+.lbbar{display:flex;justify-content:space-between;align-items:center;color:#fff;margin-top:14px;font-size:13px}
+.lbnav{position:absolute;top:50%;width:48px;height:48px;margin-top:-24px;border-radius:50%;background:rgba(255,255,255,.95);color:var(--marca);
+  font-size:20px;display:grid;place-items:center;transition:transform .4s var(--ease)}
+.lbnav:hover{transform:scale(1.1)}
+.lbnav.prev{left:-64px}.lbnav.next{right:-64px}
+.lbx{position:absolute;right:-8px;top:-52px;width:42px;height:42px;border-radius:50%;background:#fff;color:var(--marca);font-size:22px;transition:transform .4s var(--ease)}
+.lbx:hover{transform:rotate(90deg)}
+@media (max-width:1080px){.lbnav.prev{left:8px}.lbnav.next{right:8px}}
 
-/* contacto crema (velasur) */
-.contacto-crema{background:var(--crema);padding-block:clamp(52px,6.5vw,86px)}
-.contacto-crema h2{color:var(--verde)}
-.contacto-crema .intro{font-size:12.5px;color:var(--gris);max-width:30ch;margin-top:22px}
-.contacto-crema .campo label{color:var(--gris)}
-.contacto-crema .campo input,.contacto-crema .campo select,.contacto-crema .campo textarea{
-  color:var(--tinta);border-bottom-color:rgba(14,59,50,.28)}
-.volver{display:inline-block;font-family:var(--titulo);font-size:10px;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--gris);padding-block:26px}
-.volver:hover{color:var(--coral)}
+/* amenidades (bento) */
+.amen{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:220px;gap:14px;margin-top:40px}
+.am{position:relative;border-radius:var(--r);overflow:hidden;background:var(--marca);color:#fff}
+.am.big{grid-column:span 2;grid-row:span 2}
+.am.wide{grid-column:span 2}
+.am img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.6s var(--ease-out)}
+.am:hover img{transform:scale(1.08)}
+.am::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(10,46,39,.82))}
+.am .t{position:absolute;z-index:1;left:20px;right:20px;bottom:18px}
+.am b{font-family:var(--serif);font-weight:600;font-size:26px;line-height:1.05;display:block}
+.am.big b{font-size:38px}
+.am .t span{font-size:12px;opacity:.85;display:block;margin-top:4px}
+.am.ic{background:#fff;color:var(--marca);display:flex;flex-direction:column;justify-content:space-between;padding:22px;border:1px solid var(--line);
+  transition:background .5s,color .5s,transform .6s var(--ease)}
+.am.ic::after{display:none}
+.am.ic:hover{background:var(--marca);color:#fff;transform:translateY(-4px)}
+.am.ic svg{width:40px;height:40px;transition:transform .6s var(--ease)}
+.am.ic:hover svg{transform:scale(1.12) rotate(-6deg)}
+.am.ic b{font-size:24px}
+@media (max-width:1080px){.amen{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:900px){.amen{grid-auto-rows:180px}.am.ic b{font-size:20px}}
+@media (max-width:560px){.am b{font-size:21px}.am.big b{font-size:30px}}
 
-/* aparición discreta */
-.ap{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
-.ap.visible{opacity:1;transform:none}
+/* ubicación */
+.loc{border-top:1px solid var(--line)}
+.loc-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(28px,5vw,64px);align-items:center}
+.addr{display:flex;gap:12px;margin:22px 0 26px;font-size:14px;align-items:flex-start}
+.addr svg{width:22px;height:22px;color:var(--gold);flex:none;margin-top:2px}
+.loc .acts{display:flex;gap:12px;flex-wrap:wrap}
+.mapbox{position:relative;border-radius:20px;overflow:hidden;background:var(--sand);box-shadow:var(--shadow);aspect-ratio:1/1}
+.mapbox iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+@media (max-width:900px){.loc-grid{grid-template-columns:1fr}.mapbox{aspect-ratio:4/3}}
+
+/* flotantes (página de desarrollo) */
+.wa{position:fixed;right:20px;bottom:20px;z-index:40;width:56px;height:56px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;
+  box-shadow:0 10px 24px -6px rgba(0,0,0,.35);transform:scale(0);transition:transform .6s cubic-bezier(.34,1.56,.64,1)}
+.wa.show{transform:scale(1)}
+.wa svg{width:28px;height:28px}
+.wa::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #25d366;animation:ring 2.6s infinite}
+@keyframes ring{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.6);opacity:0}}
+.mbar{display:none}
+@media (max-width:900px){
+  .wa{bottom:84px}
+  .mbar{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:45;
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.94);backdrop-filter:blur(12px);
+    border-top:1px solid var(--line);transform:translateY(110%);transition:transform .5s var(--ease-out)}
+  .mbar.show{transform:none}
+  .mbar .btn{padding:13px 10px}
+  body.en-desarrollo footer.pie{padding-bottom:100px}
+}
+
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{transition-duration:.001ms!important}
   html{scroll-behavior:auto}
-  .ap{opacity:1;transform:none}
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important;transition-delay:0s!important}
+  .ap,.fade-seq>*{opacity:1!important;transform:none!important}
+  .ap .eyebrow::before{transform:none!important}
 }
 </style>
 </head>
 <body>
 
-<!-- ============ NAVEGACIÓN ============ -->
-<header class="nav" id="nav">
-  <a class="logo" href="#/">
-    <img src="Prototipos/4/img/logo/GRUPO_VELAS_BLANCO_H.png" alt="Grupo Velas">
-  </a>
-  <button class="menu-boton" id="menuBoton" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menuPrincipal">
-    <span></span><span></span><span></span>
-  </button>
-  <nav class="menu" id="menuPrincipal">
-    <a href="#/" data-ruta="home">Inicio</a>
-    <a href="#nosotros">Nosotros</a>
-    <div class="item-sub">
-      <a href="#desarrollos" data-ruta="desarrollos" aria-haspopup="true" aria-expanded="false">Desarrollos<i class="caret" aria-hidden="true"></i></a>
-      <div class="submenu">
-        <div class="submenu-in">
-          <a href="#/primera-vivienda" data-ruta="primera-vivienda" data-cat="pv">Primera Vivienda</a>
-          <a href="#/residencial" data-ruta="residencial" data-cat="res">Residencial</a>
-          <a href="#/residencial-plus" data-ruta="residencial-plus" data-cat="plus">Residencial Plus</a>
-          <div class="sep" role="presentation"></div>
-          <a href="#desarrollos">Ver todos los desarrollos</a>
+<div class="progreso" id="progreso"></div>
+
+<!-- ============ HEADER ============ -->
+<header class="top" id="top">
+  <div class="wrap nav">
+    <a class="logo" href="#/"><img src="Prototipos/4/img/logo/GRUPO_VELAS_BLANCO_H.png" alt="Grupo Velas"></a>
+    <nav class="menu" id="menuPrincipal" aria-label="Principal">
+      <a href="#/" data-ruta="home">Inicio</a>
+      <a href="#nosotros">Nosotros</a>
+      <div class="item-sub">
+        <a href="#desarrollos" data-ruta="desarrollos" aria-haspopup="true" aria-expanded="false">Desarrollos<i class="caret" aria-hidden="true"></i></a>
+        <div class="submenu">
+          <div class="submenu-in">
+            <a href="#/primera-vivienda" data-ruta="primera-vivienda" data-cat="pv">Primera Vivienda</a>
+            <a href="#/residencial" data-ruta="residencial" data-cat="res">Residencial</a>
+            <a href="#/residencial-plus" data-ruta="residencial-plus" data-cat="plus">Residencial Plus</a>
+            <div class="sep" role="presentation"></div>
+            <a href="#desarrollos">Ver todos los desarrollos</a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="item-sub">
-      <a href="#ciudades" aria-haspopup="true" aria-expanded="false">Ciudades<i class="caret" aria-hidden="true"></i></a>
-      <div class="submenu">
-        <div class="submenu-in" id="submenuCiudades"></div>
+      <div class="item-sub">
+        <a href="#ciudades" aria-haspopup="true" aria-expanded="false">Ciudades<i class="caret" aria-hidden="true"></i></a>
+        <div class="submenu"><div class="submenu-in" id="submenuCiudades"></div></div>
       </div>
-    </div>
-    <a class="caja" href="#contacto">Contacto</a>
-  </nav>
-  <div class="menu-fondo" id="menuFondo"></div>
+      <a href="#contacto">Contacto</a>
+      <a class="btn menu-cta" href="#contacto">Agendar visita <span class="arr">→</span></a>
+    </nav>
+    <a class="btn sm desk" href="#contacto">Agendar visita <span class="arr">→</span></a>
+    <button class="burger" id="menuBoton" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menuPrincipal">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </header>
+<div class="menu-fondo" id="menuFondo"></div>
 
 <main>
 
 <!-- ================================================================
-     VISTA 1 · HOME
+     VISTA 1 · HOME — el eje son las tres categorías
      ================================================================ -->
 <div data-pagina="home">
 
-  <!-- hero dividido: una puerta de entrada por categoría -->
   <section class="hero-cats" aria-label="Categorías de vivienda">
-    <div class="hero-cats-titulo">
-      <div class="sobre">Grupo Velas · 45 años construyendo México</div>
-      <h1>Desarrollos inmobiliarios para cada etapa de tu vida</h1>
+    <div class="hero-cats-titulo fade-seq">
+      <span class="eyebrow">Grupo Velas · 45 años</span>
+      <h1>Desarrollos para cada <em>etapa de tu vida</em></h1>
     </div>
     <a class="panel-cat" data-cat="pv" href="#/primera-vivienda">
       <img src="Prototipos/4/img/desarrollos/arecas-matamoros.webp" alt="">
-      <div class="panel-cat-txt">
-        <span class="num">01</span>
+      <div class="panel-cat-txt fade-seq">
+        <span class="num">01 · Categoría</span>
         <h2>Primera Vivienda</h2>
         <p>Para familias jóvenes que compran su primera casa: espacios funcionales, comunidades seguras y un precio pensado para empezar su patrimonio.</p>
-        <span class="conteo" data-conteo="pv"></span>
-        <span class="btn btn-cat">Ver desarrollos</span>
+        <div class="chips" data-chips="pv"></div>
+        <span class="btn btn-cat">Ver desarrollos <span class="arr">→</span></span>
       </div>
     </a>
     <a class="panel-cat" data-cat="res" href="#/residencial">
       <img src="Prototipos/4/img/desarrollos/velasur.webp" alt="">
-      <div class="panel-cat-txt">
-        <span class="num">02</span>
+      <div class="panel-cat-txt fade-seq">
+        <span class="num">02 · Categoría</span>
         <h2>Residencial</h2>
         <p>Para familias que buscan crecer: casas y departamentos más amplios en cotos privados, con amenidades y ubicaciones consolidadas.</p>
-        <span class="conteo" data-conteo="res"></span>
-        <span class="btn btn-cat">Ver desarrollos</span>
+        <div class="chips" data-chips="res"></div>
+        <span class="btn btn-cat">Ver desarrollos <span class="arr">→</span></span>
       </div>
     </a>
     <a class="panel-cat" data-cat="plus" href="#/residencial-plus">
       <img src="Prototipos/4/img/desarrollos/vistavela-iii.webp" alt="">
-      <div class="panel-cat-txt">
-        <span class="num">03</span>
+      <div class="panel-cat-txt fade-seq">
+        <span class="num">03 · Categoría</span>
         <h2>Residencial Plus</h2>
         <p>Para quien busca lo excepcional: departamentos y townhouses frente al mar o en las mejores zonas, con amenidades tipo resort y alta plusvalía.</p>
-        <span class="conteo" data-conteo="plus"></span>
-        <span class="btn btn-cat">Ver desarrollos</span>
+        <div class="chips" data-chips="plus"></div>
+        <span class="btn btn-cat">Ver desarrollos <span class="arr">→</span></span>
       </div>
     </a>
   </section>
 
-  <section class="franja-busqueda">
-    <div class="envoltura franja-in">
+  <section class="buscar" id="buscar">
+    <div class="wrap buscar-in">
       <div>
-        <div class="etiqueta">Buscador</div>
+        <span class="eyebrow">Buscador</span>
         <h2>Encuentra tu desarrollo</h2>
       </div>
       <form class="buscador" role="search" id="buscador">
         <div class="buscador-caja">
-          <label class="buscador-campo buscador-cat">
-            <span>Categoría</span>
+          <div class="fld fld-cat">
             <select id="buscadorCategoria">
               <option value="">Todas las categorías</option>
               <option value="pv">Primera Vivienda</option>
               <option value="res">Residencial</option>
               <option value="plus">Residencial Plus</option>
             </select>
-          </label>
-          <label class="buscador-campo buscador-texto">
-            <span>Ciudad o desarrollo</span>
-            <input type="text" id="buscadorInput" placeholder="Ej. Tampico, Velasur…" autocomplete="off">
-          </label>
-          <button class="btn btn-coral" type="submit">
-            <svg class="buscador-icono" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            Buscar
-          </button>
+            <label for="buscadorCategoria">Categoría</label>
+          </div>
+          <div class="fld fld-texto">
+            <input type="text" id="buscadorInput" placeholder=" " autocomplete="off">
+            <label for="buscadorInput">Ciudad o desarrollo</label>
+          </div>
+          <button class="btn" type="submit">Buscar <span class="arr">→</span></button>
         </div>
         <div class="buscador-resultados" id="buscadorResultados" aria-live="polite"></div>
       </form>
     </div>
   </section>
 
-  <section class="cifras">
-    <div class="cifras-in ap">
-      <div><b data-num="15" data-prefijo="+">0</b><div class="raya"></div><span>Ciudades</span></div>
-      <div><b data-num="75" data-prefijo="+">0</b><div class="raya"></div><span>Desarrollos</span></div>
-      <div><b data-num="100" data-prefijo="+" data-sufijo=" mil">0</b><div class="raya"></div><span>Familias</span></div>
-      <div><b data-num="45">0</b><div class="raya"></div><span>Años de experiencia</span></div>
+  <section class="sec" id="desarrollos">
+    <div class="wrap">
+      <div class="sec-head ap">
+        <div>
+          <span class="eyebrow">Desarrollos</span>
+          <h2>Explora nuestros desarrollos</h2>
+          <p class="lead">Elige una categoría para ver los desarrollos que mejor se ajustan a lo que buscas.</p>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Categorías de vivienda" id="tabsCat"><span class="ind" aria-hidden="true"></span></div>
+      </div>
+      <div class="ap" id="panelesCat"></div>
     </div>
   </section>
 
-  <section class="seccion envoltura" id="desarrollos">
-    <div class="cab ap">
-      <div class="etiqueta">Desarrollos</div>
-      <h2>Explora nuestros desarrollos</h2>
-      <div class="filete"></div>
-      <p>Elige una categoría para ver los desarrollos que mejor se ajustan a lo que buscas.</p>
-    </div>
-    <div class="ap">
-      <div class="tabs" role="tablist" aria-label="Categorías de vivienda" id="tabsCat"></div>
-      <div id="panelesCat"></div>
+  <section class="sec arena" id="ciudades">
+    <div class="wrap">
+      <div class="sec-head ap">
+        <div>
+          <span class="eyebrow">Ciudades</span>
+          <h2>Elige tu ciudad</h2>
+          <p class="lead">Selecciona una ciudad para ver los desarrollos disponibles en ella.</p>
+        </div>
+      </div>
+      <div class="cgrid ap" id="listaCiudades"></div>
     </div>
   </section>
 
-  <section class="seccion envoltura sin-arriba" id="ciudades">
-    <div class="cab ap">
-      <div class="etiqueta">Ciudades</div>
-      <h2>Elige tu ciudad</h2>
-      <div class="filete"></div>
-      <p>Selecciona una ciudad para ver los desarrollos disponibles.</p>
+  <section class="gv" id="nosotros">
+    <div class="ph"><img src="Prototipos/4/img/4.webp" alt="Plaza de acceso con fuente de un desarrollo Grupo Velas" loading="lazy"></div>
+    <div class="txt ap">
+      <span class="eyebrow">Sobre Grupo Velas</span>
+      <h2>Más de 45 años construyendo México</h2>
+      <p class="lead">Transformamos ideas en desarrollos que destacan por su calidad excepcional, diseño innovador y ubicaciones estratégicas. Somos marca hermana de la cadena hotelera Velas Resorts.</p>
+      <div class="stats">
+        <div class="stat"><b data-num="15" data-prefijo="+">+15</b><span>ciudades en México</span></div>
+        <div class="stat"><b data-num="75" data-prefijo="+">+75</b><span>desarrollos</span></div>
+        <div class="stat"><b data-num="100" data-prefijo="+" data-sufijo="k">+100k</b><span>familias con patrimonio</span></div>
+        <div class="stat"><b data-num="45">45</b><span>años de experiencia</span></div>
+      </div>
     </div>
-    <div class="ciudades ap" id="listaCiudades"></div>
   </section>
+  <div class="marquee" aria-label="Desarrollos de Grupo Velas">
+    <p>Desarrollos de Grupo Velas</p>
+    <div class="track" id="marquesina"></div>
+  </div>
 
-  <section class="testimonio">
-    <div class="envoltura ap">
-      <div class="etiqueta">Testimonios</div>
-      <div class="testimonio-carrusel">
-        <div class="testimonio-slide activo">
-          <div class="testimonio-avatar">RM</div>
-          <div class="testimonio-estrellas">★★★★★</div>
+  <section class="sec testimonios center">
+    <div class="wrap ap">
+      <span class="eyebrow">Testimonios</span>
+      <div class="carrusel">
+        <div class="slide activo">
+          <div class="estrellas" aria-label="5 de 5 estrellas">★★★★★</div>
           <blockquote>“Qué está precioso para vivir. Las casas están hermosas y los departamentos espectaculares. ¡Me encanta!”</blockquote>
-          <cite>Rosa María Z. — Velasur</cite>
+          <cite><b>Rosa María Z.</b> · Velasur, Querétaro</cite>
         </div>
-        <div class="testimonio-slide">
-          <div class="testimonio-avatar">CM</div>
-          <div class="testimonio-estrellas">★★★★★</div>
+        <div class="slide">
+          <div class="estrellas" aria-label="5 de 5 estrellas">★★★★★</div>
           <blockquote>“La atención desde el primer día fue excelente, y la calidad de construcción superó nuestras expectativas.”</blockquote>
-          <cite>Carlos Mendoza — Tampico</cite>
+          <cite><b>Carlos Mendoza</b> · Tampico</cite>
         </div>
-        <div class="testimonio-slide">
-          <div class="testimonio-avatar">DR</div>
-          <div class="testimonio-estrellas">★★★★★</div>
+        <div class="slide">
+          <div class="estrellas" aria-label="5 de 5 estrellas">★★★★★</div>
           <blockquote>“Elegimos Grupo Velas por la ubicación y la plusvalía; hoy podemos decir que fue la mejor decisión para nuestra familia.”</blockquote>
-          <cite>Daniela Ruiz — Cancún</cite>
+          <cite><b>Daniela Ruiz</b> · Cancún</cite>
         </div>
       </div>
-      <div class="testimonio-puntos"></div>
+      <div class="puntos" id="puntos"></div>
     </div>
   </section>
 
-  <section class="seccion envoltura" id="nosotros">
-    <div class="cab ap">
-      <div class="etiqueta">Revista Horizonte</div>
-      <h2>Noticias y tendencias</h2>
-      <div class="filete"></div>
-    </div>
-    <div class="notas ap">
-      <a class="nota" href="#">
-        <div class="foto"><img src="Prototipos/4/img/blog/terreno-desarrollo-inmobiliario.webp" alt="Planeación de un desarrollo inmobiliario" loading="lazy"></div>
-        <div class="pie"><em>31 ago 2026</em><h3>¿Realidad o utopía? La infraestructura necesaria para el crecimiento urbano</h3><span class="leer-mas">Leer más <span aria-hidden="true">→</span></span></div>
-      </a>
-      <a class="nota" href="#">
-        <div class="foto"><img src="Prototipos/4/img/blog/sanitario-color-blanco-en-bano.jpeg" alt="Baño con acabados de un desarrollo Grupo Velas" loading="lazy"></div>
-        <div class="pie"><em>Grupo Velas</em><h3>Cómo elegir el desarrollo ideal para tu próxima inversión</h3><span class="leer-mas">Leer más <span aria-hidden="true">→</span></span></div>
-      </a>
-      <a class="nota" href="#">
-        <div class="foto"><img src="Prototipos/4/img/blog/01-ciudad-de-mexico-1024x473.webp" alt="Vista aérea de Ciudad de México" loading="lazy"></div>
-        <div class="pie"><em>Grupo Velas</em><h3>Las ciudades con mayor plusvalía en México este año</h3><span class="leer-mas">Leer más <span aria-hidden="true">→</span></span></div>
-      </a>
+  <section class="sec arena" id="revista">
+    <div class="wrap">
+      <div class="sec-head ap">
+        <div>
+          <span class="eyebrow">Revista Horizonte</span>
+          <h2>Noticias y tendencias</h2>
+        </div>
+        <a class="btn ghost" href="#">Ver todos los artículos <span class="arr">→</span></a>
+      </div>
+      <div class="ngrid ap">
+        <a class="ncard" href="#">
+          <div class="img"><img src="Prototipos/4/img/blog/terreno-desarrollo-inmobiliario.webp" alt="Planeación de un desarrollo inmobiliario" loading="lazy"></div>
+          <div class="b"><time datetime="2026-08-31">31 ago 2026</time><h3>¿Realidad o utopía? La infraestructura necesaria para el crecimiento urbano</h3><span class="link">Leer más <span class="arr">→</span></span></div>
+        </a>
+        <a class="ncard" href="#">
+          <div class="img"><img src="Prototipos/4/img/blog/sanitario-color-blanco-en-bano.jpeg" alt="Baño con acabados de un desarrollo Grupo Velas" loading="lazy"></div>
+          <div class="b"><span class="cat">Grupo Velas</span><h3>Cómo elegir el desarrollo ideal para tu próxima inversión</h3><span class="link">Leer más <span class="arr">→</span></span></div>
+        </a>
+        <a class="ncard" href="#">
+          <div class="img"><img src="Prototipos/4/img/blog/01-ciudad-de-mexico-1024x473.webp" alt="Vista aérea de Ciudad de México" loading="lazy"></div>
+          <div class="b"><span class="cat">Grupo Velas</span><h3>Las ciudades con mayor plusvalía en México este año</h3><span class="link">Leer más <span class="arr">→</span></span></div>
+        </a>
+      </div>
     </div>
   </section>
 
-  <section class="contacto-verde" id="contacto">
-    <div class="contacto-grid">
+  <section class="final" id="contacto">
+    <div class="bg" style="background-image:url('Prototipos/4/img/2.webp')"></div>
+    <div class="wrap">
       <div class="ap">
-        <div class="etiqueta">Contacto</div>
+        <span class="eyebrow">Asesores especializados</span>
         <h2>Agenda tu visita</h2>
-        <div class="filete"></div>
-        <p class="intro">Más de 100 mil familias ya confían en nosotros. Escríbenos y un asesor te contactará.</p>
+        <p>Más de 100 mil familias ya confían en nosotros. Cuéntanos qué buscas y un asesor te compartirá opciones, disponibilidad y precios actualizados.</p>
+        <span class="script">Descubre tu próximo hogar</span>
+        <ul class="contacts">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Lunes a viernes: 9:00 am – 6:00 pm</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Sábado: 9:00 am – 2:00 pm</li>
+        </ul>
       </div>
-      <div class="campos ap">
-        <div class="campo"><label for="h1">Nombre completo *</label><input id="h1" type="text"></div>
-        <div class="campo"><label for="h2">Correo *</label><input id="h2" type="email"></div>
-        <div class="campo"><label for="h3">Teléfono</label><input id="h3" type="tel"></div>
-        <div class="campo"><label for="h4">Ciudad de interés</label>
-          <select id="h4"><option>Cancún</option><option>Ciudad Juárez</option><option>Los Cabos</option><option>Matamoros</option><option>Playa del Carmen</option><option>Querétaro</option><option>Reynosa</option><option>Tampico</option></select>
+      <form class="form ap" data-form novalidate>
+        <h3>Obtén más información</h3>
+        <p class="hint">Recibe opciones y disponibilidad actualizada.</p>
+        <div class="fld"><input id="h1" type="text" placeholder=" " required autocomplete="name"><label for="h1">Nombre completo</label></div>
+        <div class="two">
+          <div class="fld"><input id="h3" type="tel" placeholder=" " required autocomplete="tel"><label for="h3">Teléfono / WhatsApp</label></div>
+          <div class="fld"><input id="h2" type="email" placeholder=" " autocomplete="email"><label for="h2">Correo electrónico</label></div>
         </div>
-        <div class="campo"><label for="h7">Categoría de interés</label>
-          <select id="h7" data-filtra="h6"><option value="">Todas</option><option value="pv">Primera Vivienda</option><option value="res">Residencial</option><option value="plus">Residencial Plus</option></select>
+        <div class="two">
+          <div class="fld"><select id="h7" data-filtra="h6"><option value="">Todas</option><option value="pv">Primera Vivienda</option><option value="res">Residencial</option><option value="plus">Residencial Plus</option></select><label for="h7">Categoría</label></div>
+          <div class="fld"><select id="h6" data-desarrollos></select><label for="h6">Desarrollo de interés</label></div>
         </div>
-        <div class="campo"><label for="h6">Desarrollo de interés</label>
-          <select id="h6" data-desarrollos></select>
+        <button class="btn" type="submit">Hablar con un asesor <span class="arr">→</span></button>
+        <p class="legal">Al enviar aceptas nuestro <a href="#">Aviso de privacidad</a>.</p>
+        <div class="ok" aria-live="polite">
+          <svg viewBox="0 0 70 70" fill="none" stroke="#b8976a" stroke-width="2" aria-hidden="true"><circle cx="35" cy="35" r="30"/><path d="m23 36 8 8 16-17"/></svg>
+          <h3>¡Gracias!</h3>
+          <p>Un asesor te contactará muy pronto.</p>
         </div>
-        <div class="campo ancho"><label for="h5">Mensaje</label><textarea id="h5"></textarea></div>
-        <div class="ancho"><button class="btn btn-coral" type="button" data-enviar>Quiero más información</button></div>
-      </div>
+      </form>
     </div>
   </section>
 
   <section class="news">
-    <div class="news-in">
+    <div class="wrap">
       <div>
         <h3>Suscríbete a nuestro newsletter</h3>
         <p>Nuevas tendencias, noticias de desarrollos y temas de interés directo en tu correo.</p>
       </div>
       <form onsubmit="return false">
-        <input type="email" placeholder="tu@correo.com" aria-label="Correo electrónico">
-        <button type="button" data-enviar>Enviar</button>
+        <div class="fld"><input id="newsCorreo" type="email" placeholder=" " autocomplete="email"><label for="newsCorreo">tu@correo.com</label></div>
+        <button class="btn" type="button" data-enviar>Suscribirme</button>
       </form>
     </div>
   </section>
 </div>
 
 <!-- ================================================================
-     VISTA 2 · VELASUR
+     VISTA 2 · DESARROLLO — Velasur, sobre la plantilla de Vela Towers
      ================================================================ -->
-<div data-pagina="velasur" hidden>
+<div data-pagina="velasur" data-cat="res" hidden>
 
-  <section class="hero hero--velasur">
-    <video
-      src="Prototipos/4/video/hero-velasur.mp4"
-      poster="Prototipos/4/img/hero-velasur.png"
-      autoplay muted loop playsinline preload="metadata"
-      aria-hidden="true"></video>
-    <div class="hero-overlay">
-      <div class="hero-txt">
-        <a class="badge" data-cat="res" href="#/residencial">Residencial</a>
-        <div class="sobre">Querétaro</div>
-        <h1>Velasur</h1>
-        <div class="precio-desde">Precio desde <strong>$</strong></div>
-        <div class="hero-btns">
-          <a class="btn btn-coral" href="#catalogo">Ver catálogo</a>
-          <a class="btn btn-blanco" href="#galeria">Ver galería</a>
+  <section class="hero" id="velasur-inicio">
+    <div class="hero-media">
+      <video src="Prototipos/4/video/hero-velasur.mp4" poster="Prototipos/4/img/3.webp" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+    </div>
+    <div class="wrap">
+      <div class="hero-inner fade-seq">
+        <span class="eyebrow">Casas y terrenos en Querétaro</span>
+        <h1>Vive <em>Velasur</em> Querétaro</h1>
+        <p class="sub">Un desarrollo que redefine el estándar de vivienda en Querétaro: diseño moderno, áreas para la convivencia en familia y el respaldo de Grupo Velas.</p>
+        <div class="chips">
+          <span class="chip live"><i></i>Nuevo proyecto <span style="opacity:.6">· Ventas disponibles</span></span>
+          <a class="badge" href="#/residencial">Residencial</a>
         </div>
-      </div>
-      <div class="datos datos-hero">
-        <div class="datos-in ap">
-          <div><b data-num="3">0</b><div class="raya"></div><span>Recámaras</span></div>
-          <div><b data-num="3">0</b><div class="raya"></div><span>Baños</span></div>
-          <div><b data-num="264" data-sufijo=" m²">0</b><div class="raya"></div><span>Superficie</span></div>
-          <div><b>Nuevo proyecto</b><div class="raya"></div><span>Estatus</span></div>
-          <div class="coral"><b>Disponible</b><div class="raya"></div><span>Ventas</span></div>
+        <div class="ctas">
+          <a class="btn glass" href="#galeria" data-desplazar>Ver galería <span class="arr">→</span></a>
+          <a class="btn blanco" href="#contacto-velasur" data-desplazar>Descargar brochure</a>
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="seccion estrecho">
-    <div class="cab ap">
-      <div class="etiqueta">Sobre el desarrollo</div>
-      <h2>Un desarrollo pensado para elevar tu calidad de vida</h2>
-      <div class="filete"></div>
-      <p>Un desarrollo que redefine el estándar de la vivienda inmobiliaria en Querétaro, pensado para elevar el nivel de calidad de vida de sus espacios privados. Diseño moderno de áreas calculadas con diferentes ambientes para la recreación, el acondicionamiento físico y la convivencia familiar en contacto con la naturaleza.</p>
-    </div>
-  </section>
-
-  <section class="seccion fondo-crema">
-    <div class="estrecho">
-      <div class="cab ap">
-        <div class="etiqueta">Ventajas</div>
-        <h2>Características que elevan tu vida</h2>
-        <div class="filete"></div>
-      </div>
-      <div class="caracteristicas ap">
-        <div class="caract"><span class="n">01</span><div><b>Comunidad</b><p>Espacios pensados para la convivencia y la vida en familia.</p></div></div>
-        <div class="caract"><span class="n">02</span><div><b>Ubicación</b><p>Cerca de servicios, vialidades principales y zonas de valor en Querétaro.</p></div></div>
-        <div class="caract"><span class="n">03</span><div><b>Seguridad</b><p>Pensado para estar tranquilo todos los días.</p></div></div>
-        <div class="caract"><span class="n">04</span><div><b>Diseño</b><p>Acabados modernos y distribución funcional en cada espacio.</p></div></div>
+    <div class="hero-stats">
+      <div class="wrap">
+        <div class="hs"><small>hasta</small><b>264</b><span>m² de superficie</span></div>
+        <div class="hs"><b>3</b><span>recámaras</span></div>
+        <div class="hs"><b>3</b><span>baños</span></div>
+        <div class="hs"><b>Casas</b><span>y terrenos</span></div>
       </div>
     </div>
   </section>
 
-  <section class="ubicacion">
-    <div class="mapa">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d959980.9385486755!2d-100.14089852296493!3d19.96963336937957!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d345f78a7a2f31%3A0x666013eb60f1d398!2sVelasur!5e0!3m2!1ses-419!2smx!4v1790007921711!5m2!1ses-419!2smx" style="border:0" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Ubicación de Velasur en Santiago de Querétaro"></iframe>
-    </div>
-    <div class="mapa-panel">
-      <div class="etiqueta">Ubicación</div>
-      <h2>Querétaro</h2>
-      <p>Una ubicación pensada para el crecimiento y la plusvalía a largo plazo.</p>
-      <a class="btn btn-coral" href="#">Cómo llegar</a>
+  <section class="perks">
+    <div class="wrap grid">
+      <div class="perk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.6 19c.5-3.6 3-5.7 5.4-5.7s4.9 2.1 5.4 5.7"/><circle cx="17" cy="8.8" r="2.3"/><path d="M15.2 13.1c2-.5 4 .9 4.7 3.9"/></svg><div><b>Comunidad</b><span>Espacios pensados para la convivencia y la vida en familia.</span></div></div>
+      <div class="perk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><div><b>Ubicación</b><span>Cerca de servicios, vialidades principales y zonas de valor.</span></div></div>
+      <div class="perk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 3.4 18.6 6v5.1c0 4.8-2.9 7.9-6.6 9.1-3.7-1.2-6.6-4.3-6.6-9.1V6Z"/><path d="M9 12.1l2.1 2.1L15.3 10"/></svg><div><b>Seguridad</b><span>Acceso controlado para vivir tranquilo todos los días.</span></div></div>
+      <div class="perk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m12 3 2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7Z"/></svg><div><b>Diseño</b><span>Acabados modernos y distribución funcional en cada espacio.</span></div></div>
     </div>
   </section>
 
-  <section class="seccion fondo-crema">
-    <div class="estrecho">
-      <div class="cab ap">
-        <div class="etiqueta">Amenidades</div>
-        <h2>Conoce nuestras amenidades</h2>
-        <div class="filete"></div>
-      </div>
-      <div class="amenidades ap">
-        <div>
-          <div class="amenidad-icono"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20c-1.2-6.2 2-13 12.5-15 1 8.3-3.3 13.4-9.6 15.3-1 .3-1.9.3-2.9-.3Z"/><path d="M8.2 17.8C10 13.6 13 10.3 17 7.3"/></svg></div>
-          <b>Áreas verdes</b>
-        </div>
-        <div>
-          <div class="amenidad-icono"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4 18.6 6v5.1c0 4.8-2.9 7.9-6.6 9.1-3.7-1.2-6.6-4.3-6.6-9.1V6Z"/><path d="M9 12.1l2.1 2.1L15.3 10"/></svg></div>
-          <b>Seguridad y control de acceso</b>
-        </div>
-        <div>
-          <div class="amenidad-icono"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.6 19c.5-3.6 3-5.7 5.4-5.7s4.9 2.1 5.4 5.7"/><circle cx="17" cy="8.8" r="2.3"/><path d="M15.2 13.1c2-.5 4 .9 4.7 3.9"/></svg></div>
-          <b>Espacios de convivencia</b>
-        </div>
-        <div>
-          <div class="amenidad-icono"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="1.2"/><path d="M9 8h1.3M13.7 8H15M9 12h1.3M13.7 12H15M9 16h1.3M13.7 16H15"/></svg></div>
-          <b>Diseño moderno</b>
-        </div>
-        <div>
-          <div class="amenidad-icono"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M9.6 16.2V7.8h3a2.6 2.6 0 0 1 0 5.2H9.6"/></svg></div>
-          <b>Estacionamiento</b>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="seccion estrecho" id="galeria">
-    <div class="cab ap">
-      <div class="etiqueta">Galería</div>
-      <h2>Fotografías del desarrollo</h2>
-      <div class="filete"></div>
-    </div>
-    <div class="galeria ap">
-      <figure class="m r169"><img src="Prototipos/4/img/1.webp" alt="Alberca y camastros de Velasur" loading="lazy"></figure>
-      <figure class="m r169"><img src="Prototipos/4/img/2.webp" alt="Alberca y terraza techada de Velasur al atardecer" loading="lazy"></figure>
-      <figure class="m r169"><img src="Prototipos/4/img/3.webp" alt="Fachada de una vivienda en Velasur" loading="lazy"></figure>
-      <figure class="m r169"><img src="Prototipos/4/img/4.webp" alt="Plaza de acceso con fuente y jardín de lavanda en Velasur" loading="lazy"></figure>
-      <figure class="m r169"><img src="Prototipos/4/img/5.webp" alt="Caseta de acceso controlado de Velasur" loading="lazy"></figure>
-      <figure class="m r169"><img src="Prototipos/4/img/6.webp" alt="Entrada monumental de Velasur" loading="lazy"></figure>
-    </div>
-  </section>
-
-  <section class="seccion" id="catalogo">
-    <div class="catalogo ap">
-      <div class="txt">
-        <div class="etiqueta">Disponibilidad</div>
-        <h2>Descarga el catálogo de Velasur</h2>
-        <p>Precios, especificaciones y ubicación en un solo documento.</p>
-        <div class="btns">
-          <a class="btn btn-coral" href="#">Descargar brochure (PDF)</a>
-          <a class="btn btn-borde" href="#contacto-velasur">Cotizar ahora</a>
-        </div>
-      </div>
-      <div class="foto"><img src="Prototipos/4/img/3.webp" alt="Fachada de una vivienda en Velasur" loading="lazy"></div>
-    </div>
-  </section>
-
-  <section class="contacto-crema" id="contacto-velasur">
-    <div class="contacto-grid">
+  <section class="sec">
+    <div class="wrap intro-grid">
       <div class="ap">
-        <div class="etiqueta">Contacto</div>
-        <h2>Agenda tu visita</h2>
-        <div class="filete"></div>
-        <p class="intro">Más de 100 mil familias que confían en nosotros. Adquiere hoy la propiedad de tus sueños.</p>
-      </div>
-      <div class="campos ap">
-        <div class="campo"><label for="v1">Nombre completo *</label><input id="v1" type="text"></div>
-        <div class="campo"><label for="v2">Correo *</label><input id="v2" type="email"></div>
-        <div class="campo"><label for="v3">Teléfono</label><input id="v3" type="tel"></div>
-        <div class="campo"><label for="v4">Horario preferido</label>
-          <select id="v4"><option>9 am – 2 pm</option><option>2 pm – 6 pm</option><option>Sábado, 9 am – 2 pm</option></select>
-        </div>
-        <div class="campo ancho"><label for="v6">Desarrollo de interés</label>
-          <select id="v6" data-desarrollos data-inicial="Velasur"></select>
-        </div>
-        <div class="campo ancho"><label for="v5">Mensaje</label><textarea id="v5"></textarea></div>
-        <div class="ancho campos-acciones">
-          <button class="btn btn-verde" type="button" data-enviar>Quiero más información</button>
-          <a class="btn btn-whatsapp" href="#">
-            <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.588-.525-.984-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.245.08.38-.058 1.171-.48 1.336-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/></svg>
-            WhatsApp
-          </a>
+        <span class="eyebrow">Sobre el desarrollo</span>
+        <h2>Pensado para elevar tu calidad de vida</h2>
+        <p class="lead">Velasur redefine el estándar de la vivienda en Querétaro. Diseño moderno con áreas calculadas y distintos ambientes para la recreación, el acondicionamiento físico y la convivencia familiar en contacto con la naturaleza.</p>
+        <div class="acts">
+          <a class="btn" href="#contacto-velasur" data-desplazar>Solicitar información <span class="arr">→</span></a>
+          <a class="btn ghost" href="#ubicacion" data-desplazar>Ver ubicación</a>
         </div>
       </div>
+      <div class="ph ap" style="--d:.1s"><img src="Prototipos/4/img/3.webp" alt="Fachada de una vivienda en Velasur" loading="lazy"></div>
     </div>
-    <div class="envoltura"><a class="volver" href="#/residencial">← Volver a Residencial</a></div>
   </section>
 
-  <a class="whatsapp-flotante" id="whatsappVelasur"
-    href="https://wa.me/524421089273?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20Velasur"
-    target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp sobre Velasur">
-    <span class="whatsapp-flotante-anillo" aria-hidden="true"></span>
-    <span class="whatsapp-flotante-icono">
-      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.588-.525-.984-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.245.08.38-.058 1.171-.48 1.336-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/></svg>
-    </span>
-    <span class="whatsapp-flotante-texto">¿Dudas sobre Velasur?</span>
-  </a>
+  <section class="sec arena" id="galeria">
+    <div class="wrap">
+      <div class="sec-head ap">
+        <div>
+          <span class="eyebrow">Galería</span>
+          <h2>Espacios que inspiran</h2>
+        </div>
+        <div class="filters" id="filtrosGaleria" role="group" aria-label="Filtrar galería">
+          <span class="pill" aria-hidden="true"></span>
+          <button type="button" class="on" data-f="todas">Todas</button>
+          <button type="button" data-f="amenidades">Amenidades</button>
+          <button type="button" data-f="vivienda">Vivienda</button>
+          <button type="button" data-f="accesos">Accesos</button>
+        </div>
+      </div>
+      <div class="gal ap" id="galeriaVelasur">
+        <figure class="g w2 h2" data-tag="amenidades" tabindex="0"><img src="Prototipos/4/img/1.webp" alt="Alberca y camastros de Velasur" loading="lazy"><figcaption>Alberca y casa club</figcaption></figure>
+        <figure class="g w2" data-tag="amenidades" tabindex="0"><img src="Prototipos/4/img/2.webp" alt="Alberca y terraza techada de Velasur al atardecer" loading="lazy"><figcaption>Terraza al atardecer</figcaption></figure>
+        <figure class="g" data-tag="vivienda" tabindex="0"><img src="Prototipos/4/img/3.webp" alt="Fachada de una vivienda en Velasur" loading="lazy"><figcaption>Fachada</figcaption></figure>
+        <figure class="g" data-tag="accesos" tabindex="0"><img src="Prototipos/4/img/4.webp" alt="Plaza de acceso con fuente y jardín de lavanda en Velasur" loading="lazy"><figcaption>Plaza de acceso</figcaption></figure>
+        <figure class="g w2" data-tag="accesos" tabindex="0"><img src="Prototipos/4/img/5.webp" alt="Caseta de acceso controlado de Velasur" loading="lazy"><figcaption>Caseta de acceso</figcaption></figure>
+        <figure class="g w2" data-tag="accesos" tabindex="0"><img src="Prototipos/4/img/6.webp" alt="Entrada monumental de Velasur" loading="lazy"><figcaption>Entrada monumental</figcaption></figure>
+      </div>
+    </div>
+  </section>
 
-  <a class="cta-movil" href="#contacto-velasur">Agenda tu visita</a>
+  <section class="sec" id="amenidades">
+    <div class="wrap">
+      <div class="sec-head ap">
+        <div>
+          <span class="eyebrow">Amenidades</span>
+          <h2>Vive la experiencia Velasur</h2>
+        </div>
+        <p class="lead">Espacios para la recreación, el deporte y la convivencia dentro del desarrollo.</p>
+      </div>
+      <div class="amen ap">
+        <div class="am big"><img src="Prototipos/4/img/1.webp" alt="" loading="lazy"><div class="t"><b>Alberca y casa club</b><span>Área de descanso con camastros</span></div></div>
+        <div class="am ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M6 20c-1.2-6.2 2-13 12.5-15 1 8.3-3.3 13.4-9.6 15.3-1 .3-1.9.3-2.9-.3Z"/><path d="M8.2 17.8C10 13.6 13 10.3 17 7.3"/></svg><b>Áreas verdes</b></div>
+        <div class="am ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M12 3.4 18.6 6v5.1c0 4.8-2.9 7.9-6.6 9.1-3.7-1.2-6.6-4.3-6.6-9.1V6Z"/><path d="M9 12.1l2.1 2.1L15.3 10"/></svg><b>Control de acceso</b></div>
+        <div class="am wide"><img src="Prototipos/4/img/2.webp" alt="" loading="lazy"><div class="t"><b>Terraza techada</b><span>Para reuniones y convivencia</span></div></div>
+        <div class="am ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.6 19c.5-3.6 3-5.7 5.4-5.7s4.9 2.1 5.4 5.7"/><circle cx="17" cy="8.8" r="2.3"/><path d="M15.2 13.1c2-.5 4 .9 4.7 3.9"/></svg><b>Espacios de convivencia</b></div>
+        <div class="am ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M9.6 16.2V7.8h3a2.6 2.6 0 0 1 0 5.2H9.6"/></svg><b>Estacionamiento</b></div>
+        <div class="am wide"><img src="Prototipos/4/img/6.webp" alt="" loading="lazy"><div class="t"><b>Entrada monumental</b><span>Acceso principal del desarrollo</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec loc" id="ubicacion">
+    <div class="wrap loc-grid">
+      <div class="ap">
+        <span class="eyebrow">Ubicación</span>
+        <h2>Querétaro, bien conectado</h2>
+        <p class="lead">Una ubicación pensada para el crecimiento y la plusvalía a largo plazo.</p>
+        <div class="addr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Santiago de Querétaro, Qro.</div>
+        <div class="acts">
+          <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=Velasur+Quer%C3%A9taro" target="_blank" rel="noopener">Cómo llegar <span class="arr">→</span></a>
+        </div>
+      </div>
+      <div class="mapbox ap" style="--d:.1s">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d959980.9385486755!2d-100.14089852296493!3d19.96963336937957!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d345f78a7a2f31%3A0x666013eb60f1d398!2sVelasur!5e0!3m2!1ses-419!2smx!4v1790007921711!5m2!1ses-419!2smx" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Ubicación de Velasur en Santiago de Querétaro"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="gv">
+    <div class="ph"><img src="Prototipos/4/img/4.webp" alt="Plaza de acceso de Velasur" loading="lazy"></div>
+    <div class="txt ap">
+      <span class="eyebrow">Sobre Grupo Velas</span>
+      <h2>El respaldo de 45 años construyendo</h2>
+      <p class="lead">Velasur forma parte de la categoría <a class="link" href="#/residencial">Residencial <span class="arr">→</span></a> de Grupo Velas, empresa mexicana con más de 75 desarrollos en 15 ciudades del país.</p>
+      <div class="stats">
+        <div class="stat"><b data-num="45">45</b><span>años de experiencia</span></div>
+        <div class="stat"><b data-num="75" data-prefijo="+">+75</b><span>desarrollos</span></div>
+        <div class="stat"><b data-num="15" data-prefijo="+">+15</b><span>ciudades</span></div>
+        <div class="stat"><b data-num="100" data-prefijo="+" data-sufijo="k">+100k</b><span>familias</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final" id="contacto-velasur">
+    <div class="bg" style="background-image:url('Prototipos/4/img/1.webp')"></div>
+    <div class="wrap">
+      <div class="ap">
+        <span class="eyebrow">Asesores especializados</span>
+        <h2>Agenda una visita a Velasur</h2>
+        <p>Tu experiencia de compra será 100% personalizada. Completa el formulario y recibe el brochure con precios, especificaciones y disponibilidad.</p>
+        <span class="script">Descubre tu próximo hogar</span>
+        <ul class="contacts">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Santiago de Querétaro, Qro.</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Lunes a viernes 9:00–18:00 · Sábado 9:00–14:00</li>
+        </ul>
+      </div>
+      <form class="form ap" data-form novalidate>
+        <h3>Obtén más información</h3>
+        <p class="hint">Recibe el brochure y la disponibilidad actualizada.</p>
+        <div class="fld"><input id="v1" type="text" placeholder=" " required autocomplete="name"><label for="v1">Nombre completo</label></div>
+        <div class="two">
+          <div class="fld"><input id="v3" type="tel" placeholder=" " required autocomplete="tel"><label for="v3">Teléfono / WhatsApp</label></div>
+          <div class="fld"><input id="v2" type="email" placeholder=" " autocomplete="email"><label for="v2">Correo electrónico</label></div>
+        </div>
+        <div class="two">
+          <div class="fld"><select id="v6" data-desarrollos data-inicial="Velasur"></select><label for="v6">Me interesa</label></div>
+          <div class="fld"><select id="v4"><option>Visita presencial</option><option>Videollamada</option><option>Llamada telefónica</option></select><label for="v4">Tipo de contacto</label></div>
+        </div>
+        <button class="btn" type="submit">Hablar con un asesor <span class="arr">→</span></button>
+        <div class="alt">
+          <a class="btn ghost" href="https://wa.me/524421089273?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20Velasur" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+        <p class="legal">Al enviar aceptas nuestro <a href="#">Aviso de privacidad</a>.</p>
+        <div class="ok" aria-live="polite">
+          <svg viewBox="0 0 70 70" fill="none" stroke="#b8976a" stroke-width="2" aria-hidden="true"><circle cx="35" cy="35" r="30"/><path d="m23 36 8 8 16-17"/></svg>
+          <h3>¡Gracias!</h3>
+          <p>Un asesor de Velasur te contactará muy pronto.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <a class="wa" id="waVelasur" href="https://wa.me/524421089273?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20Velasur"
+    target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp sobre Velasur">
+    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.588-.525-.984-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.245.08.38-.058 1.171-.48 1.336-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/></svg>
+  </a>
+  <div class="mbar" id="mbarVelasur">
+    <a class="btn ghost" href="https://wa.me/524421089273?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20Velasur" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="btn" href="#contacto-velasur" data-desplazar>Agendar visita <span class="arr">→</span></a>
+  </div>
+
+  <dialog id="lb" aria-label="Galería de Velasur">
+    <div class="stage">
+      <button class="lbx" type="button" aria-label="Cerrar">×</button>
+      <button class="lbnav prev" type="button" aria-label="Foto anterior">←</button>
+      <img alt="">
+      <button class="lbnav next" type="button" aria-label="Foto siguiente">→</button>
+    </div>
+    <div class="lbbar"><span class="lbcap"></span><span class="lbcount"></span></div>
+  </dialog>
 </div>
 
 <!-- ================================================================
      VISTA 3 · CATEGORÍA (#/primera-vivienda, #/residencial, #/residencial-plus)
-     Una sola plantilla; el contenido se pinta desde CATEGORIAS/DESARROLLOS.
+     Una sola plantilla; se pinta desde CATEGORIAS/DESARROLLOS.
      ================================================================ -->
-<div data-pagina="categoria" class="vista-cat" id="vistaCategoria" hidden></div>
+<div data-pagina="categoria" id="vistaCategoria" hidden></div>
 
 </main>
 
 <!-- ============ PIE ============ -->
 <footer class="pie">
-  <div class="pie-grid">
-    <div class="pie-marca">
-      <img src="Prototipos/4/img/logo/GRUPO_VELAS_BLANCO.png" alt="Grupo Velas">
-      <p>Transformamos ideas en desarrollos inmobiliarios que destacan por su calidad excepcional, diseño innovador y ubicaciones estratégicas en México.</p>
-      <div class="pie-social">
-        <a href="#" aria-label="Facebook">
-          <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor">
-            <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>
-          </svg>
-        </a>
-        <a href="#" aria-label="Instagram">
-          <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor">
-            <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.719-.891.923-1.417.198-.509.333-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.174-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
-          </svg>
-        </a>
-        <a href="#" aria-label="YouTube">
-          <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor">
-            <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"/>
-          </svg>
-        </a>
+  <div class="wrap fgrid">
+    <div>
+      <img class="pie-logo" src="Prototipos/4/img/logo/GRUPO_VELAS_BLANCO.png" alt="Grupo Velas">
+      <p class="desc">Transformamos ideas en desarrollos inmobiliarios que destacan por su calidad excepcional, diseño innovador y ubicaciones estratégicas en México.</p>
+      <div class="social">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.719-.891.923-1.417.198-.509.333-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.174-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"/></svg></a>
       </div>
     </div>
     <div>
-      <h4>Sitio</h4>
-      <ul><li><a href="#/">Inicio</a></li><li><a href="#/primera-vivienda">Primera Vivienda</a></li><li><a href="#/residencial">Residencial</a></li><li><a href="#/residencial-plus">Residencial Plus</a></li><li><a href="#ciudades">Ciudades</a></li><li><a href="#contacto">Contacto</a></li></ul>
+      <h4>Desarrollos</h4>
+      <a href="#/primera-vivienda">Primera Vivienda</a>
+      <a href="#/residencial">Residencial</a>
+      <a href="#/residencial-plus">Residencial Plus</a>
+      <a href="#ciudades">Ciudades</a>
+      <a href="#contacto">Contacto</a>
     </div>
     <div>
       <h4>Horario de atención</h4>
-      <ul><li>Lunes a viernes: 9:00 am – 6:00 pm</li><li>Sábado: 9:00 am – 2:00 pm</li></ul>
+      <p>Lunes a viernes: 9:00 am – 6:00 pm</p>
+      <p>Sábado: 9:00 am – 2:00 pm</p>
     </div>
   </div>
-  <div class="pie-base">
+  <div class="wrap fine">
     <span>© 2026 Grupo Velas. Todos los derechos reservados.</span>
-    <a href="#">Aviso de privacidad</a>
+    <span>Imágenes ilustrativas. Precios en MXN sujetos a cambio y disponibilidad. <a href="#">Aviso de privacidad</a></span>
   </div>
 </footer>
 
@@ -1101,146 +1084,30 @@ p{margin:0 0 1em}
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ==========================================================
-     IMÁGENES
-     Marcadores vectoriales en lugar de fotografía.
-     Para producción: sustituir cada
-        <svg data-escena="fachada"></svg>
-     por
-        <img src="img/fachada.jpg" alt="Fachada de Velasur">
-     (los contenedores ya usan position:absolute / inset:0)
-
-     HERO: los dos heroes ya no usan SVG, llevan <video> con
-     autoplay muted loop playsinline. Sus archivos:
-        video/hero-home.mp4     + img/hero-home.jpg     (póster)
-        video/hero-velasur.mp4  + img/hero-velasur.jpg  (póster)
-     La escena "lobby" queda sin uso; se conserva por si se
-     quiere volver a un hero vectorial.
-     ========================================================== */
-  const escenas={
-    /* hero home: lobby de resort al atardecer con espejo de agua */
-    lobby:`<defs><linearGradient id="e1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7C93A6"/><stop offset=".34" stop-color="#C98D61"/><stop offset=".52" stop-color="#8A4F2E"/><stop offset="1" stop-color="#2A1B14"/></linearGradient></defs>
-      <rect width="400" height="500" fill="url(#e1)"/>
-      <rect y="150" width="400" height="26" fill="#2C1C14"/>
-      <g fill="#33211722"><rect y="176" width="400" height="120"/></g>
-      <g fill="#2E1D15"><rect x="24" y="176" width="13" height="122"/><rect x="104" y="176" width="13" height="122"/><rect x="184" y="176" width="13" height="122"/><rect x="264" y="176" width="13" height="122"/><rect x="344" y="176" width="13" height="122"/></g>
-      <g fill="#F7C983" opacity=".75"><rect x="44" y="190" width="52" height="5" rx="2"/><rect x="124" y="190" width="52" height="5" rx="2"/><rect x="204" y="190" width="52" height="5" rx="2"/><rect x="284" y="190" width="52" height="5" rx="2"/></g>
-      <rect y="200" width="400" height="98" fill="#E39B52" opacity=".22"/>
-      <rect y="298" width="400" height="202" fill="#1D2A2B"/>
-      <g stroke="#E8A45E" stroke-opacity=".5" stroke-width="4" fill="none"><path d="M0 320 H400"/><path d="M0 356 H400"/><path d="M0 404 H400"/><path d="M0 460 H400"/></g>
-      <g fill="#F7C983" opacity=".35"><rect x="44" y="330" width="52" height="4"/><rect x="204" y="330" width="52" height="4"/></g>`,
-
-    /* hero velasur + galería: fachada moderna */
-    fachada:`<defs><linearGradient id="e2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FB4CE"/><stop offset=".45" stop-color="#C9D6DC"/><stop offset="1" stop-color="#A89D8A"/></linearGradient></defs>
-      <rect width="400" height="500" fill="url(#e2)"/>
-      <rect x="16" y="120" width="250" height="250" fill="#EFEAE0"/>
-      <rect x="16" y="120" width="250" height="16" fill="#CFC7B8"/>
-      <rect x="40" y="150" width="200" height="96" fill="#2F3B3C"/>
-      <g stroke="#EFEAE0" stroke-width="5"><path d="M90 150 V246"/><path d="M140 150 V246"/><path d="M190 150 V246"/></g>
-      <rect x="266" y="176" width="118" height="194" fill="#DCD4C6"/>
-      <rect x="266" y="176" width="118" height="14" fill="#C4BBAA"/>
-      <rect x="292" y="240" width="66" height="70" fill="#5C5348"/>
-      <rect x="16" y="258" width="250" height="14" fill="#D6CEC0"/>
-      <rect x="60" y="292" width="76" height="78" fill="#6E645A"/>
-      <g fill="#6D8757"><rect x="16" y="246" width="250" height="14"/><circle cx="330" cy="352" r="26"/></g>
-      <rect y="370" width="400" height="130" fill="#7B7468"/>
-      <rect y="370" width="400" height="12" fill="#948C7D"/>`,
-
-    atardecer:`<defs><linearGradient id="e3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#20364A"/><stop offset=".5" stop-color="#C57A45"/><stop offset="1" stop-color="#3A2A21"/></linearGradient></defs>
-      <rect width="400" height="500" fill="url(#e3)"/>
-      <circle cx="286" cy="176" r="34" fill="#FFD89B" opacity=".75"/>
-      <rect y="250" width="400" height="16" fill="#241A16"/>
-      <g fill="#2A1F19"><rect x="30" y="180" width="60" height="86"/><rect x="130" y="160" width="80" height="106"/><rect x="250" y="196" width="70" height="70"/></g>
-      <g fill="#FFC87A" opacity=".8"><rect x="44" y="200" width="28" height="7"/><rect x="146" y="184" width="44" height="7"/><rect x="264" y="216" width="36" height="7"/></g>
-      <rect y="266" width="400" height="234" fill="#16242C"/>
-      <g stroke="#E8A45E" stroke-opacity=".45" stroke-width="4" fill="none"><path d="M0 300 H400"/><path d="M0 348 H400"/><path d="M0 410 H400"/></g>`,
-
-    andador:`<rect width="400" height="500" fill="#8AA06F"/>
-      <rect width="400" height="180" fill="#AFC9D6"/>
-      <path d="M0 180 H400 V236 H0 Z" fill="#6B7F55"/>
-      <g fill="#E4DCC8"><rect y="260" width="400" height="46"/><rect y="352" width="400" height="46"/><rect y="444" width="400" height="46"/></g>
-      <g fill="#46583A"><circle cx="62" cy="158" r="46"/><circle cx="312" cy="142" r="58"/><circle cx="190" cy="172" r="34"/></g>
-      <g fill="#33422B"><rect x="58" y="158" width="9" height="46"/><rect x="306" y="142" width="11" height="58"/></g>`,
-
-    interior:`<defs><linearGradient id="e4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0E7D6"/><stop offset="1" stop-color="#B9A588"/></linearGradient></defs>
-      <rect width="400" height="500" fill="url(#e4)"/>
-      <rect width="128" height="500" fill="#4A3A2C"/>
-      <rect x="164" y="60" width="200" height="236" fill="#BFD9DD"/>
-      <g stroke="#6B5A45" stroke-width="6" fill="none"><rect x="164" y="60" width="200" height="236"/><path d="M264 60 V296"/><path d="M164 178 H364"/></g>
-      <rect x="28" y="330" width="344" height="20" fill="#7A6247"/>
-      <rect x="58" y="350" width="150" height="90" fill="#C8B79B"/>
-      <rect x="230" y="350" width="100" height="56" fill="#5F5240"/>
-      <rect y="440" width="400" height="60" fill="#9E8B6D"/>`,
-
-    sala:`<rect width="400" height="500" fill="#E7DCC8"/>
-      <rect width="400" height="210" fill="#D6C9B0"/>
-      <rect x="0" y="210" width="400" height="10" fill="#B5A68A"/>
-      <rect x="40" y="96" width="160" height="112" fill="#3E4F46"/>
-      <rect x="230" y="120" width="130" height="88" fill="#BFD9DD"/>
-      <rect x="40" y="250" width="200" height="86" rx="6" fill="#8C9A86"/>
-      <rect x="264" y="266" width="96" height="70" rx="6" fill="#6E5B47"/>
-      <circle cx="150" cy="60" r="22" fill="#B8912B" opacity=".8"/>
-      <rect y="400" width="400" height="100" fill="#C3B394"/>`,
-
-    alberca:`<defs><linearGradient id="e5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4FC0CC"/><stop offset="1" stop-color="#0E6A83"/></linearGradient></defs>
-      <rect width="400" height="500" fill="#DCCFB2"/>
-      <rect width="400" height="150" fill="#9FCBDD"/>
-      <rect y="150" width="400" height="70" fill="#CBBE9F"/>
-      <rect y="220" width="400" height="280" fill="url(#e5)"/>
-      <g stroke="#FFFFFF" stroke-opacity=".38" stroke-width="4" fill="none"><path d="M0 270 H400"/><path d="M0 330 H400"/><path d="M0 400 H400"/><path d="M0 464 H400"/></g>
-      <g fill="#F6F1E4"><rect x="30" y="176" width="70" height="12" rx="6"/><rect x="120" y="176" width="70" height="12" rx="6"/></g>
-      <g fill="#3E6B4B"><circle cx="330" cy="120" r="34"/><circle cx="372" cy="140" r="26"/></g>`,
-
-    albercaAmplia:`<defs><linearGradient id="e6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#57C7D0"/><stop offset="1" stop-color="#0D5E77"/></linearGradient></defs>
-      <rect width="400" height="500" fill="#D9CCAF"/>
-      <rect width="400" height="190" fill="#A7D2E3"/>
-      <g fill="#EFE9DA"><rect y="150" width="400" height="14"/><rect x="30" y="100" width="12" height="64"/><rect x="180" y="100" width="12" height="64"/><rect x="330" y="100" width="12" height="64"/></g>
-      <rect y="240" width="400" height="260" fill="url(#e6)"/>
-      <g stroke="#FFFFFF" stroke-opacity=".35" stroke-width="4" fill="none"><path d="M0 286 H400"/><path d="M0 346 H400"/><path d="M0 418 H400"/></g>
-      <g fill="#F4EFE2"><rect x="24" y="200" width="64" height="11" rx="5"/><rect x="104" y="200" width="64" height="11" rx="5"/><rect x="184" y="200" width="64" height="11" rx="5"/></g>`,
-
-    terraza:`<defs><linearGradient id="e7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B5E74"/><stop offset=".55" stop-color="#C08551"/><stop offset="1" stop-color="#3C2D22"/></linearGradient></defs>
-      <rect width="400" height="500" fill="url(#e7)"/>
-      <rect y="230" width="400" height="20" fill="#2B2019"/>
-      <g fill="#EFE7D6"><rect x="40" y="250" width="320" height="120"/></g>
-      <g fill="#2F3B3C"><rect x="70" y="272" width="110" height="74"/><rect x="220" y="272" width="110" height="74"/></g>
-      <rect y="370" width="400" height="130" fill="#6B7A56"/>
-      <g fill="#F7C983" opacity=".6"><rect x="80" y="286" width="90" height="6"/><rect x="230" y="286" width="90" height="6"/></g>`,
-
-    jardin:`<rect width="400" height="500" fill="#7E9A62"/>
-      <rect width="400" height="200" fill="#A9C8DA"/>
-      <path d="M0 200 H400 V254 H0 Z" fill="#5F7448"/>
-      <g fill="#E7DFCB"><rect y="290" width="400" height="40"/><rect y="378" width="400" height="40"/></g>
-      <g fill="#41522F"><circle cx="70" cy="176" r="50"/><circle cx="300" cy="160" r="62"/></g>
-      <rect x="150" y="440" width="104" height="16" rx="8" fill="#B8912B"/>`
-  };
-  document.querySelectorAll('[data-escena]').forEach(s=>{
-    s.setAttribute('viewBox','0 0 400 500');
-    s.setAttribute('preserveAspectRatio','xMidYMid slice');
-    s.innerHTML=escenas[s.dataset.escena]||'';
-  });
-
-  /* ==========================================================
      CATEGORÍAS Y DESARROLLOS
      Fuente única para: hero, pestañas, página de categoría,
-     buscador y selects de los formularios.
+     buscador, marquesina y selects de los formularios.
      Mapeo de categorías acordado a partir de grupovelas.com.mx
      (el sitio actual no publica categorías).
+     href: página del desarrollo. Los que no tienen página propia
+     llevan al formulario con el desarrollo preseleccionado.
      ========================================================== */
   const IMG='Prototipos/4/img/desarrollos/';
+  const VELA_TOWERS='https://donvictorgarcia.github.io/velatowersv2/';
   const CATEGORIAS=[
-    {id:'pv',slug:'primera-vivienda',n:'Primera Vivienda',img:'arecas-matamoros.webp',
+    {id:'pv',slug:'primera-vivienda',n:'Primera Vivienda',h:'Primera <em>Vivienda</em>',img:'arecas-matamoros.webp',
       perfil:'Para familias jóvenes que compran su primera casa: espacios funcionales, comunidades seguras y un precio pensado para empezar su patrimonio.',
       titular:'Tu primer patrimonio, bien pensado',
       puntos:[['Tu primera casa','Viviendas pensadas para dar el primer paso con un pago accesible.'],
               ['Comunidad segura','Fraccionamientos con control de acceso y áreas comunes para la familia.'],
               ['Espacios funcionales','Distribuciones eficientes que aprovechan cada metro.']]},
-    {id:'res',slug:'residencial',n:'Residencial',img:'velasur.webp',
+    {id:'res',slug:'residencial',n:'Residencial',h:'<em>Residencial</em>',img:'velasur.webp',
       perfil:'Para familias que buscan crecer: casas y departamentos más amplios en cotos privados, con amenidades y ubicaciones consolidadas.',
       titular:'Más espacio para la siguiente etapa',
       puntos:[['Más espacio para crecer','Casas y departamentos amplios para familias en expansión.'],
               ['Cotos privados con amenidades','Albercas, casa club y áreas verdes dentro del desarrollo.'],
               ['Ubicación consolidada','Cerca de escuelas, servicios y vialidades principales.']]},
-    {id:'plus',slug:'residencial-plus',n:'Residencial Plus',img:'vistavela-iii.webp',
+    {id:'plus',slug:'residencial-plus',n:'Residencial Plus',h:'Residencial <em>Plus</em>',img:'vistavela-iii.webp',
       perfil:'Para quien busca lo excepcional: departamentos y townhouses frente al mar o en las mejores zonas, con amenidades tipo resort y alta plusvalía.',
       titular:'Vivir donde otros vacacionan',
       puntos:[['Vistas y ubicaciones únicas','Frente al mar, en destinos de playa o en las zonas más cotizadas.'],
@@ -1251,7 +1118,7 @@ p{margin:0 0 1em}
   const DESARROLLOS=[
     {n:'Loma Bonita',c:'Reynosa',cat:'pv',tipo:'Casas',img:'loma-bonita.webp'},
     {n:'Fraccionamiento Arecas',c:'Matamoros',cat:'pv',tipo:'Casas',img:'arecas-matamoros.webp'},
-    {n:'Arecas Altamira',c:'Altamira',cat:'pv',tipo:'Casas',img:'arecas-altamira.webp'},
+    {n:'Arecas Altamira',c:'Altamira',zona:'Tampico',cat:'pv',tipo:'Casas',img:'arecas-altamira.webp'},
     {n:'Valle Esmeralda',c:'Tampico',cat:'pv',tipo:'Casas',img:'valle-esmeralda.webp'},
     {n:'Velasur',c:'Querétaro',cat:'res',tipo:'Casas y terrenos',img:'velasur.webp',href:'#/velasur'},
     {n:'Coto Jade',c:'Tampico',cat:'res',tipo:'Casas',img:'coto-jade.webp'},
@@ -1260,27 +1127,38 @@ p{margin:0 0 1em}
     {n:'Selvanova Residencial',c:'Playa del Carmen',cat:'res',tipo:'Casas',img:'selvanova.webp'},
     {n:'Florencia Residencial',c:'Reynosa',cat:'res',tipo:'Departamentos',img:'florencia.webp'},
     {n:'Vista Laguna',c:'Tampico',cat:'res',tipo:'Casas y departamentos',img:'vista-laguna.webp'},
-    {n:'Vela Towers',c:'Cancún',cat:'plus',tipo:'Departamentos',img:'vela-towers.webp'},
+    {n:'Vela Towers',c:'Cancún',cat:'plus',tipo:'Departamentos',img:'vela-towers.webp',href:VELA_TOWERS},
     {n:'Vistavela III',c:'Los Cabos',cat:'plus',tipo:'Departamentos',img:'vistavela-iii.webp'},
     {n:'Vistavela Sunset',c:'Los Cabos',cat:'plus',tipo:'Departamentos',img:'vistavela-sunset.webp'},
-    {n:'Townhouses Velamar',c:'Altamira',cat:'plus',tipo:'Townhouses frente al mar',img:'velamar.webp'},
-    {n:'Torre Milos',c:'Altamira',cat:'plus',tipo:'Departamentos frente al mar',img:'torre-milos.webp'},
+    {n:'Townhouses Velamar',c:'Altamira',zona:'Tampico',cat:'plus',tipo:'Townhouses frente al mar',img:'velamar.webp'},
+    {n:'Torre Milos',c:'Altamira',zona:'Tampico',cat:'plus',tipo:'Departamentos frente al mar',img:'torre-milos.webp'},
     {n:'Torre 829',c:'Tampico',cat:'plus',tipo:'Departamentos',img:'torre-829.webp'},
     {n:'Conjunto Roma 401',c:'Tampico',cat:'plus',tipo:'Departamentos',img:'conjunto-roma-401.webp'}
   ];
   const porCat=id=>DESARROLLOS.filter(d=>d.cat===id);
+  const ciudadesDe=ds=>new Set(ds.map(d=>d.c)).size;
   const plural=(n,s,p)=>`${n} ${n===1?s:p}`;
   function conteo(id){
     const ds=porCat(id);
-    return `${plural(ds.length,'desarrollo','desarrollos')} · ${plural(new Set(ds.map(d=>d.c)).size,'ciudad','ciudades')}`;
+    return `${plural(ds.length,'desarrollo','desarrollos')} · ${plural(ciudadesDe(ds),'ciudad','ciudades')}`;
   }
-  /* los desarrollos sin página propia llevan al formulario con el desarrollo preseleccionado */
-  const tarjeta=d=>`<a class="desarrollo" data-cat="${d.cat}" href="${d.href||'#contacto'}" data-desarrollo="${d.n}">
-      <div class="foto"><img src="${IMG}${d.img}" alt="${d.n}, ${d.c}" loading="lazy"><span class="badge">${CAT[d.cat].n}</span><span class="flecha" aria-hidden="true">→</span></div>
-      <div class="pie"><b>${d.n}</b><span>${d.c} · ${d.tipo}</span></div>
+  const hrefDe=d=>d.href||'#contacto';
+  const tarjeta=d=>`<a class="dcard" data-cat="${d.cat}" href="${hrefDe(d)}" data-desarrollo="${d.n}">
+      <div class="dcard-img"><img src="${IMG}${d.img}" alt="${d.n}, ${d.c}" loading="lazy"><span class="badge">${CAT[d.cat].n}</span></div>
+      <div class="dcard-body">
+        <span class="dcard-loc">${d.c} · ${d.tipo}</span>
+        <h3>${d.n}</h3>
+        <span class="link">${d.href?'Ver desarrollo':'Solicitar información'} <span class="arr">→</span></span>
+      </div>
     </a>`;
+  const chips=id=>{const ds=porCat(id);
+    return `<span class="chip"><b>${ds.length}</b> desarrollos</span><span class="chip"><b>${ciudadesDe(ds)}</b> ciudades</span>`};
+  document.querySelectorAll('[data-chips]').forEach(el=>el.innerHTML=chips(el.dataset.chips));
 
-  document.querySelectorAll('[data-conteo]').forEach(el=>el.textContent=conteo(el.dataset.conteo));
+  /* marquesina "Desarrollos de Grupo Velas" (se duplica para el bucle continuo) */
+  const marquesina=document.getElementById('marquesina');
+  const nombres=DESARROLLOS.map(d=>`<a href="${hrefDe(d)}" data-cat="${d.cat}" data-desarrollo="${d.n}">${d.n}</a>`).join('');
+  marquesina.innerHTML=nombres+nombres.replace(/<a /g,'<a tabindex="-1" aria-hidden="true" ');
 
   /* ---------- pestañas "Explora nuestros desarrollos" ---------- */
   const tabsCat=document.getElementById('tabsCat');
@@ -1291,11 +1169,15 @@ p{margin:0 0 1em}
         aria-selected="${i===0}" tabindex="${i===0?0:-1}">${c.n}<span class="n">${porCat(c.id).length}</span></button>`);
     panelesCat.insertAdjacentHTML('beforeend',
       `<div class="tab-panel" role="tabpanel" id="panel-${c.id}" aria-labelledby="tab-${c.id}" data-cat="${c.id}"${i?' hidden':''}>
-        <div class="desarrollos">${porCat(c.id).map(tarjeta).join('')}</div>
-        <div class="tab-panel-pie"><a class="ver-cat" href="#/${c.slug}">Ver todo ${c.n} <span aria-hidden="true">→</span></a></div>
+        <div class="dgrid">${porCat(c.id).map(tarjeta).join('')}</div>
+        <div class="tab-panel-pie"><p>${c.perfil}</p><a class="btn btn-cat" href="#/${c.slug}">Ver todo ${c.n} <span class="arr">→</span></a></div>
       </div>`);
   });
+  const indicador=tabsCat.querySelector('.ind');
   function elegirTab(id,foco){
+    const i=CATEGORIAS.findIndex(c=>c.id===id);
+    tabsCat.dataset.cat=id;
+    indicador.style.transform=`translateX(${i*100}%)`;
     tabsCat.querySelectorAll('.tab').forEach(t=>{
       const sel=t.dataset.cat===id;
       t.setAttribute('aria-selected',sel);
@@ -1304,6 +1186,7 @@ p{margin:0 0 1em}
     });
     panelesCat.querySelectorAll('.tab-panel').forEach(p=>p.hidden=p.dataset.cat!==id);
   }
+  elegirTab('pv');
   tabsCat.addEventListener('click',e=>{const t=e.target.closest('.tab');if(t) elegirTab(t.dataset.cat)});
   tabsCat.addEventListener('keydown',e=>{
     const ts=[...tabsCat.querySelectorAll('.tab')];
@@ -1319,13 +1202,19 @@ p{margin:0 0 1em}
   });
 
   /* ---------- página de categoría ---------- */
+  const ICONOS=[
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 20V10l8-6 8 6v10"/><path d="M9.5 20v-5.5h5V20"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 3.4 18.6 6v5.1c0 4.8-2.9 7.9-6.6 9.1-3.7-1.2-6.6-4.3-6.6-9.1V6Z"/><path d="M9 12.1l2.1 2.1L15.3 10"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m12 3 2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7Z"/></svg>'
+  ];
   const vistaCategoria=document.getElementById('vistaCategoria');
   const panelCompacto=c=>`<a class="panel-cat" data-cat="${c.id}" href="#/${c.slug}">
       <img src="${IMG}${c.img}" alt="" loading="lazy">
       <div class="panel-cat-txt">
+        <span class="num">Categoría</span>
         <h2>${c.n}</h2>
-        <span class="conteo">${conteo(c.id)}</span>
-        <span class="btn btn-cat">Ver desarrollos</span>
+        <div class="chips">${chips(c.id)}</div>
+        <span class="btn btn-cat">Ver desarrollos <span class="arr">→</span></span>
       </div>
     </a>`;
   function pintarCategoria(c){
@@ -1333,41 +1222,51 @@ p{margin:0 0 1em}
     vistaCategoria.dataset.cat=c.id;
     vistaCategoria.innerHTML=`
       <section class="hero hero--cat">
-        <img src="${IMG}${c.img}" alt="">
-        <div class="hero-txt">
-          <span class="badge">Categoría</span>
-          <h1>${c.n}</h1>
-          <p>${c.perfil}</p>
-          <div class="conteo">${conteo(c.id)}</div>
-          <div class="hero-btns">
-            <a class="btn btn-cat" href="#cat-desarrollos" data-desplazar>Ver desarrollos</a>
-            <a class="btn btn-blanco" href="#contacto" data-categoria="${c.id}">Agenda tu visita</a>
+        <div class="hero-media"><img src="${IMG}${c.img}" alt=""></div>
+        <div class="wrap">
+          <div class="hero-inner fade-seq">
+            <span class="eyebrow">Categoría · Grupo Velas</span>
+            <h1>${c.h}</h1>
+            <p class="sub">${c.perfil}</p>
+            <div class="chips"><span class="chip live"><i></i>${plural(ds.length,'desarrollo disponible','desarrollos disponibles')}</span><span class="badge">${c.n}</span></div>
+            <div class="ctas">
+              <a class="btn btn-cat" href="#cat-desarrollos" data-desplazar>Ver desarrollos <span class="arr">→</span></a>
+              <a class="btn glass" href="#contacto" data-categoria="${c.id}">Agendar visita</a>
+            </div>
           </div>
         </div>
+        <div class="hero-stats"><div class="wrap">
+          <div class="hs"><b>${ds.length}</b><span>desarrollos</span></div>
+          <div class="hs"><b>${ciudadesDe(ds)}</b><span>ciudades</span></div>
+          <div class="hs"><b>45</b><span>años de respaldo</span></div>
+          <div class="hs"><b>+100k</b><span>familias</span></div>
+        </div></div>
       </section>
-      <section class="seccion estrecho">
-        <div class="cab ap"><div class="etiqueta">Para quién es</div><h2>${c.titular}</h2><div class="filete"></div></div>
-        <div class="caracteristicas ap">${c.puntos.map(([t,p],i)=>
-          `<div class="caract"><span class="n">0${i+1}</span><div><b>${t}</b><p>${p}</p></div></div>`).join('')}</div>
-      </section>
-      <section class="seccion fondo-crema" id="cat-desarrollos">
-        <div class="envoltura">
-          <div class="cab ap"><div class="etiqueta">Desarrollos</div><h2>Desarrollos ${c.n}</h2><div class="filete"></div>
-            <p>${conteo(c.id)}.</p></div>
-          <div class="desarrollos ap">${ds.map(tarjeta).join('')}</div>
+      <section class="perks"><div class="wrap grid" style="--cols:3">
+        ${c.puntos.map(([t,p],i)=>`<div class="perk">${ICONOS[i]}<div><b>${t}</b><span>${p}</span></div></div>`).join('')}
+      </div></section>
+      <section class="sec" id="cat-desarrollos">
+        <div class="wrap">
+          <div class="sec-head ap">
+            <div><span class="eyebrow">Desarrollos</span><h2>${c.titular}</h2></div>
+            <p class="lead">${conteo(c.id)} de la categoría ${c.n}.</p>
+          </div>
+          <div class="dgrid ap">${ds.map(tarjeta).join('')}</div>
         </div>
       </section>
-      <section class="seccion envoltura">
-        <div class="cab ap"><div class="etiqueta">Otras categorías</div><h2>Explora también</h2><div class="filete"></div></div>
-        <div class="otras-cats ap">${CATEGORIAS.filter(o=>o!==c).map(panelCompacto).join('')}</div>
+      <section class="sec arena">
+        <div class="wrap">
+          <div class="sec-head ap"><div><span class="eyebrow">Otras categorías</span><h2>Explora también</h2></div></div>
+          <div class="ocats ap">${CATEGORIAS.filter(o=>o!==c).map(panelCompacto).join('')}</div>
+        </div>
       </section>
-      <section class="cta-cat">
-        <div class="envoltura ap">
-          <div class="etiqueta">Contacto</div>
-          <h2>¿Te interesa ${c.n}? Agenda tu visita</h2>
-          <div class="filete"></div>
+      <section class="final solo">
+        <div class="bg" style="background-image:url('${IMG}${c.img}')"></div>
+        <div class="wrap ap">
+          <span class="eyebrow">Asesores especializados</span>
+          <h2>¿Te interesa ${c.n}?</h2>
           <p>Un asesor te ayuda a elegir el desarrollo y el esquema de compra que mejor se ajusta a ti.</p>
-          <div class="hero-btns"><a class="btn btn-coral" href="#contacto" data-categoria="${c.id}">Quiero más información</a></div>
+          <div class="ctas"><a class="btn blanco" href="#contacto" data-categoria="${c.id}">Agendar visita <span class="arr">→</span></a></div>
         </div>
       </section>`;
   }
@@ -1407,7 +1306,7 @@ p{margin:0 0 1em}
   });
 
   /* ==========================================================
-     TARJETAS DE CIUDAD (mismo orden que el PDF)
+     CIUDADES: tarjetas y submenú abren el buscador filtrado
      ========================================================== */
   const ciudades=[
     {n:'Cancún',d:1,img:'cancun.jpg'},
@@ -1419,37 +1318,23 @@ p{margin:0 0 1em}
     {n:'Reynosa',d:2,img:'reynosa.jpg'},
     {n:'Tampico',d:10,img:'tampico.jpg'}
   ];
-  const lista=document.getElementById('listaCiudades');
-  ciudades.forEach(c=>{
-    const a=document.createElement('a');
-    a.className='ciudad';a.href='#/velasur';
-    a.innerHTML=`<div class="foto"><img src="Prototipos/4/img/ciudades/${c.img}" alt="${c.n}" loading="lazy"><span class="flecha">→</span></div>
-      <div class="pie"><b>${c.n}</b><span>${c.d} ${c.d===1?'desarrollo':'desarrollos'}</span></div>`;
-    lista.appendChild(a);
-  });
+  document.getElementById('listaCiudades').innerHTML=ciudades.map(c=>
+    `<a class="ccard" href="#buscar" data-ciudad="${c.n}">
+      <img src="Prototipos/4/img/ciudades/${c.img}" alt="" loading="lazy">
+      <div class="t"><div><b>${c.n}</b><span>${plural(c.d,'desarrollo','desarrollos')}</span></div><span class="arr" aria-hidden="true">→</span></div>
+    </a>`).join('');
+  document.getElementById('submenuCiudades').innerHTML=ciudades.map(c=>
+    `<a href="#buscar" data-ciudad="${c.n}">${c.n}</a>`).join('');
 
-  /* submenú "Ciudades" del nav: reutiliza el mismo array */
-  const subCiudades=document.getElementById('submenuCiudades');
-  ciudades.forEach(c=>{
-    const a=document.createElement('a');
-    a.href='#/velasur'; // misma limitación que las tarjetas de #listaCiudades: única plantilla de detalle disponible
-    a.textContent=c.n;
-    subCiudades.appendChild(a);
-  });
-
-  /* submenús del nav: aria-expanded + cierre con Escape (el hover/foco ya los abre por CSS) */
-  const mqMovil=matchMedia('(max-width:900px)');
+  /* ---------- submenús del nav ---------- */
+  const mqMovil=matchMedia('(max-width:980px)');
   document.querySelectorAll('.item-sub').forEach(item=>{
     const toggle=item.querySelector('a');
     item.addEventListener('mouseenter',()=>toggle.setAttribute('aria-expanded','true'));
     item.addEventListener('mouseleave',()=>toggle.setAttribute('aria-expanded','false'));
     item.addEventListener('focusin',()=>toggle.setAttribute('aria-expanded','true'));
-    item.addEventListener('focusout',e=>{
-      if(!item.contains(e.relatedTarget)) toggle.setAttribute('aria-expanded','false');
-    });
-    item.addEventListener('keydown',e=>{
-      if(e.key==='Escape'){toggle.setAttribute('aria-expanded','false');toggle.blur()}
-    });
+    item.addEventListener('focusout',e=>{if(!item.contains(e.relatedTarget)) toggle.setAttribute('aria-expanded','false')});
+    item.addEventListener('keydown',e=>{if(e.key==='Escape'){toggle.setAttribute('aria-expanded','false');toggle.blur()}});
     /* en móvil el enlace despliega su submenú en vez de navegar */
     toggle.addEventListener('click',e=>{
       if(!mqMovil.matches) return;
@@ -1459,9 +1344,7 @@ p{margin:0 0 1em}
     });
   });
 
-  /* ==========================================================
-     MENÚ HAMBURGUESA (móvil)
-     ========================================================== */
+  /* ---------- menú móvil ---------- */
   const menuBoton=document.getElementById('menuBoton');
   const menuPrincipal=document.getElementById('menuPrincipal');
   const menuFondo=document.getElementById('menuFondo');
@@ -1475,14 +1358,12 @@ p{margin:0 0 1em}
       item.querySelector('a').setAttribute('aria-expanded','false');
     });
   }
-  function abrirMenu(){
+  menuBoton.addEventListener('click',()=>{
+    if(menuBoton.getAttribute('aria-expanded')==='true'){cerrarMenu();return}
     menuBoton.setAttribute('aria-expanded','true');
     menuPrincipal.classList.add('abierto');
     menuFondo.classList.add('visible');
     document.body.classList.add('menu-abierto');
-  }
-  menuBoton.addEventListener('click',()=>{
-    menuBoton.getAttribute('aria-expanded')==='true'?cerrarMenu():abrirMenu();
   });
   menuFondo.addEventListener('click',cerrarMenu);
   menuPrincipal.addEventListener('click',e=>{
@@ -1493,32 +1374,23 @@ p{margin:0 0 1em}
   addEventListener('keydown',e=>{if(e.key==='Escape') cerrarMenu()});
   mqMovil.addEventListener('change',e=>{if(!e.matches) cerrarMenu()});
 
-  /* ==========================================================
-     CARRUSEL DE TESTIMONIOS
-     ========================================================== */
-  const testimonioSlides=[...document.querySelectorAll('.testimonio-slide')];
-  const testimonioPuntos=document.querySelector('.testimonio-puntos');
-  if(testimonioSlides.length && testimonioPuntos){
-    testimonioSlides.forEach((s,i)=>{
-      const b=document.createElement('button');
-      b.type='button';
-      b.setAttribute('aria-label','Ver testimonio '+(i+1));
-      if(i===0) b.classList.add('activo');
-      b.addEventListener('click',()=>mostrarTestimonio(i));
-      testimonioPuntos.appendChild(b);
-    });
-    const puntos=[...testimonioPuntos.children];
-    let testimonioActual=0,testimonioTemporizador;
-    function mostrarTestimonio(i){
-      testimonioSlides[testimonioActual].classList.remove('activo');
-      puntos[testimonioActual].classList.remove('activo');
-      testimonioActual=i;
-      testimonioSlides[testimonioActual].classList.add('activo');
-      puntos[testimonioActual].classList.add('activo');
-    }
-    function testimonioSiguiente(){mostrarTestimonio((testimonioActual+1)%testimonioSlides.length)}
-    if(!reduce) testimonioTemporizador=setInterval(testimonioSiguiente,6000);
+  /* ---------- testimonios ---------- */
+  const slides=[...document.querySelectorAll('.slide')];
+  const puntos=document.getElementById('puntos');
+  let actual=0;
+  slides.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.type='button';b.setAttribute('aria-label','Ver testimonio '+(i+1));
+    if(i===0) b.classList.add('activo');
+    b.addEventListener('click',()=>mostrar(i));
+    puntos.appendChild(b);
+  });
+  function mostrar(i){
+    slides[actual].classList.remove('activo');puntos.children[actual].classList.remove('activo');
+    actual=i;
+    slides[actual].classList.add('activo');puntos.children[actual].classList.add('activo');
   }
+  if(!reduce) setInterval(()=>mostrar((actual+1)%slides.length),6500);
 
   /* ==========================================================
      BUSCADOR (categoría + ciudad o desarrollo)
@@ -1532,18 +1404,16 @@ p{margin:0 0 1em}
   function pintarBusqueda(){
     const q=normal(buscadorInput.value);
     const cat=buscadorCategoria.value;
-    const ds=DESARROLLOS.filter(d=>(!cat||d.cat===cat)&&(!q||normal(d.n+' '+d.c).includes(q)));
-    const cs=q&&!cat?ciudades.filter(c=>normal(c.n).includes(q)):[];
-    buscadorResultados.innerHTML=cs.length+ds.length
-      ? cs.map(c=>`<a href="#ciudades">${c.n}<small>Ciudad</small></a>`).join('')
-        + ds.map(d=>`<a href="${d.href||'#contacto'}" data-desarrollo="${d.n}" data-cat="${d.cat}"><span class="badge">${CAT[d.cat].n}</span>${d.n}<small>${d.c}</small></a>`).join('')
+    const ds=DESARROLLOS.filter(d=>(!cat||d.cat===cat)&&(!q||normal(`${d.n} ${d.c} ${d.zona||''}`).includes(q)));
+    buscadorResultados.innerHTML=ds.length
+      ? ds.map(d=>`<a href="${hrefDe(d)}" data-desarrollo="${d.n}" data-cat="${d.cat}"><span class="badge">${CAT[d.cat].n}</span>${d.n}<small>${d.c}</small></a>`).join('')
       : `<div class="vacio">Sin resultados para “${escapar(buscadorInput.value)}”</div>`;
   }
   function mostrarBusqueda(){pintarBusqueda();buscadorResultados.classList.add('mostrar')}
   buscadorInput.addEventListener('focus',mostrarBusqueda);
   buscadorInput.addEventListener('input',mostrarBusqueda);
   buscadorCategoria.addEventListener('change',()=>{if(buscadorInput.value.trim()) mostrarBusqueda()});
-  buscadorInput.addEventListener('blur',()=>setTimeout(()=>buscadorResultados.classList.remove('mostrar'),150));
+  buscadorInput.addEventListener('blur',()=>setTimeout(()=>buscadorResultados.classList.remove('mostrar'),180));
   buscadorInput.addEventListener('keydown',e=>{
     if(e.key==='Escape'){buscadorResultados.classList.remove('mostrar');buscadorInput.blur()}
   });
@@ -1559,34 +1429,92 @@ p{margin:0 0 1em}
     const cat=buscadorCategoria.value;
     location.hash=cat?'#/'+CAT[cat].slug:'#desarrollos';
   });
+  /* búsqueda por ciudad: tarjeta o submenú → buscador con la ciudad escrita */
+  document.addEventListener('click',e=>{
+    const a=e.target.closest('[data-ciudad]');
+    if(!a) return;
+    e.preventDefault();
+    cerrarMenu();
+    const buscar=()=>{
+      document.getElementById('buscar').scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
+      buscadorCategoria.value='';
+      buscadorInput.value=a.dataset.ciudad;
+      buscadorInput.focus({preventScroll:true});
+      mostrarBusqueda();
+    };
+    if(leerRuta()!==null&&leerRuta()!=='home'){location.hash='#/';setTimeout(buscar,60)} else buscar();
+  });
 
   /* ==========================================================
-     CONTEO ANIMADO DE NUMERALIAS (banda de cifras + datos de Velasur)
+     GALERÍA (filtros + lightbox) · página de desarrollo
+     ========================================================== */
+  const filtros=document.getElementById('filtrosGaleria');
+  const figuras=[...document.querySelectorAll('#galeriaVelasur .g')];
+  function moverPastilla(){
+    const on=filtros.querySelector('button.on'),pill=filtros.querySelector('.pill');
+    if(!on||!on.offsetWidth) return;
+    pill.style.width=on.offsetWidth+'px';
+    pill.style.transform=`translateX(${on.offsetLeft}px)`;
+  }
+  filtros.addEventListener('click',e=>{
+    const b=e.target.closest('button');
+    if(!b) return;
+    filtros.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+    figuras.forEach(f=>f.classList.toggle('out',b.dataset.f!=='todas'&&f.dataset.tag!==b.dataset.f));
+    moverPastilla();
+  });
+  addEventListener('resize',moverPastilla);
+  const lb=document.getElementById('lb');
+  const lbImg=lb.querySelector('img');
+  let lbLista=[],lbI=0;
+  function lbPintar(){
+    const f=lbLista[lbI],img=f.querySelector('img');
+    lbImg.src=img.src;lbImg.alt=img.alt;
+    lb.querySelector('.lbcap').textContent=f.querySelector('figcaption').textContent;
+    lb.querySelector('.lbcount').textContent=`${lbI+1} / ${lbLista.length}`;
+  }
+  function lbAbrir(f){
+    lbLista=figuras.filter(x=>!x.classList.contains('out'));
+    lbI=lbLista.indexOf(f);lbPintar();lb.showModal();
+  }
+  const lbMover=d=>{lbI=(lbI+d+lbLista.length)%lbLista.length;lbPintar()};
+  figuras.forEach(f=>{
+    f.addEventListener('click',()=>lbAbrir(f));
+    f.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();lbAbrir(f)}});
+  });
+  lb.querySelector('.prev').addEventListener('click',()=>lbMover(-1));
+  lb.querySelector('.next').addEventListener('click',()=>lbMover(1));
+  lb.querySelector('.lbx').addEventListener('click',()=>lb.close());
+  lb.addEventListener('click',e=>{if(e.target===lb) lb.close()});
+  lb.addEventListener('keydown',e=>{if(e.key==='ArrowLeft') lbMover(-1);if(e.key==='ArrowRight') lbMover(1)});
+
+  /* ---------- formularios de muestra ---------- */
+  document.querySelectorAll('[data-form]').forEach(f=>{
+    f.addEventListener('submit',e=>{
+      e.preventDefault();
+      if(!f.reportValidity()) return;
+      f.classList.add('sent');
+      setTimeout(()=>{f.classList.remove('sent');f.reset();
+        f.querySelectorAll('select[data-desarrollos]').forEach(s=>{llenarDesarrollos(s,'');if(s.dataset.inicial) s.value=s.dataset.inicial})},4500);
+    });
+  });
+  document.querySelectorAll('[data-enviar]').forEach(b=>{
+    b.addEventListener('click',()=>{const t=b.textContent;b.textContent='¡Listo!';setTimeout(()=>b.textContent=t,2500)});
+  });
+
+  /* ==========================================================
+     CONTEO ANIMADO (cifras de Grupo Velas)
      ========================================================== */
   function animarNumero(el){
-    const fin=parseInt(el.dataset.num,10);
-    const pre=el.dataset.prefijo||'';
-    const suf=el.dataset.sufijo||'';
+    const fin=parseInt(el.dataset.num,10),pre=el.dataset.prefijo||'',suf=el.dataset.sufijo||'';
     if(reduce){el.textContent=pre+fin+suf;return}
-    const dur=1100,inicio=performance.now();
-    (function paso(ahora){
-      const p=Math.min((ahora-inicio)/dur,1);
-      const val=Math.round(fin*(1-Math.pow(1-p,3)));
-      el.textContent=pre+val+suf;
+    const dur=1400,inicio=performance.now();
+    (function paso(t){
+      const p=Math.min((t-inicio)/dur,1);
+      el.textContent=pre+Math.round(fin*(1-Math.pow(1-p,3)))+suf;
       if(p<1) requestAnimationFrame(paso);
     })(inicio);
   }
-  function observarConteo(contenedor){
-    if(!contenedor) return;
-    const numeros=[...contenedor.querySelectorAll('[data-num]')];
-    if(!numeros.length) return;
-    const obs=new IntersectionObserver(es=>es.forEach(e=>{
-      if(e.isIntersecting){numeros.forEach(animarNumero);obs.disconnect()}
-    }),{threshold:.4});
-    obs.observe(contenedor);
-  }
-  observarConteo(document.querySelector('.cifras-in'));
-  observarConteo(document.querySelector('.datos-in'));
 
   /* ==========================================================
      RUTEO: #/ (home), #/velasur y #/<categoría>
@@ -1598,10 +1526,16 @@ p{margin:0 0 1em}
     if(cat) pintarCategoria(cat);
     const vista=cat?'categoria':(document.querySelector(`[data-pagina="${ruta}"]`)?ruta:'home');
     vistas.forEach(v=>v.hidden=v.dataset.pagina!==vista);
+    document.body.classList.toggle('en-desarrollo',vista==='velasur');
     document.querySelectorAll('[data-ruta]').forEach(a=>a.classList.toggle('activo',
       a.dataset.ruta===ruta||(a.dataset.ruta==='desarrollos'&&(!!cat||ruta==='velasur'))));
-    document.title=cat?`${cat.n} · Grupo Velas`:vista==='velasur'?'Velasur · Grupo Velas':tituloBase;
+    document.title=cat?`${cat.n} · Grupo Velas`:vista==='velasur'?'Velasur Querétaro · Grupo Velas':tituloBase;
     if(!silencioso) scrollTo({top:0,behavior:'auto'});
+    /* entrada del hero */
+    const v=document.querySelector(`[data-pagina="${vista}"]`);
+    v.classList.remove('cargado');void v.offsetWidth;
+    requestAnimationFrame(()=>v.classList.add('cargado'));
+    if(vista==='velasur') requestAnimationFrame(moverPastilla);
     revelar();
     cerrarMenu();
   }
@@ -1615,38 +1549,41 @@ p{margin:0 0 1em}
   }
   addEventListener('hashchange',()=>{const r=leerRuta();if(r!==null) ir(r||'home');else irAncla(location.hash)});
 
-  /* aparición discreta al hacer scroll */
+  /* aparición al hacer scroll + conteos de la vista visible */
   let obs;
   function revelar(){
     if(obs) obs.disconnect();
-    if(reduce){document.querySelectorAll('.ap').forEach(e=>e.classList.add('visible'));return}
+    const pagina=document.querySelector('[data-pagina]:not([hidden])');
+    const aps=pagina.querySelectorAll('.ap');
+    const nums=pagina.querySelectorAll('[data-num]');
+    if(reduce){aps.forEach(e=>e.classList.add('visible'));nums.forEach(animarNumero);return}
     obs=new IntersectionObserver(es=>es.forEach(e=>{
-      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}
-    }),{threshold:.08,rootMargin:'0px 0px -40px 0px'});
-    document.querySelectorAll('[data-pagina]:not([hidden]) .ap').forEach(e=>{e.classList.remove('visible');obs.observe(e)});
+      if(!e.isIntersecting) return;
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('[data-num]').forEach(animarNumero);
+      obs.unobserve(e.target);
+    }),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+    aps.forEach(e=>{e.classList.remove('visible');obs.observe(e)});
   }
 
-  /* la barra se fija al salir del hero */
-  const nav=document.getElementById('nav');
-  addEventListener('scroll',()=>nav.classList.toggle('fija',scrollY>420),{passive:true});
-
-  /* botón flotante de WhatsApp: aparece al salir del hero de Velasur */
-  const wtsVelasur=document.getElementById('whatsappVelasur');
-  const heroVelasur=document.querySelector('[data-pagina="velasur"] .hero');
-  if(wtsVelasur&&heroVelasur){
-    new IntersectionObserver(
-      es=>es.forEach(e=>wtsVelasur.classList.toggle('visible',!e.isIntersecting)),
-      {threshold:0}
-    ).observe(heroVelasur);
+  /* header: fondo blanco al hacer scroll + barra de progreso + flotantes de desarrollo */
+  const top=document.getElementById('top');
+  const progreso=document.getElementById('progreso');
+  const wa=document.getElementById('waVelasur');
+  const mbar=document.getElementById('mbarVelasur');
+  function alHacerScroll(){
+    top.classList.toggle('scrolled',scrollY>40);
+    const doc=document.documentElement,total=doc.scrollHeight-doc.clientHeight;
+    progreso.style.transform=`scaleX(${total>0?Math.min(1,scrollY/total):0})`;
+    const pasado=scrollY>innerHeight*.6;
+    wa.classList.toggle('show',pasado);
+    mbar.classList.toggle('show',pasado);
   }
-
-  /* formularios de muestra */
-  document.querySelectorAll('[data-enviar]').forEach(b=>{
-    b.addEventListener('click',()=>{const t=b.textContent;b.textContent='Mensaje enviado';setTimeout(()=>b.textContent=t,2500)});
-  });
+  addEventListener('scroll',alHacerScroll,{passive:true});
 
   ir(leerRuta()||'home',true);
   if(leerRuta()===null) irAncla(location.hash);
+  alHacerScroll();
 })();
 </script>
 </body>

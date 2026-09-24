@@ -152,6 +152,13 @@ header.top:not(.scrolled) .burger span{background:#fff}
 .chip b{font-weight:700}
 .chip.live{background:rgba(255,255,255,.95);color:var(--navy);border-color:#fff}
 .chip.live i{width:8px;height:8px;border-radius:50%;background:#2e9d6a;animation:ping 2s infinite}
+/* chip de precio: el dato principal del hero */
+.chips{align-items:center}
+.chip.precio{gap:10px;padding:7px 20px 7px 16px;background:var(--gold-2);color:var(--navy);border-color:var(--gold-2);
+  box-shadow:0 12px 28px -12px rgba(0,0,0,.55)}
+.chip.precio small{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.75}
+.chip.precio b{font-family:var(--serif);font-size:28px;font-weight:600;line-height:1;letter-spacing:-.01em;font-variant-numeric:lining-nums}
+.chip.precio b span{font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.04em;margin-left:3px}
 @keyframes ping{0%{box-shadow:0 0 0 0 rgba(46,157,106,.55)}70%{box-shadow:0 0 0 10px rgba(46,157,106,0)}100%{box-shadow:0 0 0 0 rgba(46,157,106,0)}}
 .hero .ctas{display:flex;flex-wrap:wrap;gap:12px}
 .fade-seq>*{opacity:0;transform:translateY(18px);transition:opacity 1s var(--ease-out),transform 1s var(--ease-out)}
@@ -546,6 +553,8 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
   .places li{grid-template-columns:24px 1fr auto;gap:10px}
   .places li em:last-child{display:none}
   .chip{font-size:12px;padding:7px 12px}
+  .chip.precio{padding:6px 16px 6px 13px}
+  .chip.precio b{font-size:24px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important;transition-delay:0s!important}
@@ -591,8 +600,8 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
       <h1><span class="line"><span>Vive Vela</span></span><span class="line"><span><em>Towers</em> Cancún</span></span></h1>
       <p class="sub">Un exclusivo desarrollo residencial en una de las zonas más privilegiadas de Cancún, con amenidades de lujo y el respaldo de Grupo Velas.</p>
       <div class="chips">
+        <span class="chip precio"><small>Desde</small><b>$9<span>MDP</span></b></span>
         <span class="chip live"><i></i><b>Entrega inmediata</b> · Torre 2</span>
-        <span class="chip">Desde <b>$9 MDP</b></span>
       </div>
       <div class="ctas">
         <a href="#prototipos" class="btn glass">Ver prototipos <span class="arr">→</span></a>

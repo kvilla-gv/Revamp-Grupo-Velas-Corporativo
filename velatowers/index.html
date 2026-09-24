@@ -190,6 +190,22 @@ header.top:not(.scrolled) .burger span{background:#fff}
 .hero .wrap{position:relative;z-index:2;display:flex;justify-content:flex-end}
 .hero-inner{max-width:560px;padding:140px 0 110px}
 .hero .eyebrow{color:var(--gold-2)}
+/* sello del desarrollo sobre la foto (esquina inferior izquierda, lado opuesto al texto):
+   el header muestra la marca Grupo Velas en el tope; así la marca Vela Towers queda visible sin saturar el bloque de texto */
+.hero-sello{position:absolute;z-index:2;left:calc(50% - min(var(--wrap) / 2, 50% - 16px));bottom:112px;
+  width:clamp(170px,14vw,210px);pointer-events:none;
+  opacity:0;transform:translateY(18px);transition:opacity 1.2s var(--ease-out) 1.15s,transform 1.4s var(--ease-out) 1.15s}
+/* halo difuso detrás del logo para leerlo sobre la foto sin usar una caja */
+.hero-sello::before{content:"";position:absolute;inset:-70% -45%;z-index:-1;
+  background:radial-gradient(closest-side,rgba(8,20,48,.62),rgba(8,20,48,.28) 55%,transparent)}
+.hero-sello img{display:block;width:100%;height:auto;
+  filter:drop-shadow(0 2px 3px rgba(8,20,48,.45)) drop-shadow(0 8px 26px rgba(8,20,48,.5))}
+.loaded .hero-sello{opacity:1;transform:none}
+/* en pantallas angostas el texto ocupa la parte baja: el sello sube al espacio libre bajo el header */
+@media (max-width:900px){
+  .hero-sello{top:132px;bottom:auto;width:118px;transform:translateY(-12px)}
+  .hero .hero-inner{padding-top:204px}   /* espacio reservado para el sello en teléfonos chicos */
+}
 .hero h1{font-size:clamp(50px,7vw,92px);margin:18px 0 20px;color:#fff}
 .hero h1 .line{display:block;overflow:hidden;padding-bottom:.06em}
 .hero h1 .line>span{display:block;transform:translateY(110%);transition:transform 1.3s var(--ease-out)}
@@ -620,7 +636,7 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important;transition-delay:0s!important}
-  [data-reveal],.split-words .w>span,.hero h1 .line>span,.fade-seq>*,.hs,.flist li{opacity:1!important;transform:none!important}
+  [data-reveal],.split-words .w>span,.hero h1 .line>span,.fade-seq>*,.hs,.flist li,.hero-sello{opacity:1!important;transform:none!important}
   [data-reveal="clip"]>*{clip-path:none!important}
   .vframe{--vs:1!important}
 }
@@ -679,6 +695,7 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
 <!-- ============ HERO ============ -->
 <section class="hero" id="inicio">
   <div class="hero-media"><img src="https://velatowerscancun.com/wp-content/uploads/2024/10/Portada-1.png" alt="Torres de Vela Towers Cancún al atardecer" id="heroImg" fetchpriority="high"></div>
+  <div class="hero-sello"><img src="img/logo-vela-towers-blanco.webp" alt="Vela Towers" width="720" height="321"></div>
   <div class="wrap">
     <div class="hero-inner fade-seq">
       <span class="eyebrow is-in">Departamentos de lujo en Cancún</span>

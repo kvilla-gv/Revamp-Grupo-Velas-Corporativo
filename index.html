@@ -342,6 +342,41 @@ body.menu-abierto .burger span{background:var(--marca)}
 .gv .acts{margin-top:30px}
 @media (max-width:900px){.gv{grid-template-columns:1fr}.gv .ph{min-height:300px}}
 @media (max-width:640px){.stats{grid-template-columns:1fr 1fr}.stat:nth-child(3){border-left:0;padding-left:10px}}
+.stats.tres{grid-template-columns:repeat(3,1fr)}
+.stats.tres .stat:nth-child(3){border-left:1px solid var(--line);padding-left:20px}
+@media (max-width:420px){.stats.tres .stat+.stat{padding-left:12px}.stats.tres .stat b{font-size:30px}}
+
+/* "Una empresa con 45 años": misma composición que el sitio actual (sello a un lado, bienvenida al otro) */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.bienvenida{display:grid;grid-template-columns:auto 1fr;gap:clamp(22px,3.4vw,44px);align-items:center;margin-top:22px}
+.sello45{display:flex;flex-direction:column;align-items:center;gap:12px}
+.sello45 h2{margin:0;font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--marca-2);white-space:nowrap}
+.sello45 img{width:clamp(130px,12vw,172px);height:auto}
+.bienvenida .lead{margin-bottom:18px;max-width:46ch}
+@media (max-width:640px){.bienvenida{grid-template-columns:1fr;justify-items:center;text-align:center}.bienvenida .lead{margin-inline:auto}}
+
+/* ---------- video institucional (mismo componente que las páginas de desarrollo) ---------- */
+.video-sec{background:var(--deep);color:#fff;overflow:hidden}
+.vframe{position:relative;aspect-ratio:16/9;border-radius:var(--vr,28px);overflow:hidden;transform:scale(var(--vs,.88));transform-origin:center;
+  will-change:transform;background:#000;box-shadow:0 40px 80px -30px rgba(0,0,0,.7)}
+.vframe img,.vframe video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:0}
+.vframe img{transition:transform 1.6s var(--ease-out)}
+.vframe:hover img{transform:scale(1.05)}
+.vframe::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,rgba(10,46,39,.12),rgba(10,46,39,.6));
+  transition:opacity .6s;pointer-events:none}
+.vframe.playing::after{opacity:0}
+.play{position:absolute;z-index:2;left:50%;top:50%;width:104px;height:104px;margin:-52px 0 0 -52px;border-radius:50%;background:rgba(255,255,255,.95);
+  color:var(--marca);display:grid;place-items:center;transition:transform .5s var(--ease),background .4s,opacity .4s}
+.play::before,.play::after{content:"";position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(255,255,255,.7);animation:ripple 2.8s var(--ease-out) infinite}
+.play::after{animation-delay:1.4s}
+@keyframes ripple{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.9);opacity:0}}
+.play:hover{transform:scale(1.08);background:var(--gold-2)}
+.play svg{width:30px;height:30px;margin-left:5px}
+.vlabel{position:absolute;z-index:2;left:28px;bottom:24px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;display:flex;gap:10px;align-items:center;transition:opacity .4s}
+.vlabel i{width:34px;height:1px;background:var(--gold-2)}
+.playing .play,.playing .vlabel{opacity:0;pointer-events:none;transform:scale(.6)}
+.playing .vlabel{transform:none}
+@media (max-width:900px){.vframe{--vs:1!important;--vr:16px!important}.play{width:78px;height:78px;margin:-39px 0 0 -39px}.vlabel{left:16px;bottom:14px;font-size:10.5px}}
 
 .marquee{padding:36px 0;border-top:1px solid var(--line);background:#fff;overflow:hidden;position:relative}
 .marquee p{text-align:center;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
@@ -728,13 +763,21 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
     <div class="ph"><img src="Prototipos/4/img/4.webp" alt="Plaza de acceso con fuente de un desarrollo Grupo Velas" loading="lazy"></div>
     <div class="txt ap">
       <span class="eyebrow">Sobre Grupo Velas</span>
-      <h2>Más de 45 años construyendo México</h2>
-      <p class="lead">Transformamos ideas en desarrollos que destacan por su calidad excepcional, diseño innovador y ubicaciones estratégicas. Somos marca hermana de la cadena hotelera Velas Resorts.</p>
-      <div class="stats">
+      <!-- contenido de la sección "Una empresa con 45 años" del sitio actual (grupovelas.com.mx) -->
+      <div class="bienvenida">
+        <div class="sello45">
+          <h2>Una empresa con <span class="sr">45 años de experiencia</span></h2>
+          <img src="Prototipos/4/img/icono-45-anios.svg" alt="" width="191" height="203">
+        </div>
+        <div>
+          <p class="lead">Te damos la bienvenida a este espacio creado para inspirarte, en Grupo Velas, transformamos ideas en desarrollos inmobiliarios que destacan por su calidad excepcional, diseño innovador y ubicaciones estratégicas en México.</p>
+          <a class="link" href="https://grupovelas.com.mx/nosotros" target="_blank" rel="noopener">Conoce más <span class="arr">→</span></a>
+        </div>
+      </div>
+      <div class="stats tres">
         <div class="stat"><b data-num="15" data-prefijo="+">+15</b><span>ciudades en México</span></div>
         <div class="stat"><b data-num="75" data-prefijo="+">+75</b><span>desarrollos</span></div>
         <div class="stat"><b data-num="100" data-prefijo="+" data-sufijo="k">+100k</b><span>familias con patrimonio</span></div>
-        <div class="stat"><b data-num="45">45</b><span>años de experiencia</span></div>
       </div>
     </div>
   </section>
@@ -742,6 +785,25 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
     <p>Desarrollos de Grupo Velas</p>
     <div class="track" id="marquesina"></div>
   </div>
+
+  <!-- video institucional del sitio actual (sección #video-seccion de grupovelas.com.mx);
+       se carga solo al pulsar reproducir para no descargar 20 MB al abrir el home -->
+  <section class="sec video-sec dark" id="video">
+    <div class="wrap">
+      <div class="sec-head ap">
+        <div>
+          <span class="eyebrow">Video</span>
+          <h2>Descubre Grupo Velas</h2>
+        </div>
+        <p class="lead">Un recorrido por los destinos, los desarrollos y la hospitalidad de Velas Resorts que respaldan 45 años de trayectoria en México.</p>
+      </div>
+      <div class="vframe" id="vframe" data-src="https://backend.grupovelas.com/uploads/home_37388fa429.mp4">
+        <img src="Prototipos/4/img/video-grupo-velas.webp" alt="Vista aérea de la playa de Cancún, portada del video de Grupo Velas" loading="lazy">
+        <button class="play" type="button" aria-label="Reproducir el video de Grupo Velas (2 minutos)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
+        <div class="vlabel" aria-hidden="true"><i></i>Grupo Velas · 2:00 min</div>
+      </div>
+    </div>
+  </section>
 
   <section class="sec testimonios center">
     <div class="wrap ap">
@@ -1488,6 +1550,31 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
   lb.addEventListener('click',e=>{if(e.target===lb) lb.close()});
   lb.addEventListener('keydown',e=>{if(e.key==='ArrowLeft') lbMover(-1);if(e.key==='ArrowRight') lbMover(1)});
 
+  /* ==========================================================
+     VIDEO INSTITUCIONAL: se crea el <video> solo al pulsar reproducir
+     ========================================================== */
+  const vframe=document.getElementById('vframe');
+  vframe.querySelector('.play').addEventListener('click',()=>{
+    const v=document.createElement('video');
+    v.src=vframe.dataset.src;
+    v.poster=vframe.querySelector('img').src;
+    v.controls=true;v.playsInline=true;v.setAttribute('playsinline','');
+    vframe.appendChild(v);
+    vframe.classList.add('playing');
+    v.play().catch(()=>{});
+    v.focus();
+  });
+  /* el marco crece y pierde redondeo al entrar en pantalla (escritorio) */
+  function escalarVideo(){
+    if(reduce){vframe.style.setProperty('--vs','1');return}
+    if(innerWidth<=900||!vframe.offsetParent) return;
+    const r=vframe.getBoundingClientRect(),vh=innerHeight;
+    const p=Math.min(Math.max((vh-r.top)/(vh*.9),0),1);
+    vframe.style.setProperty('--vs',(.88+.12*p).toFixed(4));
+    vframe.style.setProperty('--vr',(28-16*p).toFixed(1)+'px');
+  }
+  addEventListener('resize',escalarVideo);
+
   /* ---------- formularios de muestra ---------- */
   document.querySelectorAll('[data-form]').forEach(f=>{
     f.addEventListener('submit',e=>{
@@ -1536,6 +1623,8 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
     v.classList.remove('cargado');void v.offsetWidth;
     requestAnimationFrame(()=>v.classList.add('cargado'));
     if(vista==='velasur') requestAnimationFrame(moverPastilla);
+    if(vista!=='home') vframe.querySelector('video')?.pause();   // no sigue sonando al cambiar de vista
+    else requestAnimationFrame(escalarVideo);
     revelar();
     cerrarMenu();
   }
@@ -1578,6 +1667,7 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
     const pasado=scrollY>innerHeight*.6;
     wa.classList.toggle('show',pasado);
     mbar.classList.toggle('show',pasado);
+    escalarVideo();
   }
   addEventListener('scroll',alHacerScroll,{passive:true});
 

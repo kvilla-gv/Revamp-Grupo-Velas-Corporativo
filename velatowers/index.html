@@ -1422,6 +1422,21 @@ const PLACES = [
 </script>
 <script>
 /* ==========================================================
+   Regreso al sitio de origen
+   Esta página es compartida: el home principal enlaza a "velatowers/" y cada prototipo
+   añade ?origen=<clave>. Los enlaces de regreso (miga de pan, logo y menú de Grupo Velas,
+   pie, marquesina) apuntan a "../"; aquí se redirigen al prototipo de origen.
+   Para un prototipo nuevo basta con agregar su clave en ORIGENES.
+   ========================================================== */
+(() => {
+  const ORIGENES = { p5: '../Prototipos/5/' };
+  const base = ORIGENES[new URLSearchParams(location.search).get('origen')];
+  if (!base) return;                                               // sin origen (o desconocido): home principal
+  document.querySelectorAll('a[href^="../"]').forEach(a => a.setAttribute('href', base + a.getAttribute('href').slice(3)));
+})();
+</script>
+<script>
+/* ==========================================================
    Header de dos modos
    - En el tope y al hacer scroll hacia arriba: identidad del sitio
      corporativo (logo y menú de Grupo Velas).

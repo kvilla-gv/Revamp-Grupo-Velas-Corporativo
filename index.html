@@ -878,9 +878,10 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
           <div class="fld"><input id="h2" type="email" placeholder=" " autocomplete="email"><label for="h2">Correo electrónico</label></div>
         </div>
         <div class="two">
+          <div class="fld"><select id="h8" data-ciudades data-filtra="h6"><option value="">Todas</option></select><label for="h8">Ciudad</label></div>
           <div class="fld"><select id="h7" data-filtra="h6"><option value="">Todas</option><option value="pv">Primera Vivienda</option><option value="res">Residencial</option><option value="plus">Residencial Plus</option></select><label for="h7">Categoría</label></div>
-          <div class="fld"><select id="h6" data-desarrollos></select><label for="h6">Desarrollo de interés</label></div>
         </div>
+        <div class="fld"><select id="h6" data-desarrollos></select><label for="h6">Desarrollo de interés</label></div>
         <button class="btn" type="submit">Hablar con un asesor <span class="arr">→</span></button>
         <p class="legal">Al enviar aceptas nuestro <a href="#">Aviso de privacidad</a>.</p>
         <div class="ok" aria-live="polite">
@@ -1343,28 +1344,31 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
   });
 
   /* ---------- selects de desarrollo en formularios ---------- */
-  function llenarDesarrollos(sel,cat){
+  function llenarDesarrollos(sel,cat,ciudad){
     const actual=sel.value;
-    const ds=cat?porCat(cat):DESARROLLOS;
-    sel.innerHTML=ds.map(d=>`<option value="${d.n}">${d.n} — ${d.c}</option>`).join('');
+    const ds=DESARROLLOS.filter(d=>(!cat||d.cat===cat)&&(!ciudad||d.c===ciudad||d.zona===ciudad));   // Tampico incluye Altamira
+    sel.innerHTML=ds.length?ds.map(d=>`<option value="${d.n}">${d.n}</option>`).join(''):'<option value="">Sin desarrollos con esos filtros</option>';
     if(ds.some(d=>d.n===actual)) sel.value=actual;
   }
   document.querySelectorAll('select[data-desarrollos]').forEach(s=>{
     llenarDesarrollos(s,'');
     if(s.dataset.inicial) s.value=s.dataset.inicial;
   });
-  document.querySelectorAll('select[data-filtra]').forEach(s=>
-    s.addEventListener('change',()=>llenarDesarrollos(document.getElementById(s.dataset.filtra),s.value)));
+  /* ciudad y categoría del formulario del home acotan juntas la lista de desarrollos */
+  const filtrarFormulario=()=>llenarDesarrollos(formDes,formCat.value,formCiu.value);
+  document.querySelectorAll('select[data-filtra]').forEach(s=>s.addEventListener('change',filtrarFormulario));
 
   /* cualquier enlace con data-desarrollo / data-categoria preselecciona el formulario del home */
   const formCat=document.getElementById('h7');
+  const formCiu=document.getElementById('h8');
   const formDes=document.getElementById('h6');
   document.addEventListener('click',e=>{
     const a=e.target.closest('[data-desarrollo],[data-categoria]');
     if(!a) return;
     const d=DESARROLLOS.find(x=>x.n===a.dataset.desarrollo);
     formCat.value=d?d.cat:a.dataset.categoria;
-    llenarDesarrollos(formDes,formCat.value);
+    formCiu.value=d?(d.zona||d.c):'';                       // Altamira se agrupa en Tampico, como en el sitio actual
+    filtrarFormulario();
     if(d) formDes.value=d.n;
   });
 
@@ -1388,6 +1392,9 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
     </a>`).join('');
   document.getElementById('submenuCiudades').innerHTML=ciudades.map(c=>
     `<a href="#buscar" data-ciudad="${c.n}">${c.n}</a>`).join('');
+  /* campo "Ciudad" del formulario: misma lista que las tarjetas y el submenú */
+  document.querySelectorAll('select[data-ciudades]').forEach(s=>
+    s.insertAdjacentHTML('beforeend',ciudades.map(c=>`<option value="${c.n}">${c.n}</option>`).join('')));
 
   /* ---------- submenús del nav ---------- */
   const mqMovil=matchMedia('(max-width:980px)');

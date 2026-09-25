@@ -322,9 +322,10 @@ body.menu-abierto .burger span{background:var(--marca)}
 .ccard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(10,46,39,.85))}
 .ccard .t{position:absolute;z-index:1;left:20px;right:20px;bottom:18px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
 .ccard b{font-family:var(--serif);font-weight:600;font-size:28px;line-height:1.05;display:block}
-.ccard .t span{font-size:12px;opacity:.85;display:block;margin-top:4px}
-.ccard .arr{width:34px;height:34px;flex:none;border-radius:50%;border:1px solid rgba(255,255,255,.5);display:grid;place-items:center;font-size:14px;
+.ccard .t>div>span{font-size:12px;opacity:.85;display:block;margin-top:4px}   /* solo el texto; no alcanza a la flecha */
+.ccard .arr{width:34px;height:34px;flex:none;border-radius:50%;border:1px solid rgba(255,255,255,.5);display:grid;place-items:center;
   transition:background .4s,color .4s,transform .4s var(--ease)}
+.ccard .arr svg{width:14px;height:14px;display:block}
 .ccard:hover .arr{background:#fff;color:var(--marca);transform:translateX(3px)}
 @media (max-width:980px){.cgrid{grid-template-columns:repeat(2,1fr);grid-auto-rows:200px}}
 @media (max-width:520px){.cgrid{grid-auto-rows:170px;gap:10px}.ccard b{font-size:22px}.ccard .t{left:14px;right:14px;bottom:14px}.ccard .arr{display:none}}
@@ -1383,7 +1384,7 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
   document.getElementById('listaCiudades').innerHTML=ciudades.map(c=>
     `<a class="ccard" href="#buscar" data-ciudad="${c.n}">
       <img src="Prototipos/4/img/ciudades/${c.img}" alt="" loading="lazy">
-      <div class="t"><div><b>${c.n}</b><span>${plural(c.d,'desarrollo','desarrollos')}</span></div><span class="arr" aria-hidden="true">→</span></div>
+      <div class="t"><div><b>${c.n}</b><span>${plural(c.d,'desarrollo','desarrollos')}</span></div><span class="arr" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"/></svg></span></div>
     </a>`).join('');
   document.getElementById('submenuCiudades').innerHTML=ciudades.map(c=>
     `<a href="#buscar" data-ciudad="${c.n}">${c.n}</a>`).join('');

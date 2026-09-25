@@ -372,7 +372,7 @@ body.menu-abierto .burger span{background:var(--marca)}
 .play::after{animation-delay:1.4s}
 @keyframes ripple{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.9);opacity:0}}
 .play:hover{transform:scale(1.08);background:var(--gold-2)}
-.play svg{width:30px;height:30px;margin-left:5px}
+.play svg{width:30px;height:30px;display:block}   /* el triángulo va centrado en su propio lienzo (ver path) */
 .vlabel{position:absolute;z-index:2;left:28px;bottom:24px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;display:flex;gap:10px;align-items:center;transition:opacity .4s}
 .vlabel i{width:34px;height:1px;background:var(--gold-2)}
 .playing .play,.playing .vlabel{opacity:0;pointer-events:none;transform:scale(.6)}
@@ -800,7 +800,7 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
       </div>
       <div class="vframe" id="vframe" data-src="https://backend.grupovelas.com/uploads/home_37388fa429.mp4">
         <img src="Prototipos/4/img/video-grupo-velas.webp" alt="Vista aérea de la playa de Cancún, portada del video de Grupo Velas" loading="lazy">
-        <button class="play" type="button" aria-label="Reproducir el video de Grupo Velas (2 minutos)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
+        <button class="play" type="button" aria-label="Reproducir el video de Grupo Velas (2 minutos)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.75 5.5v13L18.25 12z"/></svg></button>
         <div class="vlabel" aria-hidden="true"><i></i>Grupo Velas · 2:00 min</div>
       </div>
     </div>

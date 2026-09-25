@@ -339,7 +339,7 @@ header.top:not(.scrolled) .burger span{background:#fff}
 .play::after{animation-delay:1.4s}
 @keyframes ripple{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.9);opacity:0}}
 .play:hover{transform:scale(1.08);background:var(--gold-2)}
-.play svg{width:30px;height:30px;margin-left:5px}
+.play svg{width:30px;height:30px;display:block}   /* el triángulo va centrado en su propio lienzo (ver path) */
 .vlabel{position:absolute;z-index:2;left:28px;bottom:24px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;display:flex;gap:10px;align-items:center}
 .vlabel i{width:34px;height:1px;background:var(--gold-2)}
 .playing .play,.playing .vlabel{opacity:0;pointer-events:none;transform:scale(.6)}
@@ -813,7 +813,7 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
     </div>
     <div class="vframe" id="vframe">
       <img src="https://velatowerscancun.com/wp-content/uploads/2024/10/MG_8199-1536x1024.jpg" alt="Interior de departamento en Vela Towers" loading="lazy">
-      <button class="play" id="playBtn" aria-label="Reproducir video"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg></button>
+      <button class="play" id="playBtn" aria-label="Reproducir video"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.7 4.5v15L19.7 12z"/></svg></button>
       <div class="vlabel"><i></i>Vela Towers Cancún</div>
     </div>
   </div>

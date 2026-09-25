@@ -1832,14 +1832,18 @@ html.cine #ciudades{overflow:hidden}
     const {escritorio}=ctx.conditions;
 
     /* ===== ESCENA 1 · Grupo Velas: el logo se aleja, el video se acerca y entra el titular ===== */
-    gsap.from('.ci-logo',{autoAlpha:0,scale:1.12,filter:'blur(10px)',duration:1.6,ease:'power3.out',delay:.15});
+    const sombra='drop-shadow(0px 12px 40px rgba(0,0,0,.35))';        // misma sombra que el CSS del logo
+    gsap.fromTo('.ci-logo',{autoAlpha:0,scale:1.12,filter:`${sombra} blur(10px)`},{autoAlpha:1,scale:1,filter:`${sombra} blur(0px)`,duration:1.6,ease:'power3.out',delay:.15});
     gsap.from('.ci-kicker',{autoAlpha:0,y:24,duration:1.2,ease:'power3.out',delay:.6});
     gsap.set('.ci-frase>*',{opacity:1});
     const t1=gsap.timeline({scrollTrigger:{trigger:'#cine-intro',start:'top top',end:'+=170%',pin:true,scrub:1,anticipatePin:1}});
-    t1.to('.ci-media video',{scale:1,ease:'none',duration:3},0)
-      .to('.ci-cue',{autoAlpha:0,duration:.25},0)
-      .to('.ci-logo',{scale:.5,yPercent:-35,autoAlpha:0,filter:'blur(8px)',duration:1.1,ease:'power2.in'},.1)
-      .to('.ci-kicker',{y:-50,autoAlpha:0,duration:.7,ease:'power2.in'},.15)
+    /* el scroll anima el CONTENEDOR (.ci-centro) y la entrada anima el logo y "45 años" por dentro:
+       al no compartir elemento, al volver al inicio todo regresa visible aunque se haya hecho scroll
+       durante la animación de entrada */
+    t1.fromTo('.ci-media video',{scale:1.18},{scale:1,ease:'none',duration:3,immediateRender:false},0)
+      .fromTo('.ci-cue',{autoAlpha:1},{autoAlpha:0,duration:.25,immediateRender:false},0)
+      .fromTo('.ci-centro',{autoAlpha:1,scale:1,yPercent:0,filter:'blur(0px)'},
+        {scale:.55,yPercent:-14,autoAlpha:0,filter:'blur(8px)',duration:1.1,ease:'power2.in',immediateRender:false},.1)
       .fromTo('.ci-frase .eyebrow',{autoAlpha:0,y:24},{autoAlpha:1,y:0,duration:.45},1.05)
       .fromTo('.ci-h1 .w>span',{yPercent:115},{yPercent:0,stagger:.07,duration:.6,ease:'power3.out'},1.15)
       .fromTo('.ci-sub',{autoAlpha:0,y:24},{autoAlpha:1,y:0,duration:.45},1.8)

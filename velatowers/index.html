@@ -125,6 +125,19 @@ header.top.modo-gv .logo-vt{transform:translateY(14px)}
 header.top.modo-dev .logo-gv{transform:translateY(-14px)}
 .logo-gv img{height:38px}                          /* mismo tamaño que en el sitio corporativo */
 header.top.scrolled .logo-gv img{height:32px}
+/* logo del desarrollo en el nav: mismo archivo recortado que el sello del hero, en su color oscuro original */
+.logo-vt img{height:32px}
+header.top.scrolled .logo-vt img{height:28px}
+
+/* ---------- vuelo del logo: sello del hero ⇄ nav del desarrollo ----------
+   Un clon fijo viaja entre ambas posiciones y cambia de blanco a oscuro (o al revés) mientras vuela. */
+.logo-vuelo{position:fixed;left:0;top:0;z-index:70;pointer-events:none;will-change:transform,width}
+.logo-vuelo img{display:block;width:100%;height:auto}
+.logo-vuelo img+img{position:absolute;inset:0;opacity:0}
+header.top.volando .logo-vt{opacity:0!important;transform:none!important;transition:none!important}
+header.top.aterriza .logo-vt{transition:none!important}
+.hero-sello.enviado{opacity:0!important;transition:opacity .15s var(--ease)!important}
+.hero-sello.llega{transition:none!important}
 header.top.scrolled .logo-gv img{filter:brightness(0) saturate(100%) invert(17%) sepia(22%) saturate(1500%) hue-rotate(118deg) brightness(92%)}
 .menus{flex:1;display:grid;justify-items:center;align-items:center}
 .menus>nav{grid-area:1/1;transition:visibility 0s}
@@ -656,7 +669,7 @@ footer .fine{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);f
   <div class="wrap nav">
     <div class="logos">
       <a href="../" class="logo logo-gv" aria-label="Grupo Velas, ir al inicio del sitio"><img src="../Prototipos/4/img/logo/GRUPO_VELAS_BLANCO_H.png" alt="Grupo Velas"></a>
-      <a href="#inicio" class="logo logo-vt" aria-label="Vela Towers Cancún"><img src="https://velatowerscancun.com/wp-content/uploads/2024/10/logo_vela_towers.png" srcset="https://velatowerscancun.com/wp-content/uploads/2024/10/logo_vela_towers.png 1x, https://velatowerscancun.com/wp-content/uploads/2024/11/logo_vela_towers_1500x1500-1.png 2x" alt="Vela Towers Cancún"></a>
+      <a href="#inicio" class="logo logo-vt" aria-label="Vela Towers Cancún"><img src="img/logo-vela-towers-oscuro.webp" alt="Vela Towers Cancún" width="720" height="321"></a>
     </div>
     <div class="menus">
     <nav class="menu-gv" id="menuGV" aria-label="Grupo Velas">
@@ -1421,12 +1434,83 @@ const PLACES = [
   const UMBRAL_DIR = 8;       // px acumulados antes de cambiar de modo (evita parpadeos)
   let ancla = scrollY, bloqueo = 0;
 
-  const modo = m => {
-    if (header.classList.contains('modo-' + m)) return;
-    header.classList.remove('modo-gv', 'modo-dev');
-    header.classList.add('modo-' + m);
+  /* ---- vuelo del logo: el sello del hero viaja al nav del desarrollo (y regresa) ---- */
+  const sello = document.querySelector('.hero-sello');
+  const selloImg = sello && sello.querySelector('img');
+  const navImg = document.querySelector('.logo-vt img');
+  const sinMovimiento = matchMedia('(prefers-reduced-motion: reduce)');
+  const aLaVista = r => r.width > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
+  const suave = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;   // ease-in-out cúbica
+  let vuelo = null;
+
+  /* anima un clon fijo desde el rectángulo `origen` hasta el que devuelve `destino()`
+     (se mide en cada cuadro: el header cambia de alto y la página puede seguir desplazándose) */
+  function volar(origen, destino, haciaOscuro, alAterrizar) {
+    const clon = document.createElement('div');
+    clon.className = 'logo-vuelo';
+    clon.innerHTML = '<img src="img/logo-vela-towers-blanco.webp" alt=""><img src="img/logo-vela-towers-oscuro.webp" alt="">';
+    const oscuro = clon.lastChild;
+    document.body.appendChild(clon);
+    const dur = 850, t0 = performance.now();
+    let raf, vivo = true;
+    const paso = ahora => {
+      if (!vivo) return;
+      const t = Math.min((ahora - t0) / dur, 1), e = suave(t), d = destino();
+      const x = origen.left + (d.left - origen.left) * e;
+      const y = origen.top + (d.top - origen.top) * e;
+      const w = origen.width + (d.width - origen.width) * e;
+      clon.style.width = w + 'px';
+      clon.style.transform = `translate3d(${x}px,${y}px,0)`;
+      const k = haciaOscuro ? e : 1 - e;                               // 0 = blanco (hero), 1 = oscuro (nav)
+      oscuro.style.opacity = Math.min(1, Math.max(0, (k - .2) / .6));  // el color cambia en el tramo medio
+      clon.style.filter = `drop-shadow(0 8px 24px rgba(8,20,48,${(.5 * (1 - k)).toFixed(3)}))`;
+      if (t < 1) { raf = requestAnimationFrame(paso); return; }
+      vivo = false; vuelo = null;
+      alAterrizar();
+      requestAnimationFrame(() => clon.remove());                      // se retira cuando el logo real ya se ve
+    };
+    raf = requestAnimationFrame(paso);
+    vuelo = { clon, cancelar() { vivo = false; cancelAnimationFrame(raf); clon.remove(); vuelo = null; } };
+  }
+  /* si cambia de modo a medio vuelo, el nuevo vuelo parte de donde iba el clon */
+  const cortarVuelo = () => {
+    if (!vuelo) return null;
+    const r = vuelo.clon.getBoundingClientRect();
+    vuelo.cancelar();
+    return r;
   };
-  modo(scrollY > UMBRAL_TOPE ? 'dev' : 'gv');
+  const sinTransicion = (el, clase) => { el.classList.add(clase); requestAnimationFrame(() => el.classList.remove(clase)); };
+
+  const modo = (m, inicial) => {
+    if (header.classList.contains('modo-' + m)) return;
+    const previo = cortarVuelo();
+    const rNav = navImg.getBoundingClientRect();
+    header.classList.remove('modo-gv', 'modo-dev', 'volando', 'aterriza');
+    header.classList.add('modo-' + m);
+    if (!sello) return;
+    const rSello = selloImg.getBoundingClientRect();
+    const animar = !inicial && !sinMovimiento.matches && (previo || aLaVista(rSello));
+
+    if (m === 'dev') {                                   // bajando: el sello se va al nav
+      sello.classList.add('enviado');
+      if (!animar) return;
+      header.classList.add('volando');                   // el logo del nav espera a que llegue el clon
+      volar(previo || rSello, () => navImg.getBoundingClientRect(), true, () => {
+        header.classList.remove('volando');
+        sinTransicion(header, 'aterriza');               // aparece sin fundido, justo bajo el clon
+      });
+    } else {                                             // subiendo: el logo del nav regresa al hero
+      if (!animar) { sinTransicion(sello, 'llega'); sello.classList.remove('enviado'); return; }   // fuera de pantalla: vuelve al instante
+      header.classList.add('volando');                   // el logo del nav se desprende de inmediato
+      volar(previo || rNav, () => selloImg.getBoundingClientRect(), false, () => {
+        header.classList.remove('volando');
+        sinTransicion(sello, 'llega');
+        sello.classList.remove('enviado');
+      });
+    }
+  };
+  modo(scrollY > UMBRAL_TOPE ? 'dev' : 'gv', true);
+  if (sello && header.classList.contains('modo-dev')) sello.classList.add('enviado');   // carga a media página
 
   addEventListener('scroll', () => {
     const y = scrollY;

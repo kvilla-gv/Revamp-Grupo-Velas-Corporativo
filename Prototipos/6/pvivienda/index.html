@@ -616,7 +616,11 @@ header.top.scrolled .logo img{filter:brightness(0) opacity(.85)}
 .eq.cta:hover{background:var(--navy);border-color:var(--navy)}
 
 /* Garantías (sección oscura, mismo tratamiento que el bloque de video de Plus) */
-.warr .wgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.warr .wgrid{display:grid;grid-template-columns:1fr;gap:22px}
+.wcard .src{display:inline-block;font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-left:6px;vertical-align:1px;white-space:nowrap}
+.wcard>p .src{margin-left:0}
+.wcard .src.gv{background:var(--acc);color:#fff}
+.wcard .src.inf{border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.85)}
 .wcard{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:clamp(22px,3vw,34px)}
 .wcard h3{color:#fff;font-size:clamp(26px,2.6vw,32px);margin-bottom:6px}
 .wcard>p{font-size:13.5px;color:rgba(255,255,255,.65);margin-bottom:24px}
@@ -856,19 +860,14 @@ header.top.scrolled .logo img{filter:brightness(0) opacity(.85)}
     </div>
     <div class="wgrid">
       <div class="wcard" data-reveal="up">
-        <h3>Garantías Grupo Velas</h3>
-        <p>Directamente con nosotros, a partir de la entrega de tu casa.</p>
-        <div class="wrow"><div class="t"><span>Instalaciones hidrosanitarias y eléctricas</span><b>1 año</b></div><div class="wbar"><i style="--w:10%;--d:.1s"></i></div></div>
-        <div class="wrow"><div class="t"><span>Problemas de humedad</span><b>3 años</b></div><div class="wbar"><i style="--w:30%;--d:.25s"></i></div></div>
-        <div class="wrow"><div class="t"><span>Seguridad estructural</span><b>5 años</b></div><div class="wbar"><i style="--w:50%;--d:.4s"></i></div></div>
-        <div class="wscale"><span>0</span><span>5 años</span><span>10 años</span></div>
-      </div>
-      <div class="wcard" data-reveal="up" style="--d:.1s">
-        <h3>Seguro Infonavit por vivienda nueva</h3>
-        <p>Cobertura adicional por comprar casa nueva con tu crédito.</p>
-        <div class="wrow"><div class="t"><span>Seguridad estructural</span><b>10 años</b></div><div class="wbar"><i style="--w:100%;--d:.2s"></i></div></div>
-        <div class="wrow"><div class="t"><span>Impermeabilización</span><b>5 años</b></div><div class="wbar"><i style="--w:50%;--d:.35s"></i></div></div>
-        <div class="wrow"><div class="t"><span>Instalaciones hidrosanitarias y eléctricas</span><b>2 años</b></div><div class="wbar"><i style="--w:20%;--d:.5s"></i></div></div>
+        <h3>Garantías de tu casa</h3>
+        <p>Las de <span class="src gv">Grupo Velas</span> corren directamente con nosotros a partir de la entrega; las del <span class="src inf">Seguro Infonavit</span> se suman por comprar casa nueva con tu crédito.</p>
+        <div class="wrow"><div class="t"><span>Seguridad estructural <em class="src inf">Infonavit</em></span><b>10 años</b></div><div class="wbar"><i style="--w:100%;--d:.1s"></i></div></div>
+        <div class="wrow"><div class="t"><span>Seguridad estructural <em class="src gv">Grupo Velas</em></span><b>5 años</b></div><div class="wbar"><i style="--w:50%;--d:.2s"></i></div></div>
+        <div class="wrow"><div class="t"><span>Impermeabilización <em class="src inf">Infonavit</em></span><b>5 años</b></div><div class="wbar"><i style="--w:50%;--d:.3s"></i></div></div>
+        <div class="wrow"><div class="t"><span>Problemas de humedad <em class="src gv">Grupo Velas</em></span><b>3 años</b></div><div class="wbar"><i style="--w:30%;--d:.4s"></i></div></div>
+        <div class="wrow"><div class="t"><span>Instalaciones hidrosanitarias y eléctricas <em class="src inf">Infonavit</em></span><b>2 años</b></div><div class="wbar"><i style="--w:20%;--d:.5s"></i></div></div>
+        <div class="wrow"><div class="t"><span>Instalaciones hidrosanitarias y eléctricas <em class="src gv">Grupo Velas</em></span><b>1 año</b></div><div class="wbar"><i style="--w:10%;--d:.6s"></i></div></div>
         <div class="wscale"><span>0</span><span>5 años</span><span>10 años</span></div>
       </div>
     </div>
@@ -1062,7 +1061,7 @@ header.top.scrolled .logo img{filter:brightness(0) opacity(.85)}
     <details data-reveal="up"><summary>¿Cuánto cuesta una casa en Fraccionamiento Arecas?<i></i></summary><div class="ans"><div><p>La casa Tipo Portugal está disponible desde $770,000 MXN. Precio sujeto a cambio y disponibilidad.</p></div></div></details>
     <details data-reveal="up" style="--d:.05s"><summary>¿Puedo comprar con mi crédito Infonavit?<i></i></summary><div class="ans"><div><p>Sí. Revisa tu precalificación en Mi Cuenta Infonavit y un asesor te acompaña en todo el trámite, desde tu expediente hasta la entrega.</p></div></div></details>
     <details data-reveal="up" style="--d:.1s"><summary>¿Qué incluye la casa Tipo Portugal?<i></i></summary><div class="ans"><div><p>46.92 m² de construcción en 96 m² de terreno: 2 recámaras, sala-comedor-cocina, barra desayunadora, baño, patio y 1 cajón de estacionamiento. Se entrega equipada con Rotoplas, calentador de agua, llaves de regadera y cebolleta, lavabo, tapa del WC, fregadero, tallador, telas mosquiteras, protección en ventanas, focos ahorradores, nicho de clóset, botes de basura interiores, línea de gas, puerta de seguridad, azulejo en áreas húmedas y barda perimetral de 1.20 m.</p></div></div></details>
-    <details data-reveal="up" style="--d:.15s"><summary>¿Qué garantías tiene mi casa?<i></i></summary><div class="ans"><div><p>1 año en instalaciones hidrosanitarias y eléctricas, 3 años en problemas de humedad y 5 años en seguridad estructural. Además, por ser vivienda nueva cuentas con el seguro Infonavit: seguridad estructural (10 años), impermeabilización (5 años) e instalaciones hidrosanitarias y eléctricas (2 años).</p></div></div></details>
+    <details data-reveal="up" style="--d:.15s"><summary>¿Qué garantías tiene mi casa?<i></i></summary><div class="ans"><div><p>De mayor a menor: seguridad estructural, 10 años (seguro Infonavit) y 5 años (Grupo Velas); impermeabilización, 5 años (seguro Infonavit); problemas de humedad, 3 años (Grupo Velas); e instalaciones hidrosanitarias y eléctricas, 2 años (seguro Infonavit) y 1 año (Grupo Velas). El seguro Infonavit aplica por ser vivienda nueva comprada con tu crédito.</p></div></div></details>
     <details data-reveal="up" style="--d:.2s"><summary>¿Dónde está Fraccionamiento Arecas?<i></i></summary><div class="ans"><div><p>En Matamoros, Tamaulipas, a 5 minutos de centros comerciales y áreas de trabajo, con accesos por Sendero Nacional, Martha R. Gómez y Av. 12 de Marzo, conectados al Libramiento Emilio Portes Gil.</p></div></div></details>
     <details data-reveal="up" style="--d:.25s"><summary>¿Cuál es el horario de atención?<i></i></summary><div class="ans"><div><p>Lunes a viernes de 9:00 am a 6:00 pm y sábado de 9:00 am a 2:00 pm.</p></div></div></details>
   </div>
